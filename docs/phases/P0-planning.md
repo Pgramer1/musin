@@ -18,6 +18,7 @@ No code was written in this phase. It produced the project's planning documents:
 
 | File | Purpose |
 |---|---|
+| [README.md](../../README.md) | Project overview and live status, updated as the project progresses |
 | [PRD.md](../../PRD.md) | Scope, research questions, metric definitions, schema contract, features, schedule, risks |
 | [RULES.md](../../RULES.md) | Team conventions, including these documentation rules |
 | [CLAUDE.md](../../CLAUDE.md) | Guidance for Claude Code working in the repo |
@@ -27,7 +28,11 @@ No code was written in this phase. It produced the project's planning documents:
 
 ## 3. How it fits together
 
-**Starting point.** `idea.md.txt` described a "Music Collaboration Network": Neo4j plus Wikidata, to find artists who connect genres and who has the most influential network. A review of that idea was attached to the same file.
+**Starting point.** The original pitch was:
+
+> **Music Collaboration Network.** Discover which artists connect different music genres and who has the most influential collaboration network. Tech: Neo4j · Data: free Wikidata query/API · Difficulty: Easy–Medium.
+
+A written review of that pitch came with it; its findings are summarised below. The original file (`idea.md.txt`) was deleted on 2026-10-10 once its content had been folded into this doc and the PRD.
 
 **What the review found, and how the plan responds:**
 
@@ -66,6 +71,7 @@ n/a: no data has been processed yet. The first dataset sizes arrive with F1.3 an
 - [D-008](../decisions.md#d-008--separate-credit-edges-from-contribution-edges): separate credit and contribution edges
 - [D-009](../decisions.md#d-009--benchmarks-spark-scaling--graph-engine-comparison): benchmark design
 - [D-010](../decisions.md#d-010--demo-in-neo4j-browser-streamlit-optional): demo in Neo4j Browser, Streamlit optional
+- [D-011](../decisions.md#d-011--contract-v1-clarifications): contract v1 clarifications (config and `.env` contracts, decade weights, genre attribution, import CSVs, provisional values for the open decisions)
 
 ## 6. Deviations from the plan
 
@@ -86,7 +92,7 @@ n/a.
 Before P1 work starts:
 
 - [ ] Fill in member names (PRD header and §12) and confirm the deadline
-- [ ] Create the Git repo and add a `.gitignore` (data, `.env`, notebook checkpoints)
+- [x] Create the Git repo (remote: `github.com/Pgramer1/musin`) and add `.gitignore` + `.gitattributes`
 - [ ] Install WSL2 (Ubuntu) and Docker on both machines
 - [ ] Check that the reference machine has ≥ 100 GB of free disk
 - [ ] Agree schema contract v1 (PRD §8) by Oct 13 (M1)

@@ -84,3 +84,19 @@ Entry format:
 - **Context:** With one month, a custom dashboard is the lowest value per hour.
 - **Decision:** Must = saved Neo4j Browser queries (Bloom if available). Streamlit = Could.
 - **Consequences:** The demo needs prepared queries on small subgraphs.
+
+### D-011 — Contract v1 clarifications
+- **Date / phase:** 2026-10-10 · P0
+- **Status:** Accepted, pending both members' sign-off at M1 (Oct 13)
+- **Context:** A review of the PRD found places where the contract was implied but not defined, so Member A and Member B could implement the same thing differently.
+- **Decision:**
+  1. **Config contract** (PRD §8.4): `config/pipeline.yaml` key list v1. **Environment contract** (§8.5): `.env` keys. Rule: settings that change results go in `pipeline.yaml`; secrets and per-machine settings go in `.env`.
+  2. **`edges_by_decade.weight`** = distinct shared recordings whose first release year falls in that decade. One edge can span several decades; recordings with no known year are excluded; summed weights must not exceed `edges.weight` (checked in F3.3). `first_year` / `last_year` = earliest / latest first-release year of the shared recordings.
+  3. **Genre attribution rule** (PRD §5): artists count only by their primary genre; only labelled edges enter genre metrics; the genre × genre matrix is symmetric, with within-genre collaboration on the diagonal.
+  4. **Import CSV headers** pinned in PRD §8.3.
+  5. **Provisional values** for OD1–OD7 until gate G1 (PRD §14).
+  6. **Primary-genre ties** broken by alphabetical parent-genre name; F2.5 reports how many artists tied.
+  7. **Bridge-score percentile** is taken over all artists in the loaded graph.
+  8. **Combining artist tags with release-group tags** is left to F2.5, which records its own decision.
+  9. **`min_recordings` filter** is applied when building `graph/`, so `graph/` and Neo4j hold the same graph.
+- **Consequences:** These edits are part of drafting v1, because the contract isn't frozen until M1, so there's no version bump. F1.1 creates `.env.example` and the first `config/pipeline.yaml`. F3.3 gains the `edges_by_decade` check.

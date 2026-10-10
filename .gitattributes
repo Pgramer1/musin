@@ -1,0 +1,14 @@
+# Store text files with LF line endings. Shell scripts and Dockerfiles
+# with Windows CRLF endings break inside WSL and Linux containers.
+* text=auto eol=lf
+
+# Windows-only scripts keep CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.pdf binary
+*.parquet binary

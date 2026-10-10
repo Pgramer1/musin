@@ -8,6 +8,7 @@ Guidance for Claude Code in this repository.
 
 - **[PRD.md](PRD.md):** scope, research questions, metric definitions, schema contract (§8), feature list with IDs (§11). Read the relevant section before starting any feature.
 - **[RULES.md](RULES.md):** binding team conventions (imported at the bottom of this file).
+- **[README.md](README.md):** project overview with current status. Kept up to date as the project progresses.
 - **[docs/README.md](docs/README.md):** build-log index, showing what is done, in progress, and planned.
 
 **Current phase:** P0 Planning done → **P1 Environment & ingestion** next. *(Update this line whenever a phase closes.)*
@@ -20,8 +21,9 @@ The team requires a written record of everything built. This is part of the work
 2. **After implementing a feature**, before calling it done:
    - Create `docs/features/F<x.y>-<slug>.md` from `docs/features/_TEMPLATE.md`. Fill every section with real outputs from the run (row counts, runtimes, parameters), the exact command, and *why* the design was chosen.
    - Update the feature's row in `docs/README.md`.
+   - Update the root `README.md` if the feature adds or changes setup, run commands, or results (e.g. add its command to **Getting started**).
    - Add a `D-NNN` entry to `docs/decisions.md` for any decision about scope, schema, metrics, or thresholds.
-3. **When a phase's last feature is done** (or the user closes the phase), write `docs/phases/P<n>-<slug>.md` from `docs/phases/_TEMPLATE.md`, update `docs/README.md`, and update the **Current phase** line above.
+3. **When a phase's last feature is done** (or the user closes the phase), write `docs/phases/P<n>-<slug>.md` from `docs/phases/_TEMPLATE.md`, update `docs/README.md`, update the **Status** line and **Progress** table in the root `README.md`, and update the **Current phase** line above.
 4. Never tell the user a feature is complete while its doc is missing.
 5. If a finished feature is reworked, update its existing doc and add a **Revisions** line.
 
@@ -31,6 +33,7 @@ The team requires a written record of everything built. This is part of the work
 - Reference machine: 24 GB RAM, RTX 4060 8 GB. The GPU is used only for the optional cuGraph benchmark (F5.3).
 - Data root: `$MUSIN_DATA` (default `~/musin-data` inside the WSL filesystem, not `/mnt/c`). Never inside the repo.
 - Memory budget: WSL 18 GB, Spark driver 12 GB, Neo4j heap 8 GB + page cache 5 GB. **Don't run Spark and Neo4j heavy jobs at the same time.**
+- **Config split:** settings that change results go in `config/pipeline.yaml` (PRD §8.4); secrets and per-machine settings (paths, ports, memory) go in `.env` (PRD §8.5). Never hard-code either; a missing config key should fail loudly.
 - **Ask the user before** starting multi-GB downloads, extracting dumps, or full-data runs; they take a long time and a lot of disk. Develop in sample mode (`--sample 0.05`).
 
 ## Commands

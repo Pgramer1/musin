@@ -6,11 +6,11 @@
 |---|---|
 | **Course** | Big Data Analytics — semester project |
 | **Team** | Member A: `<name>` (data engineering) · Member B: `<name>` (graph analytics) |
-| **Version** | 1.0 (2026-10-10) |
+| **Version** | 1.1 (2026-10-10): contract v1 clarifications ([D-011](docs/decisions.md)) |
 | **Submission** | ~2026-11-09 — **confirm the exact deadline** |
 | **Current phase** | P0 Planning ✅ → P1 Environment & ingestion |
 
-Companion documents: [RULES.md](RULES.md) (how we work) · [CLAUDE.md](CLAUDE.md) (AI assistant guide) · [docs/README.md](docs/README.md) (build log) · [docs/decisions.md](docs/decisions.md)
+Companion documents: [README.md](README.md) (overview and status) · [RULES.md](RULES.md) (how we work) · [CLAUDE.md](CLAUDE.md) (AI assistant guide) · [docs/README.md](docs/README.md) (build log) · [docs/decisions.md](docs/decisions.md)
 
 ---
 
@@ -47,13 +47,29 @@ Non-goals are listed in §15.
 
 ## 5. Research questions
 
-All metrics run on the **COLLAB projection** (every edge type merged into one undirected graph, `weight` = summed shared-recording counts) unless stated otherwise. Genre analyses use only artists with a known primary genre.
+All metrics run on the **COLLAB projection** (every edge type merged into one undirected graph, `weight` = summed shared-recording counts) unless stated otherwise. Parameter values (thresholds, top-k sizes, seeds) come from `config/pipeline.yaml` (§8.4); the defaults are given below.
+
+**Genre attribution rule (used by RQ1–RQ3):**
+
+- An artist counts only by its single `primary_genre` (§8.1, including the tie-break rule). The genre-share distribution in `artist_genre` is not used for attribution.
+- An edge is **labelled** when both endpoints have a primary genre. Unlabelled edges are left out of every genre metric, but stay in the graph for centrality and communities.
+- An artist with no primary genre has no genre-based score. Its edges still count in its neighbours' centrality.
 
 ### RQ1 — Which artists bridge genres?
 
-- **Genre diversity** of artist *i*: `D_i = 1 − Σ_g p_ig²`, where `p_ig` is the share of *i*'s collaboration weight going to neighbours whose primary genre is *g*. Defined only for artists with ≥ 5 genre-labelled neighbours. 0 means every collaborator is in one genre; it approaches 1 as collaborators spread evenly across many genres.
-- **Bridge score:** `B_i = D_i × percentile_rank(betweenness_i)`. A bridge is both diverse *and* structurally between groups.
-- **Outputs:** top-25 bridge table; genre × genre collaboration heatmap (edge weight between parent genres); ego-network figures for 3 bridges.
+- **Genre diversity** of artist *i*: `D_i = 1 − Σ_g p_ig²`, where `p_ig` is the share of *i*'s labelled collaboration weight going to neighbours whose primary genre is *g*.
+  - Unlabelled neighbours are ignored.
+  - Defined only for artists with at least `analysis.min_labelled_neighbours` (default 5) labelled neighbours.
+  - 0 means every collaborator is in one genre; the value approaches 1 as collaborators spread evenly across many genres.
+- **Bridge score:** `B_i = D_i × percentile_rank(betweenness_i)`.
+  - The percentile is taken over **all artists in the loaded graph**, not only those with a defined `D_i`.
+  - `B_i` is defined wherever `D_i` is.
+  - A bridge is both diverse *and* structurally between groups.
+- **Genre × genre matrix:**
+  - Each labelled edge adds its `weight` to the cell (primary genre of one endpoint, primary genre of the other).
+  - The matrix is symmetric: A–B and B–A go into the same cell. The diagonal is within-genre collaboration.
+  - Unlabelled edges are excluded.
+- **Outputs:** top-`analysis.top_k_bridges` (default 25) bridge table; genre × genre heatmap; ego-network figures for 3 bridges.
 
 ### RQ2 — Do collaboration communities match genres?
 
@@ -62,16 +78,16 @@ All metrics run on the **COLLAB projection** (every edge type merged into one un
 
 ### RQ3 — Has cross-genre collaboration changed over time?
 
-- Per decade (1960s–2020s), using the first release year of each shared recording:
-  - **Cross-genre share** = weight of edges whose endpoints have different primary genres ÷ weight of edges where both endpoints are labelled.
-  - **Featuring share** = FEATURED weight ÷ (FEATURED + CO_CREDITED) weight.
+- Per decade (`analysis.decades`, default 1960s–2020s), computed from `edges_by_decade` (§8.1), so each shared recording counts in the decade of its first release year:
+  - **Cross-genre share** = weight of labelled edges whose endpoints have different primary genres ÷ weight of all labelled edges in that decade.
+  - **Featuring share** = FEATURED weight ÷ (FEATURED + CO_CREDITED) weight in that decade. This uses all edges, labelled or not.
 - Limitation to state: primary genre is fixed per artist, not per period.
 - **Outputs:** line charts and a table by decade.
 
 ### RQ4 — Who is most central, and do the measures agree?
 
 - Weighted degree, PageRank, betweenness (settings in §5.5).
-- **Agreement:** Spearman ρ across all artists, and Jaccard overlap of the top-100 sets, for each pair of measures.
+- **Agreement:** Spearman ρ across all artists, and Jaccard overlap of the top-`analysis.top_k_overlap` (default 100) sets, for each pair of measures.
 - **Sensitivity:** repeat on a credit-only projection (CO_CREDITED + FEATURED).
 - **Outputs:** top-20 per measure; agreement table; discussion.
 
@@ -80,13 +96,13 @@ All metrics run on the **COLLAB projection** (every edge type merged into one un
 | Measure | Engine | Settings |
 |---|---|---|
 | Weighted degree | GDS `degree` | weight = `weight`, undirected |
-| PageRank | GDS `pageRank` | damping 0.85, max 20 iterations, weighted, undirected |
-| Betweenness | GDS `betweenness` | **unweighted**: GDS treats weights as distances, so a strong tie would look "long". `samplingSize` and `samplingSeed` fixed and recorded |
-| Communities | GDS `louvain` | weighted; fixed concurrency; run 3× to check stability |
+| PageRank | GDS `pageRank` | weighted, undirected; damping `analysis.pagerank.damping` (0.85), max iterations `analysis.pagerank.max_iterations` (20) |
+| Betweenness | GDS `betweenness` | **unweighted**: GDS treats weights as distances, so a strong tie would look "long". `samplingSize` = `analysis.betweenness_sampling_size` (10,000), `samplingSeed` = `analysis.random_seed` |
+| Communities | GDS `louvain` | weighted; fixed concurrency; run `analysis.louvain_runs` (3) times to check stability |
 | Shortest path | Cypher `shortestPath` | unweighted hops ("degrees of separation") |
-| NMI | scikit-learn | on the exported (artist, community, primary_genre) table |
+| NMI | scikit-learn | on the exported (artist, community, primary_genre) table, labelled artists only |
 
-The exact parameter values used are recorded in each feature doc.
+Parameter values come from `config/pipeline.yaml` (§8.4). The values actually used are also recorded in each feature doc.
 
 ### 5.6 Validation
 
@@ -128,7 +144,7 @@ F1.3 confirms the exact file locations and any extra tables needed.
 | Large credits (orchestras, cast recordings) create N² edges | Recordings with more than `max_credit_size` credited artists produce no pairwise edges (FR-10) |
 | A group and its own members look like collaborators | Remove edges between a group and its members (`l_artist_artist`, "member of band") (FR-11) |
 | Classical music creates giant hubs (composers, orchestras, conductors) | Open decision OD1 at the scope gate: exclude, or analyse separately |
-| Tags are noisy and sparse ("hip hop" / "hip-hop" / "rap") | Keep official genres and aliases only, map to 12–15 parent genres, weight by votes, report coverage (FR-08) |
+| Tags are noisy and sparse ("hip hop" / "hip-hop" / "rap") | Keep official genres and aliases only, map to 12–15 parent genres, weight by votes, report coverage (FR-08). How artist-level and release-group-level tags are combined is decided and documented in F2.5 |
 | Contribution credits are well documented mainly for popular releases | Measure coverage in F1.4; state as a limitation; analyse PRODUCED_FOR separately or drop it (OD5) |
 | Recordings have no date; release dates are partial or missing | First release year = earliest known year across releases, null if none; nulls are excluded from RQ3 only (FR-07) |
 | Results reflect what volunteers chose to document | Stated in the report's limitations section |
@@ -185,11 +201,15 @@ Hadoop/HDFS and Hive are deliberately not used ([D-004](docs/decisions.md)).
 | Free disk | ≥ 100 GB SSD; data inside the WSL filesystem, not `/mnt/c` |
 | Concurrency rule | Spark and Neo4j heavy jobs never run at the same time |
 
+These values are per machine, so they live in `.env` (§8.5), not in `config/pipeline.yaml`.
+
 ---
 
 ## 8. Data model — schema contract v1
 
-This contract is the interface between Member A (producer) and Member B (consumer). Changing it requires both members' approval, a version bump here, and a decision-log entry.
+This contract (§8.1–8.5) is the interface between Member A (producer) and Member B (consumer).
+
+**Status:** draft v1 until M1 (Oct 13), when both members sign it off. After that, changing it requires both members' approval, a version bump here, and a decision-log entry.
 
 ### 8.1 Parquet graph layer (`$MUSIN_DATA/graph/`)
 
@@ -204,7 +224,7 @@ This contract is the interface between Member A (producer) and Member B (consume
 | `area_name` | string | nullable |
 | `begin_year` | int | nullable |
 | `recording_count` | long | distinct recordings the artist is credited on |
-| `primary_genre` | string | parent genre with the highest share; null if untagged |
+| `primary_genre` | string | parent genre with the highest share. **Ties** are broken by alphabetical order of parent-genre name, and F2.5 reports how many artists tied. Null if untagged |
 | `genre_votes` | long | tag votes behind the genre profile |
 
 **`artist_genre`**
@@ -215,6 +235,8 @@ This contract is the interface between Member A (producer) and Member B (consume
 | `parent_genre` | string | |
 | `share` | double | sums to 1 per artist |
 
+How artist tags and release-group tags are combined into `share` is decided in F2.5 and recorded as a decision. This PRD does not fix it.
+
 **`edges`**
 
 | Column | Type | Notes |
@@ -223,20 +245,30 @@ This contract is the interface between Member A (producer) and Member B (consume
 | `dst_id` | long | for undirected types, `src_id < dst_id` |
 | `edge_type` | string | `CO_CREDITED`, `FEATURED`, `PRODUCED_FOR`, `PERFORMED_FOR` |
 | `weight` | long | distinct shared recordings |
-| `first_year` | int | nullable |
-| `last_year` | int | nullable |
+| `first_year` | int | earliest first-release year among the shared recordings; null if none has a known year |
+| `last_year` | int | latest first-release year among the shared recordings; null if none has a known year |
 
-**`edges_by_decade`**: `src_id`, `dst_id`, `edge_type`, `decade` (int, e.g. 1990), `weight`. Feeds RQ3.
+**`edges_by_decade`** (feeds RQ3)
+
+| Column | Type | Notes |
+|---|---|---|
+| `src_id`, `dst_id`, `edge_type` | | same meaning as in `edges` |
+| `decade` | int | first year of the decade, e.g. `1990` for 1990–1999 |
+| `weight` | long | distinct shared recordings whose first release year falls in this decade |
+
+- **One row per decade:** an edge appears once for each decade that has at least one of its shared recordings, so a long collaboration spans several rows.
+- **Unknown years:** recordings with no known first release year are left out.
+- **Invariant (checked in F3.3):** for every (src, dst, type), the decade weights summed ≤ `edges.weight`. The difference is the number of shared recordings with no known year.
 
 ### 8.2 Edge semantics
 
 For each recording, the credited artists come from `artist_credit_name` in `position` order.
 
-- An artist is **featured** if it comes after a join phrase matching `feat.`, `ft.`, or `featuring` (case-insensitive). Otherwise it is **main**.
+- An artist is **featured** if it comes after a join phrase matching `credits.featuring_pattern` (§8.4; by default `feat`, `ft`, or `featuring`, case-insensitive). Otherwise it is **main**.
 - main × main → `CO_CREDITED` (undirected)
 - main → featured → `FEATURED` (directed)
 - featured × featured → `CO_CREDITED`
-- A contribution relationship (`l_artist_recording` with a link type in the allowlist in `config/pipeline.yaml`) creates `PRODUCED_FOR` or `PERFORMED_FOR` from the contributor to each **main** artist of that recording.
+- A contribution relationship (`l_artist_recording` with a link type in the `contributions` allowlists, §8.4) creates `PRODUCED_FOR` or `PERFORMED_FOR` from the contributor to each **main** artist of that recording.
 - Self-edges are dropped. Edges are aggregated per (src, dst, type) as distinct-recording counts.
 - Ambiguous phrases (`with`, `&`, `x`, `vs.`) count as main. This is a documented limitation.
 
@@ -254,7 +286,93 @@ For each recording, the credited artists come from `artist_credit_name` in `posi
 
 Algorithm outputs are written back as Artist properties: `degreeWeighted`, `pagerank`, `betweenness`, `louvain`, `genreDiversity`, `bridgeScore`.
 
-Only artists with `recording_count ≥ min_recordings` and at least one edge are loaded. The threshold is set at the scope gate (OD2).
+**Which artists are included:**
+
+- An artist is kept if `recording_count ≥ filters.min_recordings` and it has at least one edge. Edges whose other endpoint was removed are dropped too.
+- This filter is applied when **building `graph/`** (F3.1), not at load time. `graph/` and Neo4j therefore hold the same artists and edges, so Spark-side analyses (RQ3) and Neo4j analyses see the same graph.
+- The final threshold is set at the scope gate (OD2). Until then, the provisional value in §8.4 applies.
+
+**Import CSVs (`$MUSIN_DATA/import/`)**
+
+The CSVs carry the flat columns of the model above, in `neo4j-admin database import` header format. Column names are the §8.1 names in camelCase; the one exception is `artist_type` → `type`.
+
+| File | Header |
+|---|---|
+| `artists.csv` | `artistId:ID(Artist),mbid,name,type,areaName,beginYear:int,recordingCount:long,primaryGenre,:LABEL` |
+| `genres.csv` | `name:ID(Genre),:LABEL` |
+| `in_genre.csv` | `:START_ID(Artist),:END_ID(Genre),share:double,:TYPE` |
+| `edges_<type>.csv` (one per edge type) | `:START_ID(Artist),:END_ID(Artist),weight:long,firstYear:int,lastYear:int,:TYPE` |
+
+- `CO_CREDITED` rows are written once (`src_id < dst_id`), as in §8.1.
+- `artistId` must end up as an integer property in Neo4j. F3.4 chooses the importer options that achieve this and records them in its feature doc.
+- Splitting large files into parts with a separate header file is an F3.4 implementation detail.
+
+### 8.4 Configuration contract: `config/pipeline.yaml`
+
+This file holds every setting that **changes results**. It is committed, shared by both members, and read by every stage and notebook. Draft v1:
+
+```yaml
+snapshot_date: null                  # OD6: set in F1.2
+
+paths:                               # relative to $MUSIN_DATA (§8.5)
+  dumps: dumps/
+  raw: raw/
+  clean: clean/
+  graph: graph/
+  import: import/
+reports_dir: reports/                # relative to the repo root
+
+filters:
+  special_artists_file: config/special_artists.csv
+  min_recordings: 1                  # OD2, provisional until G1
+  max_credit_size: 10                # OD3, provisional until G1
+  include_classical: true            # OD1, provisional until G1
+  use_release_level_credits: false   # OD7, provisional until G1
+
+credits:
+  featuring_pattern: '(?i)\b(feat|ft|featuring)\b'
+
+contributions:                       # MusicBrainz link_type names, verified against the dump in F2.3
+  produced_for: [producer]
+  performed_for: [performer, instrument, vocal]
+
+genres:
+  mapping_file: config/genre_mapping.csv   # official genre → parent genre (OD4)
+
+analysis:
+  min_labelled_neighbours: 5
+  top_k_bridges: 25
+  top_k_overlap: 100
+  pagerank: {damping: 0.85, max_iterations: 20}
+  betweenness_sampling_size: 10000
+  louvain_runs: 3
+  random_seed: 42
+  decades: {from: 1960, to: 2020}
+```
+
+Rules:
+
+- **No hidden defaults:** code reads these keys and fails loudly if one is missing. It never falls back to a value buried in code.
+- **Provisional values:** values marked provisional apply until gate G1. G1 replaces them, and each final value gets a `D-NNN` decision entry.
+- **Changes after G1:** changing a value under `filters`, `credits`, `contributions`, `genres`, or `analysis` needs a decision entry and a re-run of every affected stage.
+- **New keys:** a key is added in the same PR as the feature that needs it, and this list is updated in that PR.
+- **Sample size:** sample mode is a command-line flag (`--sample <fraction>`), not a config key, so the same config serves both modes.
+
+### 8.5 Environment contract: `.env`
+
+This file holds **secrets and per-machine settings**: anything that changes speed or access, but never results. It is gitignored. F1.1 creates the committed template `.env.example` with these keys and no real password.
+
+| Key | Reference-machine value | Used by |
+|---|---|---|
+| `MUSIN_DATA` | `/home/<user>/musin-data` (absolute; `~` is not expanded in `.env`) | every stage |
+| `NEO4J_PASSWORD` | set locally, never committed | Neo4j container, notebooks |
+| `NEO4J_HTTP_PORT` | `7474` | Neo4j Browser |
+| `NEO4J_BOLT_PORT` | `7687` | drivers, notebooks |
+| `SPARK_DRIVER_MEMORY` | `12g` | Spark |
+| `NEO4J_HEAP_SIZE` | `8G` | Neo4j (GDS projections live here) |
+| `NEO4J_PAGECACHE_SIZE` | `5G` | Neo4j |
+
+**Rule:** if a setting can change a number in the report, it belongs in `pipeline.yaml`. Otherwise it belongs in `.env`. Adding a key means updating `.env.example` and this table in the same PR.
 
 ---
 
@@ -273,13 +391,13 @@ Priority: **Must** (the project fails without it) · **Should** (expected) · **
 | FR-05 | Parse credits into (recording, artist, position, role ∈ {main, featured}) | Must |
 | FR-06 | Extract contribution credits through a configurable link-type allowlist | Must |
 | FR-07 | Derive each recording's first release year (null if unknown) | Must |
-| FR-08 | Map tags → official genres → parent genres; compute each artist's genre profile and primary genre | Must |
+| FR-08 | Map tags → official genres → parent genres; compute each artist's genre profile and primary genre (tie-break per §8.1; tag-combination rule decided in F2.5) | Must |
 | | **Graph build** | |
 | FR-09 | Build typed, aggregated edges per §8.2, plus `edges_by_decade` | Must |
 | FR-10 | Skip pairwise edges for recordings with more than `max_credit_size` credited artists | Must |
 | FR-11 | Remove edges between a group and its own members | Must |
 | FR-12 | Support a deterministic sample mode (`--sample <fraction>`, by hashed recording id) | Must |
-| FR-13 | Quality checks: no self-loops, no duplicate (src, dst, type), every endpoint exists | Must |
+| FR-13 | Quality checks: no self-loops, no duplicate (src, dst, type), every endpoint exists, `edges_by_decade` invariant (§8.1) holds | Must |
 | | **Load** | |
 | FR-14 | Export to neo4j-admin CSV, bulk import, create constraints and indexes | Must |
 | | **Analytics** | |
@@ -331,7 +449,7 @@ Feature IDs are `F<phase>.<n>`. Each feature gets a doc in `docs/features/` when
 
 | ID | Feature | Covers | Owner | Priority |
 |---|---|---|---|---|
-| F1.1 | Dev environment: `.wslconfig`, Docker Compose (Spark + Jupyter, Neo4j + GDS) | NFR-01, NFR-02 | A | Must |
+| F1.1 | Dev environment: `.wslconfig`, Docker Compose (Spark + Jupyter, Neo4j + GDS), `.env.example` (§8.5), initial `config/pipeline.yaml` (§8.4) | NFR-01, NFR-02 | A | Must |
 | F1.2 | Dump download, checksum verification, snapshot pinning | FR-01 | A | Must |
 | F1.3 | Table schemas and raw ingest to Parquet | FR-02 | A | Must |
 | F1.4 | Data profiling report | FR-03 | A + B | Must |
@@ -341,10 +459,10 @@ Feature IDs are `F<phase>.<n>`. Each feature gets a doc in `docs/features/` when
 | F2.3 | Contribution relationship extraction | FR-06 | A | Must |
 | F2.4 | Recording first release year | FR-07 | A | Must |
 | F2.5 | Genre normalization (1-day timebox) | FR-08 | A + B | Must |
-| F3.1 | Edge building, aggregation, hub and band-member filters | FR-09, FR-10, FR-11 | A | Must |
+| F3.1 | Edge building, aggregation, hub / band-member / `min_recordings` filters | FR-09, FR-10, FR-11 | A | Must |
 | F3.2 | Sample mode and dev sample graph | FR-12 | A | Must |
 | F3.3 | Graph-layer quality checks | FR-13 | A | Must |
-| F3.4 | Neo4j CSV export and bulk import | FR-14 | A | Must |
+| F3.4 | Neo4j CSV export (§8.3 format) and bulk import | FR-14 | A | Must |
 | F3.5 | Constraints, indexes, GDS projections | FR-14 | B | Must |
 | F4.1 | Centrality measures and agreement (RQ4) | FR-15 | B | Must |
 | F4.2 | Communities vs genres (RQ2) | FR-16 | B | Must |
@@ -400,17 +518,17 @@ Nov 5–9 is buffer. Could-priority work starts only when every Must in its phas
 
 ## 14. Open decisions (resolve at gate G1, Oct 16)
 
-| ID | Question | Input needed |
-|---|---|---|
-| OD1 | Include classical music, exclude it, or analyse it separately? | Hub sizes from F1.4 |
-| OD2 | `min_recordings` threshold for the Neo4j graph | Node/edge counts at several thresholds |
-| OD3 | `max_credit_size` | Credit-size distribution |
-| OD4 | Final parent-genre list (12–15) | Top official genres by tag volume |
-| OD5 | Is producer coverage enough to analyse PRODUCED_FOR on its own? | Relationship coverage |
-| OD6 | Snapshot date | Latest full export available |
-| OD7 | Also use release-level credits (`l_artist_release`)? | Coverage compared with recording level |
+| ID | Question | Input needed | Provisional until G1 |
+|---|---|---|---|
+| OD1 | Include classical music, exclude it, or analyse it separately? | Hub sizes from F1.4 | `include_classical: true` |
+| OD2 | `min_recordings` threshold for the graph | Node/edge counts at several thresholds | `min_recordings: 1` |
+| OD3 | `max_credit_size` | Credit-size distribution | `max_credit_size: 10` |
+| OD4 | Final parent-genre list (12–15) | Top official genres by tag volume | draft mapping in F2.5 |
+| OD5 | Is producer coverage enough to analyse PRODUCED_FOR on its own? | Relationship coverage | keep PRODUCED_FOR as its own edge type |
+| OD6 | Snapshot date | Latest full export available | latest full export when F1.2 runs |
+| OD7 | Also use release-level credits (`l_artist_release`)? | Coverage compared with recording level | `use_release_level_credits: false` |
 
-Each resolution is recorded in [docs/decisions.md](docs/decisions.md).
+The provisional values sit in `config/pipeline.yaml` (§8.4), so development isn't blocked before G1. Each final resolution is recorded in [docs/decisions.md](docs/decisions.md).
 
 ## 15. Out of scope
 
@@ -438,6 +556,7 @@ The project is done when:
 | Artist credit | How a recording is billed ("A feat. B"), stored in `artist_credit_name` |
 | Contribution | A typed relationship (producer, performer, …) from `l_artist_recording` |
 | COLLAB projection | All edge types merged into one undirected, weighted GDS graph |
-| Primary genre | The artist's parent genre with the highest vote share |
+| Primary genre | The artist's parent genre with the highest vote share (ties broken alphabetically) |
+| Labelled edge | An edge whose two endpoints both have a primary genre |
 | Special-purpose artist | A placeholder artist such as Various Artists or [unknown] |
 | MBID | MusicBrainz's public UUID for an entity |

@@ -1,0 +1,59 @@
+# ── Data: never committed (RULES.md §4, §6) ──────────────────────────
+# Real data lives in $MUSIN_DATA (~/musin-data in WSL), outside the repo.
+# These patterns catch anything that lands inside the repo by mistake.
+data/
+musin-data/
+mbdump*/
+*.tar.bz2
+*.tar.xz
+*.tar.gz
+*.parquet
+*.crc
+_SUCCESS
+spark-warehouse/
+metastore_db/
+derby.log
+spark-events/
+
+# Neo4j runtime folders and database dumps.
+# Cypher scripts (neo4j/*.cypher) ARE committed.
+neo4j/data/
+neo4j/logs/
+neo4j/import/
+neo4j/plugins/
+*.dump
+
+# Committed on purpose (not ignored): config/*.csv, config/*.yaml,
+# and small generated outputs in reports/figures/ and reports/tables/.
+
+# ── Python ──────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ── Jupyter ─────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── Secrets and machine-specific settings ───────────────────────────
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# ── Editors, OS, tools ──────────────────────────────────────────────
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+.claude/settings.local.json

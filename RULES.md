@@ -31,9 +31,13 @@ Every feature and every phase gets a written record of what was built, how, and 
 - **Where:** `docs/phases/P<n>-<slug>.md`, from [docs/phases/_TEMPLATE.md](docs/phases/_TEMPLATE.md).
 - **Must include:** the phase goal; every feature built (linked); how the pieces fit together end to end; key numbers; decisions; deviations from the PRD and why; known issues; what the next phase can now rely on.
 
-### 1.3 Index and decisions
+### 1.3 Index, README, and decisions
 
 - Update [docs/README.md](docs/README.md) (status + link) **in the same commit** as the doc.
+- Keep the root [README.md](README.md) current, in the same commit:
+  - a phase changes status → the **Status** line and **Progress** table
+  - a feature adds or changes setup or run commands → **Getting started**
+  - results become available → **Results**
 - Any decision that changes scope, the schema, a metric, or a threshold goes in [docs/decisions.md](docs/decisions.md) as a new `D-NNN` entry. Never edit an old decision; supersede it with a new one.
 
 ### 1.4 Writing standard
@@ -53,6 +57,7 @@ A feature is done only when all of these are true:
 - [ ] Runs end-to-end with one documented command, in sample mode and (for pipeline stages) full mode
 - [ ] Tests for pure logic pass; stage quality checks pass
 - [ ] Feature doc written and `docs/README.md` updated
+- [ ] Root `README.md` updated if setup, commands, status, or results changed
 - [ ] Decisions logged in `docs/decisions.md`
 - [ ] Report-bound outputs saved under `reports/`
 
@@ -70,13 +75,13 @@ A feature is done only when all of these are true:
 - Commit messages start with the ID: `F2.5: map tags to parent genres`.
 - The other member reviews each PR within 24 hours. Small PRs (under ~400 lines) get reviewed faster.
 - **Never commit data:** dumps, Parquet, CSV exports, Neo4j stores, or large notebook outputs. Small hand-made config files (`config/*.csv`, `config/*.yaml`) are committed.
-- No secrets in the repo. Machine-specific settings go in `.env` (gitignored); keep `.env.example` current.
+- No secrets in the repo. Secrets and per-machine settings go in `.env` (gitignored; keys listed in [PRD §8.5](PRD.md#85-environment-contract-env)); keep `.env.example` current. Settings that change results go in `config/pipeline.yaml` ([PRD §8.4](PRD.md#84-configuration-contract-configpipelineyaml)).
 
 ## 5. Code (Python / PySpark)
 
 - Python 3.11, type hints, `ruff` for lint and format.
 - Pipeline code lives in `src/musin/`. Entry points are thin: `python -m musin.<stage> --config config/pipeline.yaml [--sample 0.05]`.
-- **No hard-coded paths or thresholds.** Paths come from `MUSIN_DATA` + `config/pipeline.yaml`; thresholds come from the config.
+- **No hard-coded paths, thresholds, or analysis parameters.** Paths come from `MUSIN_DATA` + `config/pipeline.yaml`; every threshold and parameter comes from the config ([PRD §8.4](PRD.md#84-configuration-contract-configpipelineyaml)). A missing key fails loudly; there are no hidden defaults in code.
 - **Explicit schemas** for every dump table (`src/musin/schemas/`). Never `inferSchema`.
 - **Prefer built-in Spark functions.** A Python UDF needs a written reason in the feature doc (UDFs are slow); use a pandas UDF if one is unavoidable.
 - **Never `.collect()` or `.toPandas()`** a frame that isn't already aggregated (rule of thumb: under 1 M rows).
