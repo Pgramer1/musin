@@ -1,0 +1,2 @@
+:START_ID(Artist),:END_ID(Artist),weight:long,firstYear:int,lastYear:int,:TYPE
+103,101,1,1974,1974,PERFORMED_FOR

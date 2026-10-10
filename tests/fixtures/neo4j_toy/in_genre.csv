@@ -1,0 +1,15 @@
+:START_ID(Artist),:END_ID(Genre),share:double,:TYPE
+101,rock,1.0,IN_GENRE
+102,rock,1.0,IN_GENRE
+103,rock,1.0,IN_GENRE
+104,rock,1.0,IN_GENRE
+105,rock,1.0,IN_GENRE
+106,rock,0.5,IN_GENRE
+106,hip hop,0.5,IN_GENRE
+107,hip hop,1.0,IN_GENRE
+108,hip hop,1.0,IN_GENRE
+109,hip hop,1.0,IN_GENRE
+110,hip hop,1.0,IN_GENRE
+111,hip hop,1.0,IN_GENRE
+112,hip hop,0.7,IN_GENRE
+112,electronic,0.3,IN_GENRE

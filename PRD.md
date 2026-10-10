@@ -8,7 +8,7 @@
 | **Team** | Member A: `<name>` (data engineering) · Member B: `<name>` (graph analytics) |
 | **Version** | 1.1 (2026-10-10): contract v1 clarifications ([D-011](docs/decisions.md)) |
 | **Submission** | ~2026-11-09 — **confirm the exact deadline** |
-| **Current phase** | P0 Planning ✅ → P1 Environment & ingestion |
+| **Current phase** | P1 Environment & ingestion ✅ → P2 Cleaning & genre normalization |
 
 Companion documents: [README.md](README.md) (overview and status) · [RULES.md](RULES.md) (how we work) · [CLAUDE.md](CLAUDE.md) (AI assistant guide) · [docs/README.md](docs/README.md) (build log) · [docs/decisions.md](docs/decisions.md)
 
@@ -47,7 +47,7 @@ Non-goals are listed in §15.
 
 ## 5. Research questions
 
-All metrics run on the **COLLAB projection** (every edge type merged into one undirected graph, `weight` = summed shared-recording counts) unless stated otherwise. Parameter values (thresholds, top-k sizes, seeds) come from `config/pipeline.yaml` (§8.4); the defaults are given below.
+All metrics run on the **COLLAB projection** (every edge type merged into one undirected graph with one relationship per artist pair, `weight` = summed shared-recording counts; [D-017](docs/decisions.md)) unless stated otherwise. Parameter values (thresholds, top-k sizes, seeds) come from `config/pipeline.yaml` (§8.4); the defaults are given below.
 
 **Genre attribution rule (used by RQ1–RQ3):**
 
@@ -299,13 +299,13 @@ The CSVs carry the flat columns of the model above, in `neo4j-admin database imp
 
 | File | Header |
 |---|---|
-| `artists.csv` | `artistId:ID(Artist),mbid,name,type,areaName,beginYear:int,recordingCount:long,primaryGenre,:LABEL` |
+| `artists.csv` | `artistId:ID(Artist){id-type:long},mbid,name,type,areaName,beginYear:int,recordingCount:long,primaryGenre,:LABEL` |
 | `genres.csv` | `name:ID(Genre),:LABEL` |
 | `in_genre.csv` | `:START_ID(Artist),:END_ID(Genre),share:double,:TYPE` |
 | `edges_<type>.csv` (one per edge type) | `:START_ID(Artist),:END_ID(Artist),weight:long,firstYear:int,lastYear:int,:TYPE` |
 
 - `CO_CREDITED` rows are written once (`src_id < dst_id`), as in §8.1.
-- `artistId` must end up as an integer property in Neo4j. F3.4 chooses the importer options that achieve this and records them in its feature doc.
+- `artistId` must end up as an integer property in Neo4j. The `{id-type:long}` override on the `Artist` ID group does this while `Genre` keeps its string IDs; without it the importer stores `artistId` as a string (verified in F1.5, [D-016](docs/decisions.md)). A global `--id-type=integer` is not an option because `Genre` IDs are names.
 - Splitting large files into parts with a separate header file is an F3.4 implementation detail.
 
 ### 8.4 Configuration contract: `config/pipeline.yaml`
@@ -569,7 +569,7 @@ The project is done when:
 |---|---|
 | Artist credit | How a recording is billed ("A feat. B"), stored in `artist_credit_name` |
 | Contribution | A typed relationship (producer, performer, …) from `l_artist_recording` |
-| COLLAB projection | All edge types merged into one undirected, weighted GDS graph |
+| COLLAB projection | All edge types merged into one undirected, weighted GDS graph: one relationship per unordered artist pair, `weight` = sum over every edge type and direction ([D-017](docs/decisions.md)) |
 | Primary genre | The artist's parent genre with the highest vote share (ties broken alphabetically) |
 | Labelled edge | An edge whose two endpoints both have a primary genre |
 | Special-purpose artist | A placeholder artist such as Various Artists or [unknown] |

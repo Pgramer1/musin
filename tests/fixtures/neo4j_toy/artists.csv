@@ -1,0 +1,13 @@
+artistId:ID(Artist){id-type:long},mbid,name,type,areaName,beginYear:int,recordingCount:long,primaryGenre,:LABEL
+101,00000000-0000-4000-8000-000000000101,Alpha Rock,Group,United Kingdom,1970,40,rock,Artist
+102,00000000-0000-4000-8000-000000000102,Bravo Rock,Person,United Kingdom,1972,25,rock,Artist
+103,00000000-0000-4000-8000-000000000103,Charlie Rock,Person,Ireland,1968,30,rock,Artist
+104,00000000-0000-4000-8000-000000000104,Delta Rock,Group,United States,1985,18,rock,Artist
+105,00000000-0000-4000-8000-000000000105,Echo Rock,Person,,,12,rock,Artist
+106,00000000-0000-4000-8000-000000000106,"Foxtrot ""The Bridge""",Person,United States,1990,22,hip hop,Artist
+107,00000000-0000-4000-8000-000000000107,Golf Rap,Person,United States,1993,35,hip hop,Artist
+108,00000000-0000-4000-8000-000000000108,Hotel Rap,Group,United States,1991,50,hip hop,Artist
+109,00000000-0000-4000-8000-000000000109,India Rap,Person,Canada,1999,28,hip hop,Artist
+110,00000000-0000-4000-8000-000000000110,"Juliet Rap, Jr.",Person,United States,2001,16,hip hop,Artist
+111,00000000-0000-4000-8000-000000000111,Kilo Rap,Person,,1995,9,hip hop,Artist
+112,00000000-0000-4000-8000-000000000112,Lima Producer,Person,Germany,1980,60,hip hop,Artist
