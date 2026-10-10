@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1 Environment & ingestion in progress (dev environment built) · *Last updated 2026-10-10*
+> **Status:** P1 Environment & ingestion in progress (dev environment done; dump download next) · *Last updated 2026-10-10*
 
 ## Research questions
 

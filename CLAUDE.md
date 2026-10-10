@@ -11,7 +11,7 @@ Guidance for Claude Code in this repository.
 - **[README.md](README.md):** project overview with current status. Kept up to date as the project progresses.
 - **[docs/README.md](docs/README.md):** build-log index, showing what is done, in progress, and planned.
 
-**Current phase:** **P1 Environment & ingestion** in progress (F1.1 dev environment built, pending WSL check). *(Update this line whenever a phase closes.)*
+**Current phase:** **P1 Environment & ingestion** in progress (F1.1 done; F1.2 dump download next). *(Update this line whenever a phase closes.)*
 
 ## Mandatory: document every feature and phase
 
