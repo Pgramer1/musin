@@ -29,7 +29,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 |---|---|---|---|---|---|---|
 | F1.1 | Dev environment | P1 | A | Must | Done | [F1.1-dev-environment.md](features/F1.1-dev-environment.md) |
 | F1.2 | Dump download and snapshot pinning | P1 | A | Must | Done | [F1.2-dump-download.md](features/F1.2-dump-download.md) |
-| F1.3 | Table schemas and raw ingest | P1 | A | Must | Planned | — |
+| F1.3 | Table schemas and raw ingest | P1 | A | Must | Done | [F1.3-raw-ingest.md](features/F1.3-raw-ingest.md) |
 | F1.4 | Data profiling report | P1 | A + B | Must | Planned | — |
 | F1.5 | Neo4j + GDS smoke test | P1 | B | Must | Planned | — |
 | F2.1 | Artist cleaning and special-purpose filter | P2 | A | Must | Planned | — |

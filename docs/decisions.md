@@ -118,3 +118,14 @@ Entry format:
   3. Trust chain: `SHA256SUMS` must carry a valid GPG signature from the MusicBrainz data-dump signing key (fingerprint `D5E63B4BDCCE195642948684B8FC2375C777580F`, public key committed as `config/musicbrainz-signing-key.asc`), and every file must match its SHA-256.
   4. New `source.*` keys in `config/pipeline.yaml` and PRD §8.4: `base_url`, `files`, `signing_key_file`, `signing_key_fingerprint`.
 - **Consequences:** This snapshot leaves the official server about two weeks after 2026-10-10. After that, our verified copy in `$MUSIN_DATA/dumps/20261007-002147/` is the only source; a member who needs the files copies them from the reference machine and runs `--verify-only`. All report numbers refer to this snapshot.
+
+### D-014 — Raw layer: 22 tables, schema 31, generated explicit schemas
+- **Date / phase:** 2026-10-10 · P1 (F1.3)
+- **Status:** Accepted
+- **Context:** F1.3 had to confirm which dump tables to ingest and where their column order comes from. Dump files are headerless; a wrong column order would silently shift every value.
+- **Decision:**
+  1. Ingest the 21 tables of PRD §6.2 plus `l_artist_release`, which F1.4 needs to measure release-level credit coverage for OD7. Nothing else (no `recording_tag`, aliases, or link attributes) until a feature needs it.
+  2. Column names, order, and types come from `admin/sql/CreateTables.sql` at musicbrainz-server commit `c93f815cbfe10f1c5ba0b752a8ef878a15ee68df` (tag `v-2026-09-21.0`, the `production` head at dump time, declaring `DB_SCHEMA_SEQUENCE 31`, matching both archives' `SCHEMA_SEQUENCE`). A generator turns it into the committed module `src/musin/schemas/tables.py`; the pipeline never parses SQL at run time, and stages refuse to run if the extracted `SCHEMA_SEQUENCE` differs.
+  3. `raw/` keeps Postgres types faithfully (`SMALLINT` → short, `INTEGER`/`SERIAL` → int, `UUID` → string, `TIMESTAMP WITH TIME ZONE` → timestamp in UTC). Widening to the §8.1 types (e.g. `artist_id` long) happens in `clean/`.
+  4. Parsing is strict: wrong field counts and malformed values fail the stage (ANSI casts), so `raw/` either matches the dump exactly or does not exist.
+- **Consequences:** A new snapshot with a different schema sequence requires regenerating the schema module. Contract §8 is unaffected.

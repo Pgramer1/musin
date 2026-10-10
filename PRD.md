@@ -130,11 +130,12 @@ Before RQ1 results are looked at, both members independently list ~15 artists wi
 | `track`, `medium`, `release`, `release_group` | Link recordings → releases → release groups |
 | `release_country`, `release_unknown_country` | Release dates → first release year per recording |
 | `l_artist_recording`, `link`, `link_type` | Contribution credits: producer, performer, instrument, vocal |
+| `l_artist_release` | Release-level credits; only to measure coverage for OD7 (added in F1.3, D-014) |
 | `l_artist_artist` | Band membership (used to remove group ↔ member edges) |
 | `genre`, `genre_alias` | Official MusicBrainz genre list |
 | `tag`, `artist_tag`, `release_group_tag` | User-voted tags (derived dump) |
 
-F1.3 confirms the exact file locations and any extra tables needed.
+Confirmed in F1.3 ([D-014](docs/decisions.md)): all tables are in `mbdump.tar.bz2` except `tag`, `artist_tag`, and `release_group_tag`, which are in `mbdump-derived.tar.bz2`; both archives are at schema sequence 31. Column order comes from `CreateTables.sql` at musicbrainz-server commit `c93f815c` (tag `v-2026-09-21.0`, production at dump time).
 
 ### 6.3 Known data issues and handling
 

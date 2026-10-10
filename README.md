@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1 Environment & ingestion in progress (dev environment done; dump download next) · *Last updated 2026-10-10*
+> **Status:** P1 Environment & ingestion in progress (environment, download, raw ingest done; profiling next) · *Last updated 2026-10-10*
 
 ## Research questions
 
@@ -89,13 +89,20 @@ docker compose up -d
 docker compose exec spark python -m musin.envcheck --config config/pipeline.yaml
 ```
 
-**3. Get the data** (8.1 GB download of the pinned snapshot `20261007-002147`, GPG- and SHA-256-verified):
+**3. Get the data** (8.1 GB download of the pinned snapshot `20261007-002147`, GPG- and SHA-256-verified; [F1.2](docs/features/F1.2-dump-download.md)):
 
 ```bash
 docker compose exec spark python -m musin.ingest.download --config config/pipeline.yaml
 ```
 
-The official server keeps only the two latest weekly exports, so after about 2026-10-21 copy `$MUSIN_DATA/dumps/20261007-002147/` from a teammate and run the same command with `--verify-only`. Details: [F1.2 build log](docs/features/F1.2-dump-download.md).
+The official server keeps only the two latest weekly exports, so after about 2026-10-21 copy `$MUSIN_DATA/dumps/20261007-002147/` from a teammate and run the same command with `--verify-only`.
+
+**4. Unpack and convert to Parquet** (the 22 tables we use, ≈17.5 GB of text → typed Parquet in `$MUSIN_DATA/raw/`; [F1.3](docs/features/F1.3-raw-ingest.md)):
+
+```bash
+docker compose exec spark python -m musin.ingest.extract --config config/pipeline.yaml
+docker compose exec spark python -m musin.ingest.raw --config config/pipeline.yaml
+```
 
 | Service | URL |
 |---|---|
