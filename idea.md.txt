@@ -1,0 +1,48 @@
+Music Collaboration Network
+
+Discover which artists connect different music genres and who has the most influential collaboration network.
+
+Tech: Neo4j · Data: Free Wikidata query/API · Difficulty: Easy–Medium
+
+![Medium](https://images.openai.com/static-rsc-4/4r0nf7JqIbWkiN0BdbAcyWQfnbQg-el936YJciUVk-RoCOO7B5Ib0CJQgW91wQNbxWAzv05Z7JiFIWDqXKytvRM5efCr_KD_cGT2KTzI8mSFUMGhqvNWiQhdQurfYIK4rX0qWvju7mYx736VdqjN7EsZYHD9d6fnn9EO_YyRI0BSYjfVkK2WasEQ2ufBrhoi?purpose=fullsize)
+
+**Overall:** it's a solid, well-scoped idea that suits a graph database, and it's feasible. The main risk is that, as written, it may not count as a *big data* project.
+
+## What's good
+
+- **The problem fits the technology.** Collaboration is a graph problem, so Neo4j earns its place.
+- **The schema is concrete.** Naming the fields up front, with credited artists as the key, avoids the "random CSVs that don't join" trap.
+- **The verified vs. inferred distinction is the best part.** It shows you understand your data's limits, and few student projects do.
+- **The feature list is specific.** Genre bridges, paths, communities, and producer influence are all answerable with standard graph algorithms.
+- **It's free, and the "start with MusicBrainz alone" advice is sound.**
+
+## What to improve
+
+**1. Big data fit (the biggest issue).** If this is for a Big Data course, "Spark is optional" and "you don't need a huge dataset" work against you. An evaluator will ask where the volume, variety, and processing challenge are.
+- Use the **MusicBrainz database dumps, not the API**. The API is rate-limited to about one request per second, so it can't give you scale.
+- Make Spark the ETL layer: dump → Spark (clean, dedupe, explode credits, build edge lists) → Parquet → Neo4j.
+- Add a small benchmark, such as Spark vs. Pandas processing time at different data sizes, so you can justify the architecture.
+
+**2. The schema conflates two kinds of credits.** In MusicBrainz, the *artist credit* (who's billed on the track) is separate from *relationships* (producer, composer, performer, and so on). Model them separately, since they're your "verified" and "inferred" tiers. A relationship like "producer of" is also a different edge type from "featured on."
+
+**3. Genre is messier than it looks.** MusicBrainz genres are user-voted tags, mostly on artists and release groups, not tracks. They're noisy and inconsistent ("hip hop" vs. "hip-hop" vs. "rap"). Your genre bridges feature depends on this, so plan a normalization step, such as mapping tags to ~15 top-level genres.
+
+**4. Edge explosion and hub nodes.** A track with N credited artists creates N² pairwise links, and compilations ("Various Artists"), orchestras, and prolific session musicians create giant hubs that dominate every metric. Keep the bipartite structure (Artist–Recording) and project to artist–artist edges only when needed. Filter out special-purpose artists explicitly.
+
+**5. "Influence" and "bridge" are undefined.** Degree, PageRank, and betweenness centrality each give a different answer. Define a genre bridge formally, for example high betweenness between genre communities or the share of collaborators in other genres. Comparing the metrics would make a good analysis section.
+
+**6. The tooling is vague in places.** "NetworkX or Neo4j GDS alternatives" needs a decision. Pick your algorithms (PageRank, betweenness, Louvain/Leiden, shortest path) and where each runs. Also confirm what the free Community Edition of GDS limits.
+
+**7. Validation is missing.** How will you know the results are sensible? Check against known figures, such as prolific producers who obviously span genres, and see whether they show up as top bridges.
+
+**8. Smaller points:**
+- **Wikidata:** I'd drop it. Entity linking is a time sink with little payoff.
+- **Timeline analysis:** release dates are often incomplete, so decide how to handle nulls.
+- **Dashboard:** force-directed views of large graphs are unreadable. Show ego networks or subgraphs of a few hundred nodes.
+- **Licensing:** MusicBrainz core data is CC0, but tags and ratings are supplementary data under CC BY-NC-SA. That's fine for coursework, but cite it.
+
+## Suggested revised pipeline
+
+MusicBrainz dump → **Spark** (clean, normalize genres, build edge lists) → Parquet → **Neo4j** (artist, recording, producer, and genre nodes) → algorithms (PageRank, betweenness, Louvain, shortest path) → **Streamlit** explorer, plus a Spark vs. Pandas benchmark.
+
+Is this for a course with explicit big-data requirements (volume thresholds, a required Spark or Hadoop component)? If so, I'd tighten the scoping around that first.
