@@ -89,6 +89,14 @@ docker compose up -d
 docker compose exec spark python -m musin.envcheck --config config/pipeline.yaml
 ```
 
+**3. Get the data** (8.1 GB download of the pinned snapshot `20261007-002147`, GPG- and SHA-256-verified):
+
+```bash
+docker compose exec spark python -m musin.ingest.download --config config/pipeline.yaml
+```
+
+The official server keeps only the two latest weekly exports, so after about 2026-10-21 copy `$MUSIN_DATA/dumps/20261007-002147/` from a teammate and run the same command with `--verify-only`. Details: [F1.2 build log](docs/features/F1.2-dump-download.md).
+
 | Service | URL |
 |---|---|
 | Jupyter Lab (PySpark 3.5.9, Python 3.11) | http://localhost:8888 |

@@ -48,9 +48,13 @@ elif [[ "$data" == /mnt/* ]]; then
 else
   mkdir -p "$data"/{dumps,raw,clean,graph,import,tmp} "$data"/neo4j/{data,logs}
   ok "data dirs ready under $data"
-  free_gb=$(df -BG --output=avail "$data" | tail -1 | tr -dc '0-9')
-  if (( free_gb >= 100 )); then ok "${free_gb} GB free on the data disk"
-  else warn "only ${free_gb} GB free on the data disk; full runs need ≥100 GB (RULES §10)"; fi
+  # Inside WSL, df shows the virtual disk's MAXIMUM size, not real space. The
+  # virtual disk is a file on the Windows drive, so that drive's free space is
+  # the real limit (checked via /mnt/c when present).
+  host=$([[ -d /mnt/c ]] && echo /mnt/c || echo "$data")
+  free_gb=$(df -BG --output=avail "$host" | tail -1 | tr -dc '0-9')
+  if (( free_gb >= 100 )); then ok "${free_gb} GB free on the host drive ($host)"
+  else warn "only ${free_gb} GB free on the host drive ($host); full runs need ≥100 GB (RULES §10)"; fi
 fi
 
 # 4. Memory visible to WSL (set by %USERPROFILE%\.wslconfig).

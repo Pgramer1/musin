@@ -28,7 +28,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | ID | Feature | Phase | Owner | Priority | Status | Doc |
 |---|---|---|---|---|---|---|
 | F1.1 | Dev environment | P1 | A | Must | Done | [F1.1-dev-environment.md](features/F1.1-dev-environment.md) |
-| F1.2 | Dump download and snapshot pinning | P1 | A | Must | Planned | — |
+| F1.2 | Dump download and snapshot pinning | P1 | A | Must | Done | [F1.2-dump-download.md](features/F1.2-dump-download.md) |
 | F1.3 | Table schemas and raw ingest | P1 | A | Must | Planned | — |
 | F1.4 | Data profiling report | P1 | A + B | Must | Planned | — |
 | F1.5 | Neo4j + GDS smoke test | P1 | B | Must | Planned | — |

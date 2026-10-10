@@ -49,6 +49,7 @@ python -m musin.<stage> --config config/pipeline.yaml [--sample 0.05]
 | Check the machine, create `$MUSIN_DATA` tree (WSL) | `bash setup/preflight.sh` | F1.1 |
 | Build and start Spark/Jupyter + Neo4j/GDS | `docker compose build && docker compose up -d` | F1.1 |
 | Environment check (config, data root, Spark) | `docker compose exec spark python -m musin.envcheck --config config/pipeline.yaml` | F1.1 |
+| Download + verify pinned dumps (8.1 GB; ask first) | `docker compose exec spark python -m musin.ingest.download --config config/pipeline.yaml [--verify-only \| --show-latest]` | F1.2 |
 | Tests / lint | `docker compose exec spark pytest` · `docker compose exec spark ruff check src tests` | F1.1 |
 
 ## Planned layout

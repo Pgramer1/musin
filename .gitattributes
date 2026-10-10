@@ -12,3 +12,6 @@
 *.jpg binary
 *.pdf binary
 *.parquet binary
+
+# Signed files: must stay byte-exact for GPG verification tests
+tests/fixtures/dumps/* -text

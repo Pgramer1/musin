@@ -107,3 +107,14 @@ Entry format:
 - **Context:** The Spark + Jupyter container needs a Jupyter port, a Spark UI port, and a way to authenticate to Jupyter. None of these is in the PRD §8.5 `.env` contract. Adding them would extend the contract; leaving them out means hard-coding per-machine settings.
 - **Decision:** Keep §8.5 unchanged. Fix Jupyter at port 8888 and the Spark UI at 4040 in `docker-compose.yml`, and run Jupyter without a token. Every published port (Neo4j's included) is bound to `127.0.0.1` only.
 - **Consequences:** Nothing is reachable from the network, but any local process can use Jupyter, and through it the repo and `$MUSIN_DATA`. If 8888 or 4040 is taken on a member's machine, they edit the port mapping locally. Revisit (add `JUPYTER_PORT`, `JUPYTER_TOKEN`, `SPARK_UI_PORT` to §8.5) if either becomes a problem.
+
+### D-013 — Snapshot 20261007-002147, verified by signed checksums (OD6)
+- **Date / phase:** 2026-10-10 · P1 (F1.2)
+- **Status:** Accepted
+- **Context:** OD6 asked which MusicBrainz full export to pin. The download also needed a source URL, a file list, and a way to trust the files, none of which were config keys yet. The server keeps only the two most recent weekly exports (20260930-002222 and 20261007-002147 on 2026-10-10).
+- **Decision:**
+  1. Pin `snapshot_date: "20261007-002147"`, the latest full export when F1.2 ran (as provisionally agreed for OD6). The value is the export's directory name, because that is the snapshot's unique ID.
+  2. Download only `mbdump.tar.bz2` (core, CC0) and `mbdump-derived.tar.bz2` (tags, CC BY-NC-SA 3.0). The other archives (edit history 16 GB, editors, stats, cover art, CD stubs) are not needed by any RQ.
+  3. Trust chain: `SHA256SUMS` must carry a valid GPG signature from the MusicBrainz data-dump signing key (fingerprint `D5E63B4BDCCE195642948684B8FC2375C777580F`, public key committed as `config/musicbrainz-signing-key.asc`), and every file must match its SHA-256.
+  4. New `source.*` keys in `config/pipeline.yaml` and PRD §8.4: `base_url`, `files`, `signing_key_file`, `signing_key_fingerprint`.
+- **Consequences:** This snapshot leaves the official server about two weeks after 2026-10-10. After that, our verified copy in `$MUSIN_DATA/dumps/20261007-002147/` is the only source; a member who needs the files copies them from the reference machine and runs `--verify-only`. All report numbers refer to this snapshot.

@@ -312,7 +312,13 @@ The CSVs carry the flat columns of the model above, in `neo4j-admin database imp
 This file holds every setting that **changes results**. It is committed, shared by both members, and read by every stage and notebook. Draft v1:
 
 ```yaml
-snapshot_date: null                  # OD6: set in F1.2
+snapshot_date: "20261007-002147"     # OD6, set in F1.2 (D-013): full-export directory name
+
+source:                              # added in F1.2 (D-013)
+  base_url: https://data.metabrainz.org/pub/musicbrainz/data/fullexport/
+  files: [mbdump.tar.bz2, mbdump-derived.tar.bz2]
+  signing_key_file: config/musicbrainz-signing-key.asc
+  signing_key_fingerprint: D5E63B4BDCCE195642948684B8FC2375C777580F
 
 paths:                               # relative to $MUSIN_DATA (§8.5)
   dumps: dumps/

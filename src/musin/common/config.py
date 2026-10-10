@@ -16,6 +16,10 @@ import yaml
 # as the feature that introduces it (PRD §8.4 "New keys").
 REQUIRED_KEYS: tuple[str, ...] = (
     "snapshot_date",
+    "source.base_url",
+    "source.files",
+    "source.signing_key_file",
+    "source.signing_key_fingerprint",
     "paths.dumps",
     "paths.raw",
     "paths.clean",

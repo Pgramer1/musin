@@ -11,7 +11,13 @@
 #     with the PRD §8.4 listing and src/musin/common/config.py REQUIRED_KEYS.
 #   - Sample mode is a CLI flag (--sample <fraction>), not a config key.
 
-snapshot_date: null                  # OD6: set in F1.2
+snapshot_date: "20261007-002147"     # OD6 (D-013): full-export directory name, YYYYMMDD-HHMMSS
+
+source:                              # MusicBrainz full export (F1.2)
+  base_url: https://data.metabrainz.org/pub/musicbrainz/data/fullexport/
+  files: [mbdump.tar.bz2, mbdump-derived.tar.bz2]   # core (CC0) + derived (tags, CC BY-NC-SA)
+  signing_key_file: config/musicbrainz-signing-key.asc
+  signing_key_fingerprint: D5E63B4BDCCE195642948684B8FC2375C777580F
 
 paths:                               # relative to $MUSIN_DATA (§8.5)
   dumps: dumps/

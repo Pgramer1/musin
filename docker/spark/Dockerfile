@@ -3,9 +3,9 @@
 # The pip pyspark wheel bundles the Spark jars, so no separate Spark install.
 FROM python:3.11.16-slim-bookworm
 
-# procps: Spark's launcher scripts call `ps`.
+# procps: Spark's launcher scripts call `ps`. gnupg: dump signature check (F1.2).
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends openjdk-17-jre-headless procps \
+    && apt-get install -y --no-install-recommends openjdk-17-jre-headless procps gnupg \
     && rm -rf /var/lib/apt/lists/*
 
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
