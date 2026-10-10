@@ -153,3 +153,14 @@ Entry format:
 - **Context:** PRD §5 and the glossary define COLLAB as all edge types merged into one undirected weighted graph, but not how parallel edges are merged. A pair can have several edges: `CO_CREDITED` plus `FEATURED`, or `FEATURED` a → b plus `PERFORMED_FOR` b → a. A native GDS projection of the four types keeps them as parallel relationships. On the toy graph that left weighted degree unchanged but changed betweenness by up to 2.8 (e.g. 17.5 → 20.3), because GDS counts each parallel edge as a separate shortest path. Native `aggregation: 'SUM'` merges only within one type and direction.
 - **Decision:** COLLAB is built as a Cypher-aggregation projection. Each edge's endpoints are ordered by `artistId`, weights are summed per unordered pair across all four types and both directions, and the result is projected with `undirectedRelationshipTypes: ['*']`. Reference implementation: `neo4j/smoke/03_projections.cypher` (`collab_undirected`).
 - **Consequences:** Weighted degree, PageRank, betweenness, and Louvain all see one relationship per pair. GDS reports `relationshipCount` = 2 × pairs for this undirected graph. F3.5 builds the production `collab_undirected` this way and runs `.estimate` first; a Cypher projection over the full graph is slower to build than a native one, and F3.5 records the build time. Type-specific analyses use their own projections.
+
+### D-018 — Special-purpose artist list and artist cleaning rules
+- **Date / phase:** 2026-10-11 · P2 (F2.1)
+- **Status:** Accepted
+- **Context:** FR-04 excludes special-purpose artists everywhere downstream, but the PRD only gives examples. F1.4 showed them as the largest hubs (`[unknown]` on 225,951 recordings). The list must be reproducible and must not drop real artists who share a placeholder-like name.
+- **Decision:**
+  1. `config/special_artists.csv` lists 15 artists by MBID: the 12 whose MusicBrainz comment marks them "Special Purpose Artist", the reserved IDs 1 (Various Artists) and 2 (Deleted Artist), and `[mechanical instruments]` (type-`Other` sound-source placeholder). Bracketed names without the MusicBrainz mark, and real artists named "Anonymous"/"Unknown", stay in.
+  2. The stage fails if a listed MBID is missing from the dump or its name differs from the file.
+  3. `clean/artists` is the allowed artist set for every later stage; `clean/special_artists` holds the excluded IDs for cheap anti-joins.
+  4. `begin_year` later than the snapshot year is set to null (25 artists); years ≤ 0 are kept (historical people).
+- **Consequences:** 12,426 credit rows (12,076 artist credits) lose a placeholder artist; F2.2 handles what that means for featuring detection. Unmarked placeholders (`[blank]`, `[announcer]`) remain and are watched in the top-10 spot checks. A new snapshot needs the list re-checked.

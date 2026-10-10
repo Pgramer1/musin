@@ -17,7 +17,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 |---|---|---|---|
 | P0 Planning | Oct 10 | Done | [P0-planning.md](phases/P0-planning.md) |
 | P1 Environment & ingestion | Oct 10–16 | Done | [P1-environment-ingestion.md](phases/P1-environment-ingestion.md) |
-| P2 Cleaning & genre normalization | Oct 15–21 | Planned | — |
+| P2 Cleaning & genre normalization | Oct 15–21 | In progress | — |
 | P3 Graph build & Neo4j load | Oct 18–24 | Planned | — |
 | P4 Graph analytics | Oct 19–30 | Planned | — |
 | P5 Benchmarks | Oct 22–30 | Planned | — |
@@ -32,7 +32,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F1.3 | Table schemas and raw ingest | P1 | A | Must | Done | [F1.3-raw-ingest.md](features/F1.3-raw-ingest.md) |
 | F1.4 | Data profiling report | P1 | A + B | Must | Done | [F1.4-profiling.md](features/F1.4-profiling.md) |
 | F1.5 | Neo4j + GDS smoke test | P1 | B | Must | Done | [F1.5-neo4j-smoke-test.md](features/F1.5-neo4j-smoke-test.md) |
-| F2.1 | Artist cleaning and special-purpose filter | P2 | A | Must | Planned | — |
+| F2.1 | Artist cleaning and special-purpose filter | P2 | A | Must | Done | [F2.1-artist-cleaning.md](features/F2.1-artist-cleaning.md) |
 | F2.2 | Credit parsing (main / featured) | P2 | A | Must | Planned | — |
 | F2.3 | Contribution relationship extraction | P2 | A | Must | Planned | — |
 | F2.4 | Recording first release year | P2 | A | Must | Planned | — |

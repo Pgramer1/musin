@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1 Environment & ingestion done (environment, download, raw ingest, profiling, Neo4j smoke test); P2 Cleaning & genre normalization next, scope gate G1 on Oct 16 · *Last updated 2026-10-10*
+> **Status:** P2 Cleaning & genre normalization in progress (artist cleaning done; credit parsing next); scope gate G1 on Oct 16 · *Last updated 2026-10-11*
 
 ## Research questions
 
@@ -28,7 +28,7 @@ Exact metric definitions are in [PRD §5](PRD.md#5-research-questions).
 |---|---|---|
 | P0 Planning | Oct 10 | Done |
 | P1 Environment & ingestion | Oct 10–16 | Done |
-| P2 Cleaning & genre normalization | Oct 15–21 | Planned |
+| P2 Cleaning & genre normalization | Oct 15–21 | In progress |
 | P3 Graph build & Neo4j load | Oct 18–24 | Planned |
 | P4 Graph analytics | Oct 19–30 | Planned |
 | P5 Benchmarks | Oct 22–30 | Planned |
@@ -109,6 +109,12 @@ docker compose exec spark python -m musin.ingest.raw --config config/pipeline.ya
 ```bash
 docker compose exec spark python -m musin.profiling --config config/pipeline.yaml   # add --sample 0.05 while developing
 bash neo4j/smoke/run_smoke.sh --overwrite    # replaces the graph in Neo4j with the toy graph
+```
+
+**6. Clean** (P2; writes `$MUSIN_DATA/clean/`):
+
+```bash
+docker compose exec spark python -m musin.clean.artists --config config/pipeline.yaml   # F2.1: artists minus 15 special-purpose placeholders
 ```
 
 | Service | URL |
