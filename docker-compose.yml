@@ -1,0 +1,51 @@
+# Musin dev environment (F1.1). Run from WSL2 Ubuntu in the repo root.
+#
+#   docker compose up -d spark      # Jupyter Lab + PySpark  → http://localhost:8888
+#   docker compose up -d neo4j      # Neo4j + GDS            → http://localhost:${NEO4J_HTTP_PORT}
+#   docker compose exec spark python -m musin.envcheck --config config/pipeline.yaml
+#
+# Per-machine values and secrets come from .env (PRD §8.5); a missing key
+# stops compose with an error instead of falling back to a default.
+# Never run Spark and Neo4j HEAVY jobs at the same time (PRD §7.2): both
+# containers may be up, but only one engine should be doing real work.
+# All ports are published on 127.0.0.1 only, never on the network.
+
+name: musin
+
+services:
+  spark:
+    build: docker/spark
+    image: musin-spark:f1.1
+    env_file: .env
+    environment:
+      # Inside the container the data root is always /data; this overrides the
+      # host path that env_file sets.
+      MUSIN_DATA: /data
+      # Spark shuffle/spill goes to the WSL filesystem, not the container layer.
+      SPARK_LOCAL_DIRS: /data/tmp/spark
+    volumes:
+      - .:/workspace
+      - ${MUSIN_DATA:?MUSIN_DATA must be set in .env}:/data
+    ports:
+      - "127.0.0.1:8888:8888"   # Jupyter Lab
+      - "127.0.0.1:4040:4040"   # Spark UI (while a SparkSession is running)
+
+  neo4j:
+    # neo4j:5.26.30-community with GDS 2.13.12 baked in (see docker/neo4j/Dockerfile).
+    build: docker/neo4j
+    image: musin-neo4j:f1.1
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?NEO4J_PASSWORD must be set in .env}
+      NEO4J_dbms_usage__report_enabled: "false"
+      NEO4J_dbms_security_procedures_unrestricted: gds.*
+      NEO4J_dbms_security_procedures_allowlist: gds.*
+      NEO4J_server_memory_heap_initial__size: ${NEO4J_HEAP_SIZE:?NEO4J_HEAP_SIZE must be set in .env}
+      NEO4J_server_memory_heap_max__size: ${NEO4J_HEAP_SIZE:?NEO4J_HEAP_SIZE must be set in .env}
+      NEO4J_server_memory_pagecache_size: ${NEO4J_PAGECACHE_SIZE:?NEO4J_PAGECACHE_SIZE must be set in .env}
+    volumes:
+      - ${MUSIN_DATA:?MUSIN_DATA must be set in .env}/neo4j/data:/data
+      - ${MUSIN_DATA:?MUSIN_DATA must be set in .env}/neo4j/logs:/logs
+      - ${MUSIN_DATA:?MUSIN_DATA must be set in .env}/import:/import:ro
+    ports:
+      - "127.0.0.1:${NEO4J_HTTP_PORT:?NEO4J_HTTP_PORT must be set in .env}:7474"
+      - "127.0.0.1:${NEO4J_BOLT_PORT:?NEO4J_BOLT_PORT must be set in .env}:7687"

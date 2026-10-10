@@ -16,7 +16,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | Phase | Dates | Status | Doc |
 |---|---|---|---|
 | P0 Planning | Oct 10 | Done | [P0-planning.md](phases/P0-planning.md) |
-| P1 Environment & ingestion | Oct 10–16 | Planned | — |
+| P1 Environment & ingestion | Oct 10–16 | In progress | — |
 | P2 Cleaning & genre normalization | Oct 15–21 | Planned | — |
 | P3 Graph build & Neo4j load | Oct 18–24 | Planned | — |
 | P4 Graph analytics | Oct 19–30 | Planned | — |
@@ -27,7 +27,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 
 | ID | Feature | Phase | Owner | Priority | Status | Doc |
 |---|---|---|---|---|---|---|
-| F1.1 | Dev environment | P1 | A | Must | Planned | — |
+| F1.1 | Dev environment | P1 | A | Must | In progress | [F1.1-dev-environment.md](features/F1.1-dev-environment.md) |
 | F1.2 | Dump download and snapshot pinning | P1 | A | Must | Planned | — |
 | F1.3 | Table schemas and raw ingest | P1 | A | Must | Planned | — |
 | F1.4 | Data profiling report | P1 | A + B | Must | Planned | — |

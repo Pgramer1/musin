@@ -100,3 +100,10 @@ Entry format:
   8. **Combining artist tags with release-group tags** is left to F2.5, which records its own decision.
   9. **`min_recordings` filter** is applied when building `graph/`, so `graph/` and Neo4j hold the same graph.
 - **Consequences:** These edits are part of drafting v1, because the contract isn't frozen until M1, so there's no version bump. F1.1 creates `.env.example` and the first `config/pipeline.yaml`. F3.3 gains the `edges_by_decade` check.
+
+### D-012 — Fixed Jupyter/Spark ports, Jupyter without a token
+- **Date / phase:** 2026-10-10 · P1 (F1.1)
+- **Status:** Accepted
+- **Context:** The Spark + Jupyter container needs a Jupyter port, a Spark UI port, and a way to authenticate to Jupyter. None of these is in the PRD §8.5 `.env` contract. Adding them would extend the contract; leaving them out means hard-coding per-machine settings.
+- **Decision:** Keep §8.5 unchanged. Fix Jupyter at port 8888 and the Spark UI at 4040 in `docker-compose.yml`, and run Jupyter without a token. Every published port (Neo4j's included) is bound to `127.0.0.1` only.
+- **Consequences:** Nothing is reachable from the network, but any local process can use Jupyter, and through it the repo and `$MUSIN_DATA`. If 8888 or 4040 is taken on a member's machine, they edit the port mapping locally. Revisit (add `JUPYTER_PORT`, `JUPYTER_TOKEN`, `SPARK_UI_PORT` to §8.5) if either becomes a problem.

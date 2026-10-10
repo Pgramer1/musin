@@ -1,0 +1,22 @@
+# Pinned Python dependencies for the Spark + Jupyter image (NFR-01).
+# PySpark 3.5 is tested against pandas 2.x / numpy 1.x; don't move to
+# pandas 3 or numpy 2 without checking toPandas() and pandas UDFs.
+
+# Processing
+pyspark==3.5.9
+pyarrow==17.0.0
+pandas==2.2.3
+numpy==1.26.4
+
+# Config
+pyyaml==6.0.3
+
+# Analysis (aggregated outputs only, PRD §7.1)
+jupyterlab==4.4.10
+matplotlib==3.9.4
+scikit-learn==1.5.2
+neo4j==5.28.2
+
+# Dev
+pytest==8.4.2
+ruff==0.14.0

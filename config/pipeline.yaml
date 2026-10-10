@@ -1,0 +1,49 @@
+# Musin pipeline configuration: every setting that CHANGES RESULTS.
+# Contract: PRD §8.4. Secrets and per-machine settings go in .env (PRD §8.5).
+#
+# Rules (PRD §8.4):
+#   - No hidden defaults: code fails loudly if a key is missing.
+#   - Values marked "provisional" apply until gate G1 (Oct 16); each final
+#     value gets a D-NNN entry in docs/decisions.md.
+#   - After G1, changing a value under filters/credits/contributions/genres/
+#     analysis needs a decision entry and a re-run of every affected stage.
+#   - New keys are added in the PR of the feature that needs them, together
+#     with the PRD §8.4 listing and src/musin/common/config.py REQUIRED_KEYS.
+#   - Sample mode is a CLI flag (--sample <fraction>), not a config key.
+
+snapshot_date: null                  # OD6: set in F1.2
+
+paths:                               # relative to $MUSIN_DATA (§8.5)
+  dumps: dumps/
+  raw: raw/
+  clean: clean/
+  graph: graph/
+  import: import/
+reports_dir: reports/                # relative to the repo root
+
+filters:
+  special_artists_file: config/special_artists.csv
+  min_recordings: 1                  # OD2, provisional until G1
+  max_credit_size: 10                # OD3, provisional until G1
+  include_classical: true            # OD1, provisional until G1
+  use_release_level_credits: false   # OD7, provisional until G1
+
+credits:
+  featuring_pattern: '(?i)\b(feat|ft|featuring)\b'
+
+contributions:                       # MusicBrainz link_type names, verified against the dump in F2.3
+  produced_for: [producer]
+  performed_for: [performer, instrument, vocal]
+
+genres:
+  mapping_file: config/genre_mapping.csv   # official genre → parent genre (OD4)
+
+analysis:
+  min_labelled_neighbours: 5
+  top_k_bridges: 25
+  top_k_overlap: 100
+  pagerank: {damping: 0.85, max_iterations: 20}
+  betweenness_sampling_size: 10000
+  louvain_runs: 3
+  random_seed: 42
+  decades: {from: 1960, to: 2020}

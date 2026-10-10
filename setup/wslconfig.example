@@ -1,0 +1,18 @@
+# WSL2 VM settings for Musin (PRD §7.2). Docker Desktop's WSL2 backend runs in
+# this same VM, so these limits cap Spark and Neo4j containers too.
+#
+# Install (Windows, PowerShell):
+#   Copy-Item setup\wslconfig.example $env:USERPROFILE\.wslconfig
+#   wsl --shutdown          # restarts WSL (and Docker Desktop) with the new limits
+#
+# If you already have a %USERPROFILE%\.wslconfig, merge these keys into it.
+# On a machine with less than 24 GB RAM, set memory to about 75% of physical
+# RAM and use sample mode only (lower the memory values in .env to match).
+
+[wsl2]
+# 18 GB = Spark driver 12 GB + headroom, or Neo4j heap 8 GB + page cache 5 GB
+# + headroom. Leaves ~6 GB for Windows.
+memory=18GB
+
+# Small safety net only; NFR-02 requires that runs fit in RAM without swapping.
+swap=4GB

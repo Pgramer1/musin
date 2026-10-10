@@ -1,0 +1,18 @@
+[project]
+name = "musin"
+version = "0.1.0"
+description = "MusicBrainz artist collaboration graph: PySpark ETL + Neo4j/GDS analytics"
+requires-python = ">=3.11,<3.12"
+# Pinned runtime and dev dependencies live in docker/spark/requirements.txt.
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]

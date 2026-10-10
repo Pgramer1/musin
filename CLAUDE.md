@@ -11,7 +11,7 @@ Guidance for Claude Code in this repository.
 - **[README.md](README.md):** project overview with current status. Kept up to date as the project progresses.
 - **[docs/README.md](docs/README.md):** build-log index, showing what is done, in progress, and planned.
 
-**Current phase:** P0 Planning done → **P1 Environment & ingestion** next. *(Update this line whenever a phase closes.)*
+**Current phase:** **P1 Environment & ingestion** in progress (F1.1 dev environment built, pending WSL check). *(Update this line whenever a phase closes.)*
 
 ## Mandatory: document every feature and phase
 
@@ -38,7 +38,7 @@ The team requires a written record of everything built. This is part of the work
 
 ## Commands
 
-No code yet. Add each command here when its feature lands. Convention:
+Add each command here when its feature lands. Convention:
 
 ```bash
 python -m musin.<stage> --config config/pipeline.yaml [--sample 0.05]
@@ -46,12 +46,17 @@ python -m musin.<stage> --config config/pipeline.yaml [--sample 0.05]
 
 | Task | Command | Added in |
 |---|---|---|
-| _(none yet)_ | | |
+| Check the machine, create `$MUSIN_DATA` tree (WSL) | `bash setup/preflight.sh` | F1.1 |
+| Build and start Spark/Jupyter + Neo4j/GDS | `docker compose build && docker compose up -d` | F1.1 |
+| Environment check (config, data root, Spark) | `docker compose exec spark python -m musin.envcheck --config config/pipeline.yaml` | F1.1 |
+| Tests / lint | `docker compose exec spark pytest` · `docker compose exec spark ruff check src tests` | F1.1 |
 
 ## Planned layout
 
 ```
 config/            pipeline.yaml, genre_mapping.csv, special_artists.csv
+docker/            spark/ (Jupyter + PySpark image), neo4j/ (Neo4j + pinned GDS image)
+setup/             wslconfig.example, preflight.sh
 src/musin/         schemas/, ingest/, clean/, graph/, export/, benchmark/, common/
 neo4j/             numbered .cypher files (constraints, projections, algorithms)
 notebooks/         numbered analysis notebooks (no ETL logic)
