@@ -134,6 +134,8 @@ More folders (`neo4j/`, `notebooks/`, `reports/`) are added as the phases progre
 
 *Added during P4 (analysis) and P6 (report).*
 
+**Data profile (F1.4):** 40.5 M recordings, 2.0 M credited artists; 86% of recordings have one credited artist; 92.6% have a first release year; genre tags cover 27% of credited artists (72% of artist appearances); producer credits cover 4.4% of recordings. Details and G1 evidence: [F1.4 build log](docs/features/F1.4-profiling.md), tables in `reports/tables/profile_*.csv`.
+
 ## Documentation
 
 | Document | What it covers |

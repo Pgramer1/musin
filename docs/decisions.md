@@ -129,3 +129,13 @@ Entry format:
   3. `raw/` keeps Postgres types faithfully (`SMALLINT` → short, `INTEGER`/`SERIAL` → int, `UUID` → string, `TIMESTAMP WITH TIME ZONE` → timestamp in UTC). Widening to the §8.1 types (e.g. `artist_id` long) happens in `clean/`.
   4. Parsing is strict: wrong field counts and malformed values fail the stage (ANSI casts), so `raw/` either matches the dump exactly or does not exist.
 - **Consequences:** A new snapshot with a different schema sequence requires regenerating the schema module. Contract §8 is unaffected.
+
+### D-015 — Profiling report parameters and definitions
+- **Date / phase:** 2026-10-10 · P1 (F1.4)
+- **Status:** Accepted
+- **Context:** The profiling report (FR-03) feeds the G1 open decisions. Its own parameters (threshold grid, top-k sizes, histogram cap) must come from config (RULES §5), and its coverage figures need fixed definitions so the numbers mean the same thing at G1 and in the report.
+- **Decision:**
+  1. New `profiling:` keys in `config/pipeline.yaml` and PRD §8.4: `min_recordings_grid [1, 2, 3, 5, 10]`, `credit_size_cap 20`, `top_k_hubs 30`, `top_k_genres 150`, `top_k_join_phrases 30`. They shape only the report, never the graph.
+  2. Definitions: a **credited artist** appears in the `artist_credit_name` of at least one recording's credit; **credit size** = distinct artists in a recording's credit; **pair-instances** = n(n−1)/2 per recording; a **genre tag** is a tag whose name equals (case-insensitively) an official genre name or genre alias, counted only with vote count > 0; **first release year** = earliest `date_year` over all releases containing the recording (country and unknown-country dates); **contribution coverage** uses the `contributions.*` allowlists at recording level, and for OD7 the same names at release level, mapped to recordings through track → medium → release.
+  3. The `min_recordings` grid counts **credit-pair edges only** (credits ≤ `max_credit_size`), before the F2/F3 filters (special artists, band members). It is a preview for OD2, not the final graph size.
+- **Consequences:** Profiling numbers are reproducible from `python -m musin.profiling` and land in `reports/tables/profile_*.csv`; G1 decisions cite those files.

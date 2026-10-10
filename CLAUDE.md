@@ -11,7 +11,7 @@ Guidance for Claude Code in this repository.
 - **[README.md](README.md):** project overview with current status. Kept up to date as the project progresses.
 - **[docs/README.md](docs/README.md):** build-log index, showing what is done, in progress, and planned.
 
-**Current phase:** **P1 Environment & ingestion** in progress (F1.1–F1.3 done; F1.4 profiling next). *(Update this line whenever a phase closes.)*
+**Current phase:** **P1 Environment & ingestion** in progress (F1.1–F1.4 done; F1.5 Neo4j smoke test next, owner B). *(Update this line whenever a phase closes.)*
 
 ## Mandatory: document every feature and phase
 
@@ -53,6 +53,7 @@ python -m musin.<stage> --config config/pipeline.yaml [--sample 0.05]
 | Extract the 22 needed tables from the dumps (≈17.5 GB; ask first) | `docker compose exec spark python -m musin.ingest.extract --config config/pipeline.yaml [--tables a,b]` | F1.3 |
 | Raw ingest: dump tables → typed Parquet in `raw/` (full run; ask first) | `docker compose exec spark python -m musin.ingest.raw --config config/pipeline.yaml [--tables a,b]` | F1.3 |
 | Regenerate table schemas (new schema sequence only) | `python -m musin.schemas.generate --sql <CreateTables.sql> --commit <sha> --schema-sequence <n>` | F1.3 |
+| Profiling report → `reports/tables/profile_*.csv`, `reports/figures/profile_*.png` (full run; ask first) | `docker compose exec spark python -m musin.profiling --config config/pipeline.yaml [--sample 0.05]` | F1.4 |
 | Tests / lint | `docker compose exec spark pytest` · `docker compose exec spark ruff check src tests` | F1.1 |
 
 ## Planned layout

@@ -45,6 +45,11 @@ REQUIRED_KEYS: tuple[str, ...] = (
     "analysis.random_seed",
     "analysis.decades.from",
     "analysis.decades.to",
+    "profiling.min_recordings_grid",
+    "profiling.credit_size_cap",
+    "profiling.top_k_hubs",
+    "profiling.top_k_genres",
+    "profiling.top_k_join_phrases",
 )
 
 # Keys whose value may legitimately be null (e.g. before F1.2 pins the snapshot).

@@ -1,0 +1,9 @@
+level,group,name,relationships,distinct_targets,distinct_artists
+recording,performed_for,instrument,6725798,2069970,284937
+recording,performed_for,performer,397922,314998,51469
+recording,performed_for,vocal,2727775,1723314,205921
+recording,produced_for,producer,2447023,1787112,130062
+release,performed_for,instrument,384284,60202,107525
+release,performed_for,performer,19465,8946,12785
+release,performed_for,vocal,163435,50293,60995
+release,produced_for,producer,160007,99313,49631

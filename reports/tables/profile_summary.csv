@@ -1,0 +1,58 @@
+section,metric,value
+run,snapshot,20261007-002147
+run,sample_fraction,1.0
+base,recordings,40475049
+base,credited artists (on >= 1 recording),2020979
+base,artist-recording appearances,48270286
+base,artists in artist table (all),3005875
+credits,recordings without credit names,0
+credits,recordings with 1 credited artist,34883833
+credits,recordings with > 10 artists,12777
+credits,share of pair-instances from > 10,0.11538
+credits,total pair-instances (all sizes),12701529
+featuring,recordings with a featured artist,1048882
+featuring,share of recordings,0.025914
+featuring,share of multi-artist recordings,0.187595
+years,releases,5832132
+years,releases with a known year,5521580
+years,share of releases dated,0.946752
+years,recordings with a first release year,37469609
+years,share of recordings dated,0.925746
+years,first_year < 1900,1211
+years,first_year > 2026,1472
+years,min first_year,206
+contributions,allowlisted names missing in link_type,none
+contributions,recordings with produced_for (recording level),1787112
+contributions,share with produced_for (recording level),0.044153
+contributions,recordings with performed_for (recording level),3267364
+contributions,share with performed_for (recording level),0.080725
+contributions,share with any contribution,0.099169
+od7,recordings with produced_for via release level,956797
+od7,... of which NOT covered at recording level,629329
+od7,... as share of all recordings,0.015549
+od7,recordings with performed_for via release level,850197
+od7,... of which NOT covered at recording level,516069
+od7,... as share of all recordings,0.01275
+tags,official genres,2212
+tags,tags matching an official genre,2558
+tags,artist_tag rows with count <= 0,30801
+tags,release_group_tag rows with count <= 0,60957
+tags,share of positive artist-tag votes on genre tags,0.671302
+tags,credited artists with artist-level genre tag,199392
+tags,share (artist level),0.098661
+tags,credited artists with release-group genre tag,476335
+tags,share (release-group level),0.235695
+tags,share (either source),0.272348
+tags,appearance-weighted share (artist level),0.41547
+tags,appearance-weighted share (either source),0.723273
+pairs,distinct credit pairs (credits <= 10),2406037
+classical,credited artists tagged 'classical',5552
+classical,share of credited artists,0.002747
+classical,share of appearances,0.043522
+classical,share of distinct pairs touching classical,0.066778
+classical,share of pair weight touching classical,0.181343
+band_members,'member of band' relationships,656990
+band_members,distinct members (entity0),394000
+band_members,distinct groups (entity1),201918
+band_members,credit pairs that are group-member pairs,20849
+band_members,share of distinct credit pairs,0.008665
