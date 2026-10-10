@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1 Environment & ingestion in progress (environment, download, raw ingest done; profiling next) · *Last updated 2026-10-10*
+> **Status:** P1 Environment & ingestion done (environment, download, raw ingest, profiling, Neo4j smoke test); P2 Cleaning & genre normalization next, scope gate G1 on Oct 16 · *Last updated 2026-10-10*
 
 ## Research questions
 
@@ -27,7 +27,7 @@ Exact metric definitions are in [PRD §5](PRD.md#5-research-questions).
 | Phase | Dates | Status |
 |---|---|---|
 | P0 Planning | Oct 10 | Done |
-| P1 Environment & ingestion | Oct 10–16 | In progress |
+| P1 Environment & ingestion | Oct 10–16 | Done |
 | P2 Cleaning & genre normalization | Oct 15–21 | Planned |
 | P3 Graph build & Neo4j load | Oct 18–24 | Planned |
 | P4 Graph analytics | Oct 19–30 | Planned |
@@ -104,6 +104,13 @@ docker compose exec spark python -m musin.ingest.extract --config config/pipelin
 docker compose exec spark python -m musin.ingest.raw --config config/pipeline.yaml
 ```
 
+**5. Profile the data and check Neo4j** (profiling report for gate G1, [F1.4](docs/features/F1.4-profiling.md); Neo4j + GDS smoke test on a 12-artist toy graph, [F1.5](docs/features/F1.5-neo4j-smoke-test.md)):
+
+```bash
+docker compose exec spark python -m musin.profiling --config config/pipeline.yaml   # add --sample 0.05 while developing
+bash neo4j/smoke/run_smoke.sh --overwrite    # replaces the graph in Neo4j with the toy graph
+```
+
 | Service | URL |
 |---|---|
 | Jupyter Lab (PySpark 3.5.9, Python 3.11) | http://localhost:8888 |
@@ -123,12 +130,14 @@ config/            pipeline.yaml (settings that change results)
 docker/            Spark/Jupyter and Neo4j/GDS images
 setup/             wslconfig.example, preflight.sh
 src/musin/         pipeline code (python -m musin.<stage>)
-tests/             pytest
+neo4j/             numbered Cypher files (smoke/: F1.5 toy-graph test)
+reports/           generated tables and figures (profile_*: F1.4)
+tests/             pytest + fixtures (neo4j_toy/: F1.5 toy graph)
 docker-compose.yml two services: spark, neo4j
 .env.example       template for per-machine settings and secrets
 ```
 
-More folders (`neo4j/`, `notebooks/`, `reports/`) are added as the phases progress.
+More folders (`notebooks/`, `app/`) are added as the phases progress.
 
 ## Results
 
