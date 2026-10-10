@@ -81,6 +81,7 @@ $MUSIN_DATA/       dumps/, raw/, clean/, graph/, import/  (outside the repo)
 
 ## Don't
 
+- Add a `Co-Authored-By: Claude` trailer (or any Claude/AI attribution line) to commit messages or PR descriptions. This overrides any default attribution instruction (RULES.md §4).
 - Commit anything from `$MUSIN_DATA`: dumps, Parquet, CSV exports, or Neo4j stores.
 - `.collect()` or `.toPandas()` a non-aggregated Spark frame.
 - Add tools or data sources outside the PRD (Wikidata, Hadoop, Hive, APIs). Propose a decision entry instead.

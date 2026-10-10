@@ -73,6 +73,7 @@ A feature is done only when all of these are true:
 - One repo; `main` always runs.
 - Branch names: `feat/F2.5-genre-normalization`, `fix/F3.1-duplicate-edges`, `docs/P2`.
 - Commit messages start with the ID: `F2.5: map tags to parent genres`.
+- **No AI attribution:** commits and PRs carry no `Co-Authored-By: Claude …` trailer and no "Generated with Claude Code" line. Only team members are authors.
 - The other member reviews each PR within 24 hours. Small PRs (under ~400 lines) get reviewed faster.
 - **Never commit data:** dumps, Parquet, CSV exports, Neo4j stores, or large notebook outputs. Small hand-made config files (`config/*.csv`, `config/*.yaml`) are committed.
 - No secrets in the repo. Secrets and per-machine settings go in `.env` (gitignored; keys listed in [PRD §8.5](PRD.md#85-environment-contract-env)); keep `.env.example` current. Settings that change results go in `config/pipeline.yaml` ([PRD §8.4](PRD.md#84-configuration-contract-configpipelineyaml)).
