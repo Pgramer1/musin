@@ -15,7 +15,9 @@ artist -> PRODUCED_FOR / PERFORMED_FOR. Before aggregating, the stage drops
 (D-026): every edge of a recording with more than `filters.max_credit_size`
 credited artists (FR-10), self-loops, edges touching an excluded artist
 (`filters.exclude_artist_types`, D-021; classical if `filters.include_classical`
-is false, OD1), and edges between a group and its own member (FR-11). Edges are
+is false, OD1), edges between a group and its own member (FR-11), and repeats of
+an artist pair on one recording: each recording counts once per pair, under
+the billed type if any, else PRODUCED_FOR, else PERFORMED_FOR (D-028). Edges are
 then aggregated per (src, dst, type) into distinct-recording weights, and the
 node rule of PRD §8.3 (`recording_count >= filters.min_recordings` and at
 least one edge) decides which artists and edges reach graph/.
@@ -30,7 +32,7 @@ import sys
 import time
 from pathlib import Path
 
-from pyspark.sql import Column, DataFrame
+from pyspark.sql import Column, DataFrame, Window
 from pyspark.sql import functions as F
 
 from musin.clean.credits import FEATURED as ROLE_FEATURED
@@ -51,12 +53,16 @@ MEMBER_OF_BAND = "member of band"
 CLASSICAL = "classical"
 
 # Drop reasons, in the order they are applied (an edge counts under the first).
-SELF_LOOP, EXCLUDED_TYPE, EXCLUDED_CLASSICAL, BAND_MEMBER = (
+SELF_LOOP, EXCLUDED_TYPE, EXCLUDED_CLASSICAL, BAND_MEMBER, SAME_RECORDING_PAIR = (
     "self_loop",
     "excluded_artist_type",
     "excluded_classical",
     "band_member",
+    "same_recording_pair",
 )
+# Which instance of an artist pair a recording keeps (D-028): billing first,
+# then production, then performance. Lower wins.
+PAIR_PRECEDENCE = {CO_CREDITED: 0, FEATURED: 0, PRODUCED_FOR: 1, PERFORMED_FOR: 2}
 INSTANCE = ["recording_id", "src_id", "dst_id", "edge_type"]
 EDGE_KEY = ["src_id", "dst_id", "edge_type"]
 
@@ -180,16 +186,25 @@ def mark_drops(instances: DataFrame, excluded: DataFrame, band_pairs: DataFrame)
     band_member_pairs output.
     Out: the same rows plus `drop_reason`: SELF_LOOP, the exclusion reason of
     src (else dst), BAND_MEMBER for a group-member pair in either direction,
-    or null if the instance is kept.
+    SAME_RECORDING_PAIR when the recording already gives the same unordered
+    pair an instance of higher PAIR_PRECEDENCE (D-028), or null if kept.
+    Ties within one precedence level cannot occur for a kept pair: billing
+    gives one instance per pair, and two contribution instances of one type
+    in opposite directions need both artists billed as main.
     """
     src_x = excluded.select(F.col("artist_id").alias("src_id"), F.col("reason").alias("src_x"))
     dst_x = excluded.select(F.col("artist_id").alias("dst_id"), F.col("reason").alias("dst_x"))
     members = band_pairs.withColumn("band", F.lit(True))
+    precedence = F.create_map(*[F.lit(x) for kv in PAIR_PRECEDENCE.items() for x in kv])
+    per_pair = Window.partitionBy("recording_id", "a", "b").orderBy(
+        precedence[F.col("edge_type")], "edge_type", "src_id"
+    )
     reason = (
         F.when(F.col("src_id") == F.col("dst_id"), F.lit(SELF_LOOP))
         .when(F.col("src_x").isNotNull(), F.col("src_x"))
         .when(F.col("dst_x").isNotNull(), F.col("dst_x"))
         .when(F.col("band"), F.lit(BAND_MEMBER))
+        .when(F.col("pair_rank") > 1, F.lit(SAME_RECORDING_PAIR))
     )
     return (
         instances.join(src_x, "src_id", "left")
@@ -197,6 +212,7 @@ def mark_drops(instances: DataFrame, excluded: DataFrame, band_pairs: DataFrame)
         .withColumn("a", F.least("src_id", "dst_id"))
         .withColumn("b", F.greatest("src_id", "dst_id"))
         .join(members, ["a", "b"], "left")
+        .withColumn("pair_rank", F.row_number().over(per_pair))
         .select(*INSTANCE, reason.alias("drop_reason"))
     )
 
@@ -396,7 +412,14 @@ def run(cfg: Config, sample: float | None) -> dict:
         (r["edge_type"], r["drop_reason"] or "kept"): r["count"]
         for r in marked.groupBy("edge_type", "drop_reason").count().collect()
     }
-    reasons = ["kept", SELF_LOOP, EXCLUDED_TYPE, EXCLUDED_CLASSICAL, BAND_MEMBER]
+    reasons = [
+        "kept",
+        SELF_LOOP,
+        EXCLUDED_TYPE,
+        EXCLUDED_CLASSICAL,
+        BAND_MEMBER,
+        SAME_RECORDING_PAIR,
+    ]
     dropped_type = marked.filter(F.col("drop_reason") == EXCLUDED_TYPE)
     type_partners = (
         dropped_type.select(F.col("src_id").alias("artist_id"))
@@ -528,6 +551,14 @@ def run(cfg: Config, sample: float | None) -> dict:
         problems.append("excluded artists in nodes_artist")
     if edges.filter(F.col("weight") < 1).count():
         problems.append("edges with weight < 1")
+    repeated = (
+        kept.groupBy("recording_id", F.least("src_id", "dst_id"), F.greatest("src_id", "dst_id"))
+        .count()
+        .filter("count > 1")
+        .count()
+    )
+    if repeated:
+        problems.append(f"{repeated} (recording, artist pair) counted more than once (D-028)")
     for df in (sizes, excluded, band_pairs, marked, kept, counts_df, edges, node_ids, nodes):
         df.unpersist()
     spark.stop()

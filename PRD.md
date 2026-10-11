@@ -273,6 +273,7 @@ For each recording, the credited artists come from `artist_credit_name` in `posi
 - featured × featured → `CO_CREDITED`
 - A contribution relationship (`l_artist_recording` with a link type in the `contributions` allowlists, §8.4) creates `PRODUCED_FOR` or `PERFORMED_FOR` from the contributor to each **main** artist of that recording.
 - Self-edges are dropped. Edges are aggregated per (src, dst, type) as distinct-recording counts.
+- A recording counts **once per artist pair**: if it gives the same two artists several instances, only the first in the order billed (`CO_CREDITED` / `FEATURED`) → `PRODUCED_FOR` → `PERFORMED_FOR` is kept, so summed type weights per pair equal distinct shared recordings ([D-028](docs/decisions.md)).
 - Ambiguous phrases (`with`, `&`, `x`, `vs.`) count as main. This is a documented limitation.
 
 ### 8.3 Neo4j graph

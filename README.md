@@ -163,7 +163,7 @@ More folders (`notebooks/`, `app/`) are added as the phases progress.
 
 **Genres (F2.5):** 15 parent genres cover 97.5% of genre votes; 26.6% of credited artists (69.9% of appearances) get a primary genre, led by electronic (26.7%) and rock (18.0%). Details: [F2.5 build log](docs/features/F2.5-genre-normalization.md), tables in `reports/tables/genre_*.csv`.
 
-**Graph (F3.1, provisional G1 thresholds):** 1.18 M artists and 4.20 M edges (1.73 M co-credited, 0.73 M featured, 0.33 M produced-for, 1.41 M performed-for); 23.4% of artists have a primary genre and 36.9% of edges are labelled at both ends. Classical artists are 2.2% of nodes but touch 18.6% of edges. Details: [F3.1 build log](docs/features/F3.1-edge-building.md), `reports/tables/graph_build_summary.csv`.
+**Graph (F3.1, provisional G1 thresholds):** 1.18 M artists and 3.54 M edges (1.73 M co-credited, 0.73 M featured, 0.29 M produced-for, 0.78 M performed-for), each recording counted once per artist pair; 23.4% of artists have a primary genre and 35.2% of edges are labelled at both ends. Classical artists are 2.2% of nodes but touch 13.1% of edges. Details: [F3.1 build log](docs/features/F3.1-edge-building.md), `reports/tables/graph_build_summary.csv`.
 
 ## Documentation
 

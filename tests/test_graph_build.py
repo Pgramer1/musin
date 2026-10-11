@@ -10,6 +10,7 @@ from musin.graph.build import (
     FEATURED,
     PERFORMED_FOR,
     PRODUCED_FOR,
+    SAME_RECORDING_PAIR,
     SELF_LOOP,
     aggregate_by_decade,
     aggregate_edges,
@@ -153,6 +154,12 @@ def test_mark_drops_labels_first_reason(spark):
             (2, 41, 40, PERFORMED_FOR),  # member -> own group
             (2, 40, 41, CO_CREDITED),  # same pair, other direction
             (2, 40, 42, CO_CREDITED),  # kept
+            (3, 50, 51, CO_CREDITED),  # billed pair ...
+            (3, 51, 50, PERFORMED_FOR),  # ... so the main's own vocal credit adds nothing
+            (3, 52, 50, PERFORMED_FOR),  # producer who also played: production wins
+            (3, 52, 50, PRODUCED_FOR),
+            (3, 53, 50, PERFORMED_FOR),  # contributor only: kept
+            (4, 51, 50, PERFORMED_FOR),  # other recording: kept
         ],
         INSTANCES,
     )
@@ -160,7 +167,7 @@ def test_mark_drops_labels_first_reason(spark):
     band = spark.createDataFrame([(40, 41)], "a long, b long")
     got = {
         (r["recording_id"], r["src_id"], r["dst_id"]): r["drop_reason"]
-        for r in mark_drops(instances, excluded, band).collect()
+        for r in mark_drops(instances, excluded, band).filter("src_id != 52").collect()
     }
     assert got == {
         (1, 10, 10): SELF_LOOP,
@@ -169,7 +176,18 @@ def test_mark_drops_labels_first_reason(spark):
         (2, 41, 40): BAND_MEMBER,
         (2, 40, 41): BAND_MEMBER,
         (2, 40, 42): None,
+        (3, 50, 51): None,
+        (3, 51, 50): SAME_RECORDING_PAIR,
+        (3, 53, 50): None,
+        (4, 51, 50): None,
     }
+    by_type = {
+        r["edge_type"]: r["drop_reason"]
+        for r in mark_drops(instances, excluded, band)
+        .filter("recording_id = 3 AND src_id = 52")
+        .collect()
+    }
+    assert by_type == {PRODUCED_FOR: None, PERFORMED_FOR: SAME_RECORDING_PAIR}
 
 
 @pytest.fixture
