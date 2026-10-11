@@ -1,0 +1,3 @@
+graph,projection,types,nodes,relationships,pairs,total_weight,build_seconds,project_millis,memory_usage,size_bytes,native_estimate_max_bytes,degree_estimate_max_bytes,pagerank_estimate_max_bytes,betweenness_estimate_max_bytes,louvain_estimate_max_bytes,heap_bytes
+full,collab_undirected,CO_CREDITED+FEATURED+PRODUCED_FOR+PERFORMED_FOR,1180939,6602784,3301392,17363002,15.1,5428,193 MiB,203112823,591914248,9447640,28490984,481824784,386591384,8589934592
+full,credit_only,CO_CREDITED+FEATURED,888062,4641526,2320763,10738375,8.9,2622,145 MiB,152442751,315472280,7104624,21425320,362330952,281154096,8589934592

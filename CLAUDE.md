@@ -11,7 +11,7 @@ Guidance for Claude Code in this repository.
 - **[README.md](README.md):** project overview with current status. Kept up to date as the project progresses.
 - **[docs/README.md](docs/README.md):** build-log index, showing what is done, in progress, and planned.
 
-**Current phase:** **P3 Graph build & Neo4j load** in progress: F3.1–F3.4 done 2026-10-11 (M2: sample graph loaded in Neo4j); F3.5 (constraints, indexes, GDS projections; owner B) remains. G1 evidence: [docs/g1-scope-gate.md](docs/g1-scope-gate.md). P1 done 2026-10-10, P2 done 2026-10-11; scope gate G1 on Oct 16 resolves OD1–OD5/OD7 (evidence: F1.4 profile, F2.3 OD7 run, F2.5 genre tables). *(Update this line whenever a phase closes.)*
+**Current phase:** **P4 Graph analytics** next (owner B). P1 done 2026-10-10, P2 and P3 done 2026-10-11 (M2: sample graph loaded in Neo4j with constraints; projections via `musin.gds.setup.project()`). Scope gate G1 on Oct 16 will likely change filters and require a rebuild of F3.1→F3.5; evidence in [docs/g1-scope-gate.md](docs/g1-scope-gate.md). P1 done 2026-10-10, P2 done 2026-10-11; scope gate G1 on Oct 16 resolves OD1–OD5/OD7 (evidence: F1.4 profile, F2.3 OD7 run, F2.5 genre tables). *(Update this line whenever a phase closes.)*
 
 ## Mandatory: document every feature and phase
 
@@ -65,6 +65,7 @@ python -m musin.<stage> --config config/pipeline.yaml [--sample 0.05]
 | Graph checks (49, incl. run-to-run counts) → `<graph>/_checks.json`, `reports/tables/graph_checks.csv`; required after every full build (~30 s) | `docker compose exec spark python -m musin.graph.checks --config config/pipeline.yaml [--sample 0.05] [--accept-changes]` | F3.3 |
 | Neo4j CSV export (§8.3) → `$MUSIN_DATA/import/<full\|sample-f0.05>/` (full ~30 s) | `docker compose exec spark python -m musin.export.neo4j_csv --config config/pipeline.yaml [--sample 0.05]` | F3.4 |
 | Bulk import + 39 checks; **replaces** the loaded graph; writes `$MUSIN_DATA/neo4j/loaded_graph.json` (WSL, ~1 min) | `bash neo4j/import_graph.sh <full\|sample-f0.05> --overwrite` | F3.4 |
+| Constraints + indexes, build/check/drop `collab_undirected` and `credit_only`, algorithm memory estimates (run by the import script; full ~70 s) | `docker compose exec spark python -m musin.gds.setup --config config/pipeline.yaml [--keep-projections]` | F3.5 |
 | Tests / lint | `docker compose exec spark pytest` · `docker compose exec spark ruff check src tests` | F1.1 |
 
 ## Planned layout

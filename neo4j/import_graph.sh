@@ -13,6 +13,8 @@
 #    _import_args.txt; bad rows or duplicate nodes abort the import
 # 3. starts Neo4j and runs `python -m musin.export.neo4j_check`, which writes
 #    loaded_graph.json again only if every check passes
+# 4. runs `python -m musin.gds.setup` (F3.5): constraints, indexes, and a
+#    build-check-drop of every GDS projection
 #
 # Community Edition has ONE user database: the import REPLACES the loaded graph
 # (sample, full, or the F1.5 toy graph). --overwrite says that is intended.
@@ -55,4 +57,7 @@ docker compose run --rm --no-deps neo4j \
 echo "== start neo4j and verify"
 docker compose up -d neo4j
 docker compose exec spark python -m musin.export.neo4j_check --config config/pipeline.yaml --graph "$graph"
+
+echo "== constraints, indexes, and projection checks (F3.5)"
+docker compose exec spark python -m musin.gds.setup --config config/pipeline.yaml
 echo "== import of '$graph' finished in $(( $(date +%s) - start ))s"

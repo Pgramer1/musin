@@ -291,3 +291,17 @@ Entry format:
   4. **Marker.** `$MUSIN_DATA/neo4j/loaded_graph.json` names the loaded graph and its fingerprints. Every import (F3.4 script and the F1.5 smoke test) deletes it first and rewrites it only after its checks pass. P4 results quote it.
   5. **Default loaded graph until M3:** `sample-f0.05`, for member B (M2). The full graph is imported for verification and again at M3.
 - **Consequences:** Export plus import of the full graph takes about 1.5 min (30 s export, 7 s `neo4j-admin`, 41 s verification), so switching graphs is cheap. A missing marker means "unknown database content".
+
+### D-032 — Neo4j schema and the two production projections
+- **Date / phase:** 2026-10-11 · P3 (F3.5)
+- **Status:** Accepted. F3.5 is assigned to member B, who should confirm this at the P3 review.
+- **Context:** FR-14 asks for constraints and indexes without naming them. PRD §5 needs COLLAB for every RQ and a credit-only projection for RQ4's sensitivity run. RULES §7 asks for named projections, `.estimate` before full runs, and dropping projections after use. Every import replaces the database, so a hand-made schema would be lost.
+- **Decision:**
+  1. **Schema:** unique `Artist.artistId`, unique `Artist.mbid`, unique `Genre.name`, and a range index on `Artist.name` (`neo4j/01_constraints.cypher`). It is applied by `python -m musin.gds.setup`, which `neo4j/import_graph.sh` runs after every verified import.
+  2. **Projections:** `collab_undirected` (all four edge types) and `credit_only` (`CO_CREDITED + FEATURED`), both built by one Cypher-aggregation statement as D-017 defines (one undirected relationship per pair, summed weight). Only artists with an edge of the projected types are included, so `credit_only` has fewer artists.
+  3. **Gates:**
+     - The native-projection estimate must fit the heap before building.
+     - Node count, relationship count (2 × pairs), weight total, and the 5 heaviest pairs must equal the Parquet graph.
+     - Projection plus the largest §5.5 algorithm estimate must fit `NEO4J_HEAP_SIZE`.
+     - Projections are dropped afterwards. P4 builds them with `musin.gds.setup.project()`.
+- **Consequences:** On the full graph, COLLAB builds in 15 s (193 MiB), and the worst case for P4 (betweenness) needs 0.64 GiB of the 8 GiB heap. RQ4 must compare COLLAB and credit-only rankings on their common artists (888,062).
