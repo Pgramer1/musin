@@ -70,6 +70,7 @@ All metrics run on the **COLLAB projection** (every edge type merged into one un
   - The matrix is symmetric: A–B and B–A go into the same cell. The diagonal is within-genre collaboration.
   - Unlabelled edges are excluded.
 - **Outputs:** top-`analysis.top_k_bridges` (default 25) bridge table; genre × genre heatmap; ego-network figures for 3 bridges.
+- **Sensitivity:** the bridge table is also produced from a graph built with `Character` artists included (`filters.exclude_artist_types: []`, [D-021](docs/decisions.md)).
 
 ### RQ2 — Do collaboration communities match genres?
 
@@ -88,7 +89,7 @@ All metrics run on the **COLLAB projection** (every edge type merged into one un
 
 - Weighted degree, PageRank, betweenness (settings in §5.5).
 - **Agreement:** Spearman ρ across all artists, and Jaccard overlap of the top-`analysis.top_k_overlap` (default 100) sets, for each pair of measures.
-- **Sensitivity:** repeat on a credit-only projection (CO_CREDITED + FEATURED).
+- **Sensitivity:** repeat on a credit-only projection (CO_CREDITED + FEATURED), and report the top-20 lists from a graph built with `Character` artists included ([D-021](docs/decisions.md)).
 - **Outputs:** top-20 per measure; agreement table; discussion.
 
 ### 5.5 Algorithm settings
@@ -146,6 +147,7 @@ Confirmed in F1.3 ([D-014](docs/decisions.md)): all tables are in `mbdump.tar.bz
 | A group and its own members look like collaborators | Remove edges between a group and its members (`l_artist_artist`, "member of band") (FR-11) |
 | Classical music creates giant hubs (composers, orchestras, conductors) | Open decision OD1 at the scope gate: exclude, or analyse separately |
 | Tags are noisy and sparse ("hip hop" / "hip-hop" / "rap") | Keep official genres and aliases only, map to 12–15 parent genres, weight by votes, report coverage (FR-08). How artist-level and release-group-level tags are combined is decided and documented in F2.5 |
+| `Character` artists (singing-synthesizer voicebanks such as 初音ミク, fictional characters such as Benjamin Blümchen) are credited like performers | Left out of the graph via `filters.exclude_artist_types` ([D-021](docs/decisions.md)); RQ1/RQ4 top lists are also reported with them included |
 | Contribution credits are well documented mainly for popular releases | Measure coverage in F1.4; state as a limitation; analyse PRODUCED_FOR separately or drop it (OD5) |
 | Recordings have no date; release dates are partial or missing | First release year = earliest known year across releases, null if none; nulls are excluded from RQ3 only (FR-07) |
 | Results reflect what volunteers chose to document | Stated in the report's limitations section |
@@ -335,6 +337,7 @@ filters:
   max_credit_size: 10                # OD3, provisional until G1
   include_classical: true            # OD1, provisional until G1
   use_release_level_credits: false   # OD7, provisional until G1
+  exclude_artist_types: [Character]  # D-021: artist types left out of the graph (applied in F3.1); [] keeps all
 
 credits:
   featuring_pattern: '(?i)\b(feat|ft|featuring)\b'

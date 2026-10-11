@@ -31,6 +31,7 @@ REQUIRED_KEYS: tuple[str, ...] = (
     "filters.max_credit_size",
     "filters.include_classical",
     "filters.use_release_level_credits",
+    "filters.exclude_artist_types",
     "credits.featuring_pattern",
     "contributions.produced_for",
     "contributions.performed_for",

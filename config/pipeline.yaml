@@ -33,6 +33,7 @@ filters:
   max_credit_size: 10                # OD3, provisional until G1
   include_classical: true            # OD1, provisional until G1
   use_release_level_credits: false   # OD7, provisional until G1
+  exclude_artist_types: [Character]  # D-021: artist types left out of the graph (applied in F3.1); [] keeps all
 
 credits:
   featuring_pattern: '(?i)\b(feat|ft|featuring)\b'
