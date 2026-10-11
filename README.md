@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P2 Cleaning & genre normalization in progress (artist cleaning, credit parsing, contributions, first release years done; genre normalization next); scope gate G1 on Oct 16 · *Last updated 2026-10-11*
+> **Status:** P1 and P2 done (raw ingest, profiling, Neo4j smoke test, clean layer with genres); P3 Graph build & Neo4j load next; scope gate G1 on Oct 16 · *Last updated 2026-10-11*
 
 ## Research questions
 
@@ -28,7 +28,7 @@ Exact metric definitions are in [PRD §5](PRD.md#5-research-questions).
 |---|---|---|
 | P0 Planning | Oct 10 | Done |
 | P1 Environment & ingestion | Oct 10–16 | Done |
-| P2 Cleaning & genre normalization | Oct 15–21 | In progress |
+| P2 Cleaning & genre normalization | Oct 15–21 | Done |
 | P3 Graph build & Neo4j load | Oct 18–24 | Planned |
 | P4 Graph analytics | Oct 19–30 | Planned |
 | P5 Benchmarks | Oct 22–30 | Planned |
@@ -118,6 +118,7 @@ docker compose exec spark python -m musin.clean.artists --config config/pipeline
 docker compose exec spark python -m musin.clean.credits --config config/pipeline.yaml   # F2.2: main/featured artist per recording
 docker compose exec spark python -m musin.clean.contributions --config config/pipeline.yaml   # F2.3: producer/performer relationships
 docker compose exec spark python -m musin.clean.years --config config/pipeline.yaml   # F2.4: first release year per recording
+docker compose exec spark python -m musin.clean.genres --config config/pipeline.yaml   # F2.5: 15 parent genres per artist
 ```
 
 | Service | URL |
@@ -153,6 +154,8 @@ More folders (`notebooks/`, `app/`) are added as the phases progress.
 *Added during P4 (analysis) and P6 (report).*
 
 **Data profile (F1.4):** 40.5 M recordings, 2.0 M credited artists; 86% of recordings have one credited artist; 92.6% have a first release year; genre tags cover 27% of credited artists (72% of artist appearances); producer credits cover 4.4% of recordings. Details and G1 evidence: [F1.4 build log](docs/features/F1.4-profiling.md), tables in `reports/tables/profile_*.csv`.
+
+**Genres (F2.5):** 15 parent genres cover 97.5% of genre votes; 26.6% of credited artists (69.9% of appearances) get a primary genre, led by electronic (26.7%) and rock (18.0%). Details: [F2.5 build log](docs/features/F2.5-genre-normalization.md), tables in `reports/tables/genre_*.csv`.
 
 ## Documentation
 
