@@ -41,7 +41,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F3.1 | Edge building and filters | P3 | A | Must | Done | [F3.1-edge-building.md](features/F3.1-edge-building.md) |
 | F3.2 | Sample mode and dev sample graph | P3 | A | Must | Done | [F3.2-dev-sample-graph.md](features/F3.2-dev-sample-graph.md) |
 | F3.3 | Graph-layer quality checks | P3 | A | Must | Done | [F3.3-graph-quality-checks.md](features/F3.3-graph-quality-checks.md) |
-| F3.4 | Neo4j CSV export and bulk import | P3 | A | Must | Planned | — |
+| F3.4 | Neo4j CSV export and bulk import | P3 | A | Must | Done | [F3.4-neo4j-export-import.md](features/F3.4-neo4j-export-import.md) |
 | F3.5 | Constraints, indexes, GDS projections | P3 | B | Must | Planned | — |
 | F4.1 | Centrality and agreement (RQ4) | P4 | B | Must | Planned | — |
 | F4.2 | Communities vs genres (RQ2) | P4 | B | Must | Planned | — |

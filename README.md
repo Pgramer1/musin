@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1 and P2 done (raw ingest, profiling, Neo4j smoke test, clean layer with genres); P3 Graph build & Neo4j load in progress (F3.1 graph build, F3.2 dev sample graph, F3.3 graph checks done); scope gate G1 on Oct 16 · *Last updated 2026-10-11*
+> **Status:** P1 and P2 done (raw ingest, profiling, Neo4j smoke test, clean layer with genres); P3 Graph build & Neo4j load in progress (F3.1–F3.4 done: graph build, dev sample graph, checks, Neo4j export and import; **M2 reached: the sample graph is loaded in Neo4j**); scope gate G1 on Oct 16 · *Last updated 2026-10-11*
 
 ## Research questions
 
@@ -129,6 +129,15 @@ docker compose exec spark python -m musin.graph.checks --config config/pipeline.
 ```
 
 The checks compare row counts with the last passing check and fail on a change above 5%. After a deliberate change (e.g. a G1 decision), run them once with `--accept-changes` and record why in `docs/decisions.md`.
+
+**8. Load into Neo4j** ([F3.4](docs/features/F3.4-neo4j-export-import.md); ~1.5 min for the full graph). Neo4j Community holds one graph at a time, so the import **replaces** the loaded graph. `$MUSIN_DATA/neo4j/loaded_graph.json` says which graph is loaded.
+
+```bash
+docker compose exec spark python -m musin.export.neo4j_csv --config config/pipeline.yaml --sample 0.05   # -> $MUSIN_DATA/import/sample-f0.05
+bash neo4j/import_graph.sh sample-f0.05 --overwrite   # bulk import + 39 verification checks
+docker compose exec spark python -m musin.export.neo4j_csv --config config/pipeline.yaml               # full graph -> import/full
+bash neo4j/import_graph.sh full --overwrite
+```
 
 **Dev sample graph** (F3.2; ~1.5 min, works with `SPARK_DRIVER_MEMORY=4g`). It rebuilds the whole recording-level chain for 5% of recordings into `$MUSIN_DATA/sample/f0.05/` and writes `graph/_manifest.json` with content fingerprints. Two members hold the same graph when the fingerprints match. Needs the full `clean/artists` and genre tables from step 6.
 

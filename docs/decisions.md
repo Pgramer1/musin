@@ -276,3 +276,18 @@ Entry format:
   3. A deliberate change is accepted with `--accept-changes`. The accepted counts are listed in `_checks.json`, and the change must be explained in a decision entry (e.g. each G1 decision).
   4. `python -m musin.graph.checks` is the required step after every full `graph.build`; the sample chain (F3.2) runs it automatically.
 - **Consequences:** Rebuilding the same inputs gives 0 % change, so any drift has to be explained. In a test on the sample graph, `max_credit_size: 20` moved total edges by +4.7 % (inside 5 %), but `CO_CREDITED` by +8.86 %. The per-type check caught it. After G1 the first rebuild will need `--accept-changes`. The key never changes results, so changing it needs no rebuild.
+
+### D-031 — Neo4j export layout, CSV dialect, and the loaded-graph marker
+- **Date / phase:** 2026-10-11 · P3 (F3.4)
+- **Status:** Accepted
+- **Context:** PRD §8.3 fixes the import headers but leaves file splitting to F3.4. Several things had to be settled:
+  - where sample exports go, given that D-019 sample trees live outside the folder Neo4j can see
+  - how Spark's CSV writer is made to produce what `neo4j-admin` parses identically
+  - how anyone can tell which graph the single Community-Edition database holds (RULES §7)
+- **Decision:**
+  1. **Layout.** Exports go to `$MUSIN_DATA/<paths.import>/<name>/`, where `<name>` is `full` or `sample-f<fraction>`. Sample exports live there too, not in the D-019 sample tree, because docker-compose mounts only `import/` into Neo4j. Each §8.3 file is `<file>.header.csv` plus `<file>/part-*.csv` (≤ 1 M rows per part). The exact `neo4j-admin` arguments are written to `_import_args.txt`, so the import script lists no files itself.
+  2. **CSV dialect.** RFC 4180 quoting with `""` inside quotes (Spark's default escape is a backslash). Whitespace is not trimmed (Spark's writer trims by default). Null is an empty unquoted field, so Neo4j omits the property. Empty strings are exported as null. A value containing a line break stops the export instead of switching on `--multiline-fields`.
+  3. **Gates.** The export refuses a graph whose content fingerprints differ from its last passing F3.3 check, and it reads every file back with the header's types: the content must match the source exactly. The import runs with `--bad-tolerance=0`, no skipping of bad relationships or duplicate nodes, and must leave an empty report.
+  4. **Marker.** `$MUSIN_DATA/neo4j/loaded_graph.json` names the loaded graph and its fingerprints. Every import (F3.4 script and the F1.5 smoke test) deletes it first and rewrites it only after its checks pass. P4 results quote it.
+  5. **Default loaded graph until M3:** `sample-f0.05`, for member B (M2). The full graph is imported for verification and again at M3.
+- **Consequences:** Export plus import of the full graph takes about 1.5 min (30 s export, 7 s `neo4j-admin`, 41 s verification), so switching graphs is cheap. A missing marker means "unknown database content".

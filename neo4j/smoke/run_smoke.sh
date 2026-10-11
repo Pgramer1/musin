@@ -34,6 +34,8 @@ rm -rf "$MUSIN_DATA/import/toy"
 mkdir -p "$MUSIN_DATA/import/toy"
 cp tests/fixtures/neo4j_toy/*.csv "$MUSIN_DATA/import/toy/"
 
+rm -f "$MUSIN_DATA/neo4j/loaded_graph.json"   # F3.4 marker: the loaded graph is about to change
+
 echo "== stop neo4j and bulk-import"
 docker compose stop neo4j
 docker compose run --rm --no-deps neo4j \
@@ -51,4 +53,6 @@ docker compose run --rm --no-deps neo4j \
 echo "== start neo4j and run the checks"
 docker compose up -d neo4j
 docker compose exec spark python -m musin.neo4j_smoke --config config/pipeline.yaml
+printf '{"graph": "toy", "verified_at_utc": "%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  > "$MUSIN_DATA/neo4j/loaded_graph.json"
 echo "== smoke test finished in $(( $(date +%s) - start ))s"
