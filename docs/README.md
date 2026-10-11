@@ -8,6 +8,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | `features/` | One doc per feature, written when the feature is done ([template](features/_TEMPLATE.md)) |
 | [decisions.md](decisions.md) | Numbered decision log (`D-NNN`) |
 | `validation-list.md` | Pre-registered cross-genre artists, written before RQ1 results (PRD §5.6) |
+| [g1-scope-gate.md](g1-scope-gate.md) | Evidence and proposals for scope gate G1 (Oct 16): OD1–OD7, spoken word, contract sign-off |
 
 **Status values:** Planned · In progress · Done · Cut
 
