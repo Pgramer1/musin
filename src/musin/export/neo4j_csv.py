@@ -1,10 +1,12 @@
 """Neo4j CSV export in neo4j-admin import format (F3.4, FR-14).
 
     python -m musin.export.neo4j_csv --config config/pipeline.yaml [--sample 0.05]
+        [--variant <name>]
 
 Reads:  <graph>/{nodes_artist,artist_genre,edges}  (F3.1) and <graph>/_checks.json (F3.3)
         <genres.mapping_file>  (the parent genres become Genre nodes)
-Writes: $MUSIN_DATA/<paths.import>/<name>/  with <name> = "full" or "sample-f<fraction>"
+Writes: $MUSIN_DATA/<paths.import>/<name>/  with <name> = "full" or "sample-f<fraction>",
+                                            plus "-<variant>" for a variant graph (D-035)
           <file>.header.csv + <file>/part-*.csv   for every PRD §8.3 file
           _import_args.txt   the --nodes/--relationships arguments for neo4j-admin
           _export.json       source fingerprints, rows, null counts per file
@@ -44,7 +46,7 @@ from pyspark.sql.types import (
 
 from musin.clean.genres import load_mapping
 from musin.common.config import Config, ConfigError, load_config
-from musin.common.layers import layer_path, sample_tag
+from musin.common.layers import graph_name, layer_path
 from musin.common.provenance import fingerprint, repo_commit
 from musin.common.spark import get_spark
 from musin.graph.build import EDGE_TYPES, GRAPH_TABLES
@@ -107,11 +109,6 @@ CSV_OPTIONS = {
 
 _ID_GROUP = re.compile(r"^(?:[^:]*):(ID|START_ID|END_ID)\((\w+)\)(\{id-type:long\})?$")
 _TYPED = {"int": IntegerType(), "long": LongType(), "double": DoubleType()}
-
-
-def graph_name(sample: float | None) -> str:
-    """Folder name of an export: 'full' or 'sample-f<fraction>'."""
-    return "full" if sample is None else f"sample-{sample_tag(sample)}"
 
 
 def field_type(field: str, long_id_groups: frozenset[str] = frozenset({"Artist"})) -> DataType:
@@ -220,7 +217,7 @@ def run(cfg: Config, sample: float | None) -> dict:
     repo_root = cfg.source.resolve().parent.parent
     parents = {p for p in load_mapping(repo_root / cfg.get("genres.mapping_file")).values() if p}
     graph = layer_path(cfg, "graph", sample)
-    name = graph_name(sample)
+    name = graph_name(sample, cfg.variant)
     out = cfg.data_path("import") / name
     checks_file = graph / CHECKS_FILE
     if not checks_file.is_file():
@@ -287,6 +284,8 @@ def run(cfg: Config, sample: float | None) -> dict:
     record = {
         "graph": name,
         "source": str(graph),
+        "variant": cfg.variant,
+        "variant_overrides": cfg.overrides,
         "exported_at_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "repo_commit": repo_commit(repo_root),
         "graph_fingerprints": checked,
@@ -304,10 +303,11 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--config", required=True, help="path to config/pipeline.yaml")
     parser.add_argument("--sample", type=float, help="export the sample graph of this fraction")
+    parser.add_argument("--variant", help="export the variant graph defined under variants.<name>")
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     start = time.monotonic()
-    run(load_config(args.config), args.sample)
+    run(load_config(args.config, args.variant), args.sample)
     log.info("done in %.0fs", time.monotonic() - start)
     return 0
 

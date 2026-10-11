@@ -152,6 +152,17 @@ docker compose exec spark python -m musin.analytics.centrality --config config/p
 docker compose exec spark python -m musin.analytics.communities --config config/pipeline.yaml  # F4.2: Louvain communities vs genres (RQ2)
 ```
 
+**Sensitivity variants** ([F4.7](docs/features/F4.7-sensitivity-variants.md), D-035). A variant graph is the main graph with some F3.1 filters overridden under `variants.<name>` in `config/pipeline.yaml` (first variant: `characters`, which keeps `Character` artists, D-021). It is built next to the main graph in `$MUSIN_DATA/[sample/f0.05/]variants/<name>/` and loaded as `<full|sample-f0.05>-<name>`. Its P4 tables go to `reports/tables/variants/<name>/` (full) or the sample tree. Load the main graph again afterwards:
+
+```bash
+docker compose exec spark python -m musin.graph.build --config config/pipeline.yaml --sample 0.05 --variant characters
+docker compose exec spark python -m musin.graph.checks --config config/pipeline.yaml --sample 0.05 --variant characters
+docker compose exec spark python -m musin.export.neo4j_csv --config config/pipeline.yaml --sample 0.05 --variant characters
+bash neo4j/import_graph.sh sample-f0.05-characters --overwrite
+docker compose exec spark python -m musin.analytics.centrality --config config/pipeline.yaml   # tables -> sample/f0.05/variants/characters/reports/tables
+bash neo4j/import_graph.sh sample-f0.05 --overwrite                                           # back to the main dev graph
+```
+
 | Service | URL |
 |---|---|
 | Jupyter Lab (PySpark 3.5.9, Python 3.11) | http://localhost:8888 |

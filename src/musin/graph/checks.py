@@ -1,12 +1,15 @@
 """Graph-layer quality checks (F3.3, FR-13).
 
-    python -m musin.graph.checks --config config/pipeline.yaml [--sample 0.05] [--accept-changes]
+    python -m musin.graph.checks --config config/pipeline.yaml [--sample 0.05] [--variant <name>]
+        [--accept-changes]
 
 Reads:  <graph>/{nodes_artist,artist_genre,edges,edges_by_decade}  (F3.1; sample tree with --sample)
         <genres.mapping_file>  (the parent-genre list, D-024)
 Writes: <graph>/_checks.json  the last PASSING check of this folder: row counts,
                               content fingerprints, and every check result
-        <reports_dir>/tables/graph_checks.csv  (full mode only)
+        <reports_dir>/tables/graph_checks.csv  (full mode only; variants: tables/variants/<name>/)
+With --variant <name> the checks run on that variant graph (D-035) with its
+config overrides, and the variant folder keeps its own run-to-run baseline.
 Exits with status 1 if a check fails; _checks.json is then left unchanged.
 
 The suite reads only the written tables, so it is independent of the build
@@ -35,7 +38,7 @@ from pyspark.sql import functions as F
 
 from musin.clean.genres import load_mapping
 from musin.common.config import Config, load_config
-from musin.common.layers import layer_path
+from musin.common.layers import graph_name, layer_path, results_dir
 from musin.common.provenance import fingerprint, repo_commit
 from musin.common.spark import get_spark
 from musin.graph.build import (
@@ -379,12 +382,12 @@ def run(cfg: Config, sample: float | None, accept_changes: bool) -> list[Check]:
     baseline = json.loads(result_file.read_text())["counts"] if result_file.is_file() else None
     checks += row_changes(counts, baseline, max_change, accept_changes)
 
-    log.info("graph: %s (sample fraction: %s)", root, sample if sample else "full")
+    log.info("graph %s: %s", graph_name(sample, cfg.variant), root)
     for c in checks:
         log.info("  %-5s %-16s %-34s %10d  %s", c.status, c.table, c.name, c.violations, c.detail)
     if sample is None:
         write_table(
-            repo_root / cfg.get("reports_dir") / "tables" / "graph_checks.csv",
+            results_dir(cfg, graph_name(None, cfg.variant)) / "graph_checks.csv",
             [
                 {
                     "table": c.table,
@@ -402,6 +405,8 @@ def run(cfg: Config, sample: float | None, accept_changes: bool) -> list[Check]:
             "checked_at_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "repo_commit": repo_commit(repo_root),
             "sample_fraction": sample,
+            "variant": cfg.variant,
+            "variant_overrides": cfg.overrides,
             "max_row_change": max_change,
             "changes_accepted": [c.name for c in checks if c.accepted],
             "counts": counts,
@@ -426,6 +431,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--config", required=True, help="path to config/pipeline.yaml")
     parser.add_argument("--sample", type=float, help="check the sample graph of this fraction")
+    parser.add_argument("--variant", help="check the variant graph defined under variants.<name>")
     parser.add_argument(
         "--accept-changes",
         action="store_true",
@@ -435,7 +441,7 @@ def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     start = time.monotonic()
     try:
-        run(load_config(args.config), args.sample, args.accept_changes)
+        run(load_config(args.config, args.variant), args.sample, args.accept_changes)
     except RuntimeError as exc:
         log.error("%s", exc)
         return 1

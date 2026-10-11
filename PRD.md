@@ -70,7 +70,7 @@ All metrics run on the **COLLAB projection** (every edge type merged into one un
   - The matrix is symmetric: A–B and B–A go into the same cell. The diagonal is within-genre collaboration.
   - Unlabelled edges are excluded.
 - **Outputs:** top-`analysis.top_k_bridges` (default 25) bridge table; genre × genre heatmap; ego-network figures for 3 bridges.
-- **Sensitivity:** the bridge table is also produced from a graph built with `Character` artists included (`filters.exclude_artist_types: []`, [D-021](docs/decisions.md)).
+- **Sensitivity:** the bridge table is also produced from a graph built with `Character` artists included (`filters.exclude_artist_types: []`, [D-021](docs/decisions.md)): the variant graph `characters` (F4.7, [D-035](docs/decisions.md)).
 
 ### RQ2 — Do collaboration communities match genres?
 
@@ -89,7 +89,7 @@ All metrics run on the **COLLAB projection** (every edge type merged into one un
 
 - Weighted degree, PageRank, betweenness (settings in §5.5).
 - **Agreement:** Spearman ρ across all artists, and Jaccard overlap of the top-`analysis.top_k_overlap` (default 100) sets, for each pair of measures.
-- **Sensitivity:** repeat on a credit-only projection (CO_CREDITED + FEATURED), and report the top-20 lists from a graph built with `Character` artists included ([D-021](docs/decisions.md)).
+- **Sensitivity:** repeat on a credit-only projection (CO_CREDITED + FEATURED), and report the top-20 lists from a graph built with `Character` artists included ([D-021](docs/decisions.md)): the variant graph `characters` (F4.7, [D-035](docs/decisions.md)).
 - **Outputs:** top-`analysis.top_k_centrality` (default 20) per measure; agreement table; discussion.
 
 ### 5.5 Algorithm settings
@@ -378,6 +378,10 @@ profiling:                           # F1.4 report parameters (D-015); never aff
 
 checks:                              # F3.3 (D-030); never affect the graph
   max_row_change: 0.05               # largest relative row-count change vs the last passing check
+
+variants:                            # F4.7 (D-035): variant graphs for sensitivity runs, built with --variant <name>
+  characters:                        # D-021: Character artists kept (RQ1 and RQ4 sensitivity runs)
+    filters: {exclude_artist_types: []}
 ```
 
 Rules:
@@ -387,6 +391,7 @@ Rules:
 - **Changes after G1:** changing a value under `filters`, `credits`, `contributions`, `genres`, or `analysis` needs a decision entry and a re-run of every affected stage.
 - **New keys:** a key is added in the same PR as the feature that needs it, and this list is updated in that PR.
 - **Sample size:** sample mode is a command-line flag (`--sample <fraction>`), not a config key, so the same config serves both modes.
+- **Variants** ([D-035](docs/decisions.md)): a variant graph is the main graph with a few `filters` overridden, built side by side for a sensitivity run. Its overrides live under `variants.<name>` and may only set keys that F3.1 applies (`exclude_artist_types`, `include_classical`, `min_recordings`, `max_credit_size`), so the variant reuses the main `clean/` layer. `--variant <name>` on `graph.build`, `graph.checks` and `export.neo4j_csv` selects one. Its graph follows §8.1 in `[sample/f<fraction>/]variants/<name>/graph/`, its export and loaded-graph name is `<full|sample-f<fraction>>-<name>`, and P4 writes its tables to `reports/tables/variants/<name>/` (full) or the sample tree. A new variant, or a changed one, needs a decision entry.
 
 ### 8.5 Environment contract: `.env`
 
@@ -500,6 +505,7 @@ Feature IDs are `F<phase>.<n>`. Each feature gets a doc in `docs/features/` when
 | F4.4 | Cross-genre trends by decade (RQ3) | FR-18 | B | Must |
 | F4.5 | Degrees of separation | FR-19 | B | Should |
 | F4.6 | Validation | FR-20 | B | Must |
+| F4.7 | Sensitivity graph variants (D-021) | FR-15, FR-17 | B | Must |
 | F5.1 | Spark scaling benchmark | FR-21 | A | Must |
 | F5.2 | PageRank: GDS vs GraphFrames | FR-22 | A | Should |
 | F5.3 | PageRank on GPU (cuGraph) | FR-23 | A | Could |

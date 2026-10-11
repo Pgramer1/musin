@@ -238,7 +238,9 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--config", required=True, help="path to config/pipeline.yaml")
     parser.add_argument(
-        "--graph", required=True, help="export name: 'full' or 'sample-f<fraction>'"
+        "--graph",
+        required=True,
+        help="export name: 'full' or 'sample-f<fraction>', plus '-<variant>' (D-035)",
     )
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")

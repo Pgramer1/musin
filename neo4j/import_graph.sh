@@ -4,7 +4,8 @@
 #   bash neo4j/import_graph.sh <graph> --overwrite      # from WSL, in the repo root
 #
 # <graph> is the export name printed by `python -m musin.export.neo4j_csv`:
-# "full" or "sample-f<fraction>" (e.g. sample-f0.05), i.e. $MUSIN_DATA/import/<graph>/.
+# "full" or "sample-f<fraction>" (e.g. sample-f0.05), plus "-<variant>" for a variant
+# graph (D-035, e.g. sample-f0.05-characters), i.e. $MUSIN_DATA/import/<graph>/.
 #
 # 1. removes $MUSIN_DATA/neo4j/loaded_graph.json (nothing claims to know the
 #    database content until the new import is verified)
@@ -23,11 +24,11 @@ set -euo pipefail
 
 graph="${1:-}"
 if [[ -z "$graph" || "${2:-}" != "--overwrite" ]]; then
-  echo "usage: bash neo4j/import_graph.sh <full|sample-f<fraction>> --overwrite" >&2
+  echo "usage: bash neo4j/import_graph.sh <full|sample-f<fraction>>[-<variant>] --overwrite" >&2
   echo "Replaces the graph in the Neo4j 'neo4j' database with the exported graph." >&2
   exit 2
 fi
-[[ "$graph" =~ ^(full|sample-f[0-9.]+)$ ]] || { echo "bad graph name: $graph" >&2; exit 2; }
+[[ "$graph" =~ ^(full|sample-f[0-9.]+)(-[a-z][a-z0-9_]*)?$ ]] || { echo "bad graph name: $graph" >&2; exit 2; }
 
 cd "$(dirname "$0")/.."
 [[ -f .env ]] || { echo ".env missing (cp .env.example .env)" >&2; exit 1; }

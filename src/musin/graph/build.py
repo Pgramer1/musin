@@ -1,13 +1,16 @@
 """Edge building, aggregation, and graph filters (F3.1, FR-09, FR-10, FR-11).
 
-    python -m musin.graph.build --config config/pipeline.yaml [--sample 0.05]
+    python -m musin.graph.build --config config/pipeline.yaml [--sample 0.05] [--variant <name>]
 
 Reads:  <clean>/{credits,contributions,recording_years}  (F2.2-F2.4; sample tree with --sample)
         $MUSIN_DATA/<paths.clean>/{artists,artist_genres,artist_primary_genre}  (F2.1, F2.5; full)
         $MUSIN_DATA/<paths.raw>/{l_artist_artist,link,link_type}  (F1.3, band membership)
 Writes: <graph>/{nodes_artist,artist_genre,edges,edges_by_decade}  (PRD §8.1)
-        <reports_dir>/tables/graph_build_summary.csv  (full mode only)
+        <reports_dir>/tables/graph_build_summary.csv  (full mode only; a variant writes to
+                                                      tables/variants/<name>/)
         <clean>/<graph> as in D-019: $MUSIN_DATA/sample/f<fraction>/... with --sample.
+        --variant <name> applies the filter overrides under variants.<name> in the config
+        and writes <base>/variants/<name>/<paths.graph> instead (D-035); clean inputs are shared.
 
 Per recording (PRD §8.2): main x main and featured x featured -> CO_CREDITED
 (src_id < dst_id), main -> featured -> FEATURED, contributor -> each main
@@ -38,7 +41,7 @@ from pyspark.sql import functions as F
 from musin.clean.credits import FEATURED as ROLE_FEATURED
 from musin.clean.credits import MAIN as ROLE_MAIN
 from musin.common.config import Config, ConfigError, load_config
-from musin.common.layers import layer_path
+from musin.common.layers import graph_name, layer_path, results_dir
 from musin.common.spark import get_spark
 
 log = logging.getLogger("musin.graph.build")
@@ -344,7 +347,6 @@ def run(cfg: Config, sample: float | None) -> dict:
     min_recordings = int(cfg.get("filters.min_recordings"))
     exclude_types = list(cfg.get("filters.exclude_artist_types"))
     include_classical = bool(cfg.get("filters.include_classical"))
-    repo_root = cfg.source.resolve().parent.parent
     spark = get_spark("musin-graph-build")
 
     def raw(table: str) -> DataFrame:
@@ -499,7 +501,7 @@ def run(cfg: Config, sample: float | None) -> dict:
         "edges_by_decade_rows": by_decade.count(),
         "artist_genre_rows": genre_out.count(),
     }
-    log.info("sample fraction: %s -> %s", sample if sample else "full", out)
+    log.info("graph %s -> %s", graph_name(sample, cfg.variant), out)
     for key, value in counts.items():
         log.info("  %-48s %s", key, value)
     neighbours = (
@@ -529,9 +531,8 @@ def run(cfg: Config, sample: float | None) -> dict:
         )
 
     if sample is None:
-        tables = repo_root / cfg.get("reports_dir") / "tables"
         write_table(
-            tables / "graph_build_summary.csv",
+            results_dir(cfg, graph_name(None, cfg.variant)) / "graph_build_summary.csv",
             [{"metric": k, "value": v} for k, v in counts.items()],
         )
 
@@ -573,10 +574,11 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--config", required=True, help="path to config/pipeline.yaml")
     parser.add_argument("--sample", type=float, help="fraction of recordings, e.g. 0.05")
+    parser.add_argument("--variant", help="build the variant graph defined under variants.<name>")
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     start = time.monotonic()
-    run(load_config(args.config), args.sample)
+    run(load_config(args.config, args.variant), args.sample)
     log.info("done in %.0fs", time.monotonic() - start)
     return 0
 
