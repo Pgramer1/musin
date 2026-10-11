@@ -318,3 +318,21 @@ Entry format:
   3. `analysis.pagerank.max_iterations` 20 → **1000**, now a cap rather than a target: GDS stops at tolerance 1e-7, and a run that does not converge fails the stage.
   4. New key `analysis.top_k_centrality: 20` for RQ4's top lists.
 - **Consequences:** F4.1 results are reproducible run to run. Betweenness is about 2.7× slower (sample COLLAB: 553 s instead of 203 s; `credit_only`: 224 s). Scaling the sample time by graph size (nodes + relationships, ≈ 5.7×) suggests roughly 1–1.5 h for both projections on the full graph. That is an extrapolation, to be replaced by the measured runtime of the first full run; it runs once per graph build. PageRank cost is negligible (< 1 s on the sample). F5.2 (GDS vs GraphFrames) must use the same PageRank settings, or state that it doesn't. PRD §5.5 and §8.4 updated.
+
+### D-034 — Louvain: a single-threaded run of record, stability runs, AMI alongside NMI
+- **Date / phase:** 2026-10-11 · P4 (F4.2)
+- **Status:** Accepted
+- **Context:** PRD §5.5 asks for weighted Louvain with "fixed concurrency", run `analysis.louvain_runs` (3) times to check stability, and NMI against primary genre. An exploratory test on `sample-f0.05` (edges fingerprint `-728045217745244929017`) showed:
+  - **Concurrency 4 is not reproducible.** Three runs gave three partitions: NMI between them 0.93–0.94, modularity 0.8813–0.8819, genre NMI 0.3087–0.3111.
+  - **Concurrency 1 is reproducible.** Two runs gave identical partitions (NMI 1.0, modularity 0.8811, 42,562 communities, genre NMI 0.3085), and it is fast (≈ 4 s compute on the sample).
+  - The sample graph has 42,228 connected components; the largest holds 194,045 artists (62.5 %). Of the run of record's 42,562 communities, 42,227 are exactly one small separate component, and only 335 divide the largest component. Over all artists, the genre comparison therefore mostly measures which island an artist is on. NMI also rewards many small clusters: genre AMI was 0.20 against NMI 0.31 over all artists, but 0.31 against 0.31 inside the largest component.
+  - PRD §5 RQ2 also hard-codes "the 10 largest communities" (RULES §5: no hard-coded analysis parameters).
+- **Decision:**
+  1. **Run of record:** one Louvain run at `analysis.louvain_concurrency: 1` (new key). It alone is written back to `:Artist.louvain` and used for NMI, the size distribution and the community descriptions. This mirrors D-033's single-threaded betweenness.
+  2. **Stability:** `analysis.louvain_runs` (3) further runs at `analysis.concurrency` (4), where thread scheduling changes the processing order. Report NMI between every pair of runs, and each run's modularity and genre NMI. "Fixed concurrency" therefore means: 1 for the result, 4 for the stability check.
+  3. **Community ids** in tables and in Neo4j are size ranks (1 = largest; ties broken by smallest member `artistId`), not GDS's internal ids, which depend on processing order.
+  4. **AMI** (scikit-learn `adjusted_mutual_info_score`) is reported next to NMI (scikit-learn default, arithmetic normalisation), on the same labelled artists. NMI stays the PRD metric; AMI is the check against chance.
+  5. **Largest connected component.** Genre NMI/AMI and run-to-run NMI are reported over all artists (the PRD metric) **and** inside the largest connected component (GDS `wcc`). The second is what RQ2's question is about: how Louvain divides the one connected collaboration network.
+  6. New keys `analysis.top_k_communities: 10` (communities described) and `analysis.community_example_artists: 5` (highest weighted-degree members listed per community).
+  7. Louvain's own parameters stay at the GDS defaults (maxLevels 10, maxIterations 10, tolerance 0.0001). The run records them.
+- **Consequences:** The reported partition is reproducible run to run, and its sensitivity to processing order is still measured. On the sample, partitions agree less inside the largest component (NMI 0.80–0.86 between runs) than over all artists (0.93–0.95), and the report must quote the former. Four Louvain runs, WCC and write-back took 71–82 s on the sample. PRD §5 RQ2, §5.5 and §8.4 updated.

@@ -75,7 +75,7 @@ All metrics run on the **COLLAB projection** (every edge type merged into one un
 ### RQ2 — Do collaboration communities match genres?
 
 - Louvain communities on COLLAB (weighted). Report modularity, the community-size distribution, and **NMI** (normalized mutual information) between community and primary genre.
-- **Outputs:** NMI value; genre composition of the 10 largest communities; a short description of each.
+- **Outputs:** NMI value (with AMI, its chance-corrected variant, alongside: [D-034](docs/decisions.md)); genre composition of the `analysis.top_k_communities` (10) largest communities; a short description of each.
 
 ### RQ3 — Has cross-genre collaboration changed over time?
 
@@ -99,7 +99,7 @@ All metrics run on the **COLLAB projection** (every edge type merged into one un
 | Weighted degree | GDS `degree` | weight = `weight`, undirected |
 | PageRank | GDS `pageRank` | weighted, undirected; damping `analysis.pagerank.damping` (0.85), max iterations `analysis.pagerank.max_iterations` (1000, a cap: the run must converge at GDS's default tolerance 1e-7, [D-033](docs/decisions.md)) |
 | Betweenness | GDS `betweenness` | **unweighted**: GDS treats weights as distances, so a strong tie would look "long". `samplingSize` = `analysis.betweenness_sampling_size` (10,000), `samplingSeed` = `analysis.random_seed`, concurrency `analysis.betweenness_concurrency` (1: with more threads the sampled sources depend on scheduling, [D-033](docs/decisions.md)) |
-| Communities | GDS `louvain` | weighted; fixed concurrency (`analysis.concurrency`, 4, used by every GDS algorithm except betweenness); run `analysis.louvain_runs` (3) times to check stability |
+| Communities | GDS `louvain` | weighted; the result of record runs single-threaded (`analysis.louvain_concurrency`, 1), so it is reproducible; `analysis.louvain_runs` (3) more runs at `analysis.concurrency` (4) check its stability ([D-034](docs/decisions.md)) |
 | Shortest path | Cypher `shortestPath` | unweighted hops ("degrees of separation") |
 | NMI | scikit-learn | on the exported (artist, community, primary_genre) table, labelled artists only |
 
@@ -361,7 +361,10 @@ analysis:
   pagerank: {damping: 0.85, max_iterations: 1000}   # D-033: cap; must converge at GDS tolerance 1e-7
   betweenness_sampling_size: 10000
   betweenness_concurrency: 1         # F4.1 (D-033): single-threaded, the only reproducible setting
-  louvain_runs: 3
+  louvain_runs: 3                    # D-034: stability runs at analysis.concurrency, compared with the run of record
+  louvain_concurrency: 1             # F4.2 (D-034): the run of record is single-threaded, hence reproducible
+  top_k_communities: 10              # F4.2 (D-034): largest communities described by genre composition (RQ2)
+  community_example_artists: 5       # F4.2 (D-034): highest weighted-degree artists listed per described community
   random_seed: 42
   concurrency: 4                     # F4.1 (D-033): GDS concurrency, fixed, for every algorithm but betweenness
   decades: {from: 1960, to: 2020}

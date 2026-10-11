@@ -32,7 +32,13 @@ from itertools import combinations
 
 import pandas as pd
 
-from musin.analytics.common import CONNECT_WAIT_S, loaded_graph, results_dir, write_table
+from musin.analytics.common import (
+    CONNECT_WAIT_S,
+    check_still_loaded,
+    loaded_graph,
+    results_dir,
+    write_table,
+)
 from musin.common.config import Config, load_config, require_env
 from musin.common.neo4j import get_driver
 from musin.gds.setup import Session, drop, parse_size, project
@@ -249,6 +255,7 @@ def run(cfg: Config) -> dict[str, pd.DataFrame]:
             runs += projection_runs
     finally:
         driver.close()
+    check_still_loaded(cfg, loaded)
 
     top_rows, agree_rows = [], []
     for name, frame in scores.items():

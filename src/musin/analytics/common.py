@@ -34,6 +34,22 @@ def loaded_graph(cfg: Config) -> dict:
     return loaded
 
 
+def check_still_loaded(cfg: Config, loaded: dict) -> None:
+    """RuntimeError unless the marker still names the graph a stage started on.
+
+    Neo4j has one database. An import during a P4 run (e.g. by the other team
+    member) would silently mix two graphs, so each stage re-reads the marker
+    after its last Neo4j query and refuses to write results otherwise.
+    """
+    marker = cfg.data_root / "neo4j" / LOADED_MARKER
+    now = json.loads(marker.read_text()) if marker.is_file() else None
+    if now is None or now.get("graph_fingerprints") != loaded["graph_fingerprints"]:
+        raise RuntimeError(
+            f"the loaded graph changed during the run (started on {loaded['graph']}, "
+            f"marker now {now['graph'] if now else 'missing'}); results discarded"
+        )
+
+
 def results_dir(cfg: Config, graph: str) -> Path:
     """Where the result tables of `graph` go.
 

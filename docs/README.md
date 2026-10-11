@@ -44,7 +44,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F3.4 | Neo4j CSV export and bulk import | P3 | A | Must | Done | [F3.4-neo4j-export-import.md](features/F3.4-neo4j-export-import.md) |
 | F3.5 | Constraints, indexes, GDS projections | P3 | B (built by A) | Must | Done | [F3.5-constraints-indexes-projections.md](features/F3.5-constraints-indexes-projections.md) |
 | F4.1 | Centrality and agreement (RQ4) | P4 | B | Must | In progress (sample-verified; full run after G1) | [F4.1-centrality.md](features/F4.1-centrality.md) |
-| F4.2 | Communities vs genres (RQ2) | P4 | B | Must | Planned | — |
+| F4.2 | Communities vs genres (RQ2) | P4 | B | Must | In progress (sample-verified; full run after G1) | [F4.2-communities.md](features/F4.2-communities.md) |
 | F4.3 | Genre bridges (RQ1) | P4 | B | Must | Planned | — |
 | F4.4 | Cross-genre trends by decade (RQ3) | P4 | B | Must | Planned | — |
 | F4.5 | Degrees of separation | P4 | B | Should | Planned | — |

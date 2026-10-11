@@ -11,7 +11,7 @@ Guidance for Claude Code in this repository.
 - **[README.md](README.md):** project overview with current status. Kept up to date as the project progresses.
 - **[docs/README.md](docs/README.md):** build-log index, showing what is done, in progress, and planned.
 
-**Current phase:** **P4 Graph analytics** in progress (owner B). P1 done 2026-10-10, P2 and P3 done 2026-10-11 (M2: sample graph loaded in Neo4j with constraints; projections via `musin.gds.setup.project()`). F4.1 is sample-verified; full-graph P4 runs wait for the post-G1 graph. P4 stages run on whatever graph `loaded_graph.json` names and have no `--sample` flag. Scope gate G1 on Oct 16 resolves OD1–OD5/OD7 and will likely change filters and require a rebuild of F3.1→F3.5; evidence in [docs/g1-scope-gate.md](docs/g1-scope-gate.md). The F4.6 validation list must be committed before anyone looks at RQ1 (F4.3) results. *(Update this line whenever a phase closes.)*
+**Current phase:** **P4 Graph analytics** in progress (owner B). P1 done 2026-10-10, P2 and P3 done 2026-10-11 (M2: sample graph loaded in Neo4j with constraints; projections via `musin.gds.setup.project()`). F4.1 and F4.2 are sample-verified; full-graph P4 runs wait for the post-G1 graph. P4 stages run on whatever graph `loaded_graph.json` names and have no `--sample` flag. Scope gate G1 on Oct 16 resolves OD1–OD5/OD7 and will likely change filters and require a rebuild of F3.1→F3.5; evidence in [docs/g1-scope-gate.md](docs/g1-scope-gate.md). The F4.6 validation list must be committed before anyone looks at RQ1 (F4.3) results. *(Update this line whenever a phase closes.)*
 
 ## Mandatory: document every feature and phase
 
@@ -67,6 +67,7 @@ python -m musin.<stage> --config config/pipeline.yaml [--sample 0.05]
 | Bulk import + 39 checks; **replaces** the loaded graph; writes `$MUSIN_DATA/neo4j/loaded_graph.json` (WSL, ~1 min) | `bash neo4j/import_graph.sh <full\|sample-f0.05> --overwrite` | F3.4 |
 | Constraints + indexes, build/check/drop `collab_undirected` and `credit_only`, algorithm memory estimates (run by the import script; full ~70 s) | `docker compose exec spark python -m musin.gds.setup --config config/pipeline.yaml [--keep-projections]` | F3.5 |
 | Centrality (RQ4): degree/PageRank/betweenness on `collab_undirected` + `credit_only`, write-back, agreement → `centrality_*.csv` (on the loaded graph; sample ~15 min, full est. 1–1.5 h) | `docker compose exec spark python -m musin.analytics.centrality --config config/pipeline.yaml` | F4.1 |
+| Communities (RQ2): Louvain run of record + 3 stability runs, WCC, NMI/AMI vs genre, `louvain` write-back → `communities_*.csv` (on the loaded graph; sample ~80 s) | `docker compose exec spark python -m musin.analytics.communities --config config/pipeline.yaml` | F4.2 |
 | Tests / lint | `docker compose exec spark pytest` · `docker compose exec spark ruff check src tests` | F1.1 |
 
 ## Planned layout

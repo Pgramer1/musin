@@ -56,7 +56,10 @@ analysis:
   pagerank: {damping: 0.85, max_iterations: 1000}   # D-033: a cap, not a target; runs stop at GDS tolerance 1e-7 and must converge
   betweenness_sampling_size: 10000
   betweenness_concurrency: 1         # F4.1 (D-033): sampled betweenness is reproducible only single-threaded
-  louvain_runs: 3
+  louvain_runs: 3                    # D-034: stability runs at analysis.concurrency, compared with the run of record
+  louvain_concurrency: 1             # F4.2 (D-034): the run of record is single-threaded, hence reproducible
+  top_k_communities: 10              # F4.2 (D-034): largest communities described by genre composition (RQ2)
+  community_example_artists: 5       # F4.2 (D-034): highest weighted-degree artists listed per described community
   random_seed: 42
   concurrency: 4                     # F4.1 (D-033): GDS concurrency for every algorithm except betweenness (fixed, PRD §5.5)
   decades: {from: 1960, to: 2020}
