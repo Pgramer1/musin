@@ -33,7 +33,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F1.4 | Data profiling report | P1 | A + B | Must | Done | [F1.4-profiling.md](features/F1.4-profiling.md) |
 | F1.5 | Neo4j + GDS smoke test | P1 | B | Must | Done | [F1.5-neo4j-smoke-test.md](features/F1.5-neo4j-smoke-test.md) |
 | F2.1 | Artist cleaning and special-purpose filter | P2 | A | Must | Done | [F2.1-artist-cleaning.md](features/F2.1-artist-cleaning.md) |
-| F2.2 | Credit parsing (main / featured) | P2 | A | Must | Planned | — |
+| F2.2 | Credit parsing (main / featured) | P2 | A | Must | Done | [F2.2-credit-parsing.md](features/F2.2-credit-parsing.md) |
 | F2.3 | Contribution relationship extraction | P2 | A | Must | Planned | — |
 | F2.4 | Recording first release year | P2 | A | Must | Planned | — |
 | F2.5 | Genre normalization | P2 | A + B | Must | Planned | — |

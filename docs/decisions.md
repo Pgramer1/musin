@@ -164,3 +164,17 @@ Entry format:
   3. `clean/artists` is the allowed artist set for every later stage; `clean/special_artists` holds the excluded IDs for cheap anti-joins.
   4. `begin_year` later than the snapshot year is set to null (25 artists); years ≤ 0 are kept (historical people).
 - **Consequences:** 12,426 credit rows (12,076 artist credits) lose a placeholder artist; F2.2 handles what that means for featuring detection. Unmarked placeholders (`[blank]`, `[announcer]`) remain and are watched in the top-10 spot checks. A new snapshot needs the list re-checked.
+
+### D-019 — Sample-mode output layout
+- **Date / phase:** 2026-10-11 · P2 (F2.2)
+- **Status:** Accepted
+- **Context:** FR-12 requires a `--sample <fraction>` mode for every pipeline stage, and RULES §2 requires each stage to run in sample and full mode. F2.2 is the first `clean/` stage that reads recordings, so sample output needs a home that can never overwrite full data. F1.4 used an ad-hoc `tmp/profiling_sample/`.
+- **Decision:** Recording-level outputs of a sample run go to `$MUSIN_DATA/sample/f<fraction>/<paths.layer>/` (e.g. `sample/f0.05/clean/credits`), via `musin.common.layers.layer_path`. Artist-level tables (`clean/artists`, `clean/special_artists`) are not sampled and are always read from the full layer. A sampled stage reads its recording-level inputs from the same sample tree.
+- **Consequences:** Several fractions can coexist, and a sample run is never mistaken for full output. F3.2 builds the dev sample graph from this tree (`sample/f<fraction>/graph/`). F1.4's profiling sample location is unchanged (report-only output).
+
+### D-020 — Credit roles decided before removing special artists
+- **Date / phase:** 2026-10-11 · P2 (F2.2)
+- **Status:** Accepted
+- **Context:** PRD §8.2 defines featured artists by their position after a featuring join phrase, and FR-04 removes special-purpose artists. The order matters for credits such as `[unknown] ft. X`: removing the placeholder first would make X the first slot and therefore main.
+- **Decision:** Roles are computed on the complete MusicBrainz credit; special artists are removed afterwards, and the remaining artists keep their role and original position. When one credit lists the same artist twice, it gets one row: the first position, and `main` if any slot is main.
+- **Consequences:** 117 recordings keep featured artists with no main artist (e.g. guests on `[theatre]` cast recordings); they produce no `FEATURED` edge, because the main collaborator is unknown. 5,204 repeated slots are collapsed. Positions can have gaps where a placeholder was removed.
