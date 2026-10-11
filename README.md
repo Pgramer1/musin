@@ -153,6 +153,81 @@ docker compose exec spark python -m musin.graph.sample --config config/pipeline.
 
 Ports listen on `127.0.0.1` only. Spark and Neo4j heavy jobs must not run at the same time (18 GB budget). Settings that change results live in [`config/pipeline.yaml`](config/pipeline.yaml); per-machine settings and secrets live in `.env`. Details: [F1.1 build log](docs/features/F1.1-dev-environment.md).
 
+## Verify the build
+
+How to check, look at, and reproduce what has been built. Run everything from WSL Ubuntu in the repo root (`wsl -d Ubuntu-24.04 --cd <repo>` from PowerShell, since the default WSL distro may be `docker-desktop`), with `docker compose up -d spark neo4j`. The expected numbers below are from the 2026-10-11 build with the provisional G1 values; they change once G1 decisions are applied.
+
+**1. Health check** (about 2 min, changes no data):
+
+```bash
+export MUSIN_DATA="$(grep -E '^MUSIN_DATA=' .env | cut -d= -f2-)"                                     # for the cat/grep lines below
+docker compose exec spark pytest -q                                                                  # all tests pass
+docker compose exec spark ruff check src tests                                                       # "All checks passed!"
+docker compose exec spark python -m musin.graph.checks --config config/pipeline.yaml                 # full graph: 49 checks pass, run_to_run +0.00%
+docker compose exec spark python -m musin.graph.checks --config config/pipeline.yaml --sample 0.05   # same for the dev sample graph
+cat $MUSIN_DATA/neo4j/loaded_graph.json                                                              # which graph Neo4j holds now
+```
+
+**2. Look at the graph in Neo4j Browser** (http://localhost:7474, user `neo4j`, password `NEO4J_PASSWORD` from `.env`). On an edge, `weight` is the number of shared recordings, and `firstYear`/`lastYear` give their span.
+
+```cypher
+// what's loaded
+MATCH ()-[r]->() RETURN type(r) AS type, count(*) AS n ORDER BY n DESC;
+
+// one artist's strongest collaborations, drawn as a graph
+MATCH (a:Artist {name: 'Snoop Dogg'})-[r]-(b:Artist)
+RETURN a, r, b ORDER BY r.weight DESC LIMIT 40;
+
+// degrees of separation (on the sample: Tom Petty → Prince → Erick Sermon → Snoop Dogg)
+MATCH (a:Artist {name: 'Tom Petty'}), (b:Artist {name: 'Snoop Dogg'})
+MATCH p = shortestPath((a)-[:CO_CREDITED|FEATURED|PRODUCED_FOR|PERFORMED_FOR*..10]-(b))
+RETURN p;
+
+// genre profile of an artist
+MATCH (a:Artist {name: 'Daft Punk'})-[r:IN_GENRE]->(g:Genre)
+RETURN g.name, r.share ORDER BY r.share DESC;
+```
+
+**3. Look at the Parquet tables** (Jupyter, http://localhost:8888):
+
+```python
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.getOrCreate()
+edges = spark.read.parquet("/data/graph/edges")            # sample: /data/sample/f0.05/graph/edges
+nodes = spark.read.parquet("/data/graph/nodes_artist")
+edges.groupBy("edge_type").count().show()
+nodes.orderBy(nodes.recording_count.desc()).show(10)
+```
+
+Generated tables are in `reports/tables/`:
+- what each graph filter removed: `graph_build_summary.csv`
+- the 49 check results: `graph_checks.csv`
+- sample vs full: `sample_f0.05_vs_full.csv`
+- projection sizes and memory: `gds_projections.csv`
+- the earlier phases: `profile_*` (F1.4) and `genre_*` (F2.5)
+
+The whole graph phase is summarised in [docs/phases/P3-graph-build-neo4j.md](docs/phases/P3-graph-build-neo4j.md).
+
+**4. Prove a rebuild is identical.** Every build records order-independent content fingerprints; equal fingerprints mean identical tables.
+
+```bash
+docker compose exec spark python -m musin.graph.sample --config config/pipeline.yaml --sample 0.05   # ~95 s, safe while Neo4j runs
+grep -A2 '"edges"' $MUSIN_DATA/sample/f0.05/graph/_manifest.json                                    # rows + fingerprint, unchanged between builds
+docker compose stop neo4j                                                                            # full rebuild is a heavy Spark job
+docker compose exec spark python -m musin.graph.build --config config/pipeline.yaml                  # ~3 min
+docker compose exec spark python -m musin.graph.checks --config config/pipeline.yaml                 # run_to_run +0.00% = same counts
+```
+
+**5. Re-verify Neo4j.** Each import runs 39 checks against the export and the Parquet source, then F3.5's constraint and projection checks; every line should say `PASS`. An import **replaces** the loaded graph.
+
+```bash
+bash neo4j/import_graph.sh sample-f0.05 --overwrite                                    # member B's dev graph (~1.5 min)
+bash neo4j/import_graph.sh full --overwrite                                            # full graph (~2 min)
+docker compose exec spark python -m musin.gds.setup --config config/pipeline.yaml      # re-check schema + projections only
+```
+
+After a deliberate config change (e.g. a G1 decision), `graph.checks` fails on purpose, because row counts move by more than 5 %. Re-run it once with `--accept-changes` and record the reason in [docs/decisions.md](docs/decisions.md).
+
 ## Repository layout
 
 ```
