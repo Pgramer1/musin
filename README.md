@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P2 Cleaning & genre normalization in progress (artist cleaning, credit parsing, contribution extraction done; first release year next); scope gate G1 on Oct 16 · *Last updated 2026-10-11*
+> **Status:** P2 Cleaning & genre normalization in progress (artist cleaning, credit parsing, contributions, first release years done; genre normalization next); scope gate G1 on Oct 16 · *Last updated 2026-10-11*
 
 ## Research questions
 
@@ -117,6 +117,7 @@ bash neo4j/smoke/run_smoke.sh --overwrite    # replaces the graph in Neo4j with 
 docker compose exec spark python -m musin.clean.artists --config config/pipeline.yaml   # F2.1: artists minus 15 special-purpose placeholders
 docker compose exec spark python -m musin.clean.credits --config config/pipeline.yaml   # F2.2: main/featured artist per recording
 docker compose exec spark python -m musin.clean.contributions --config config/pipeline.yaml   # F2.3: producer/performer relationships
+docker compose exec spark python -m musin.clean.years --config config/pipeline.yaml   # F2.4: first release year per recording
 ```
 
 | Service | URL |

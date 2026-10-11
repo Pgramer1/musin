@@ -36,6 +36,7 @@ REQUIRED_KEYS: tuple[str, ...] = (
     "contributions.produced_for",
     "contributions.performed_for",
     "genres.mapping_file",
+    "years.min_release_year",
     "analysis.min_labelled_neighbours",
     "analysis.top_k_bridges",
     "analysis.top_k_overlap",

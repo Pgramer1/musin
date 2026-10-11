@@ -11,7 +11,7 @@ Guidance for Claude Code in this repository.
 - **[README.md](README.md):** project overview with current status. Kept up to date as the project progresses.
 - **[docs/README.md](docs/README.md):** build-log index, showing what is done, in progress, and planned.
 
-**Current phase:** **P2 Cleaning & genre normalization** in progress (F2.1–F2.3 done; F2.4 first release year next). P1 done 2026-10-10; scope gate G1 on Oct 16 resolves OD1–OD5/OD7 from the F1.4 profile. *(Update this line whenever a phase closes.)*
+**Current phase:** **P2 Cleaning & genre normalization** in progress (F2.1–F2.4 done; F2.5 genre normalization next, 1-day timebox). P1 done 2026-10-10; scope gate G1 on Oct 16 resolves OD1–OD5/OD7 from the F1.4 profile. *(Update this line whenever a phase closes.)*
 
 ## Mandatory: document every feature and phase
 
@@ -58,6 +58,7 @@ python -m musin.<stage> --config config/pipeline.yaml [--sample 0.05]
 | Clean artists: drop special-purpose artists → `clean/artists`, `clean/special_artists` (full only, ~20 s) | `docker compose exec spark python -m musin.clean.artists --config config/pipeline.yaml` | F2.1 |
 | Parse credits: main/featured per recording → `clean/credits` (full ~1 min; ask first) | `docker compose exec spark python -m musin.clean.credits --config config/pipeline.yaml [--sample 0.05]` | F2.2 |
 | Extract contributions: producer/performer relationships → `clean/contributions` (full ~45 s; ask first) | `docker compose exec spark python -m musin.clean.contributions --config config/pipeline.yaml [--sample 0.05]` | F2.3 |
+| First release year per recording → `clean/recording_years` (full ~3 min; ask first) | `docker compose exec spark python -m musin.clean.years --config config/pipeline.yaml [--sample 0.05]` | F2.4 |
 | Tests / lint | `docker compose exec spark pytest` · `docker compose exec spark ruff check src tests` | F1.1 |
 
 ## Planned layout

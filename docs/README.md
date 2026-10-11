@@ -35,7 +35,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F2.1 | Artist cleaning and special-purpose filter | P2 | A | Must | Done | [F2.1-artist-cleaning.md](features/F2.1-artist-cleaning.md) |
 | F2.2 | Credit parsing (main / featured) | P2 | A | Must | Done | [F2.2-credit-parsing.md](features/F2.2-credit-parsing.md) |
 | F2.3 | Contribution relationship extraction | P2 | A | Must | Done | [F2.3-contributions.md](features/F2.3-contributions.md) |
-| F2.4 | Recording first release year | P2 | A | Must | Planned | — |
+| F2.4 | Recording first release year | P2 | A | Must | Done | [F2.4-first-release-year.md](features/F2.4-first-release-year.md) |
 | F2.5 | Genre normalization | P2 | A + B | Must | Planned | — |
 | F3.1 | Edge building and filters | P3 | A | Must | Planned | — |
 | F3.2 | Sample mode and dev sample graph | P3 | A | Must | Planned | — |

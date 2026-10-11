@@ -204,3 +204,10 @@ Entry format:
   3. If `filters.use_release_level_credits` is true, an artist → release relationship applies to every recording on that release.
   4. Special artists are removed here (FR-04); excluded artist types (D-021), group members (FR-11), and self-edges are handled in F3.1.
 - **Consequences:** Default run: 11,097,331 rows on 4,011,210 recordings. With release level: 16,948,022 rows (+52.7 %) but recording coverage only 9.91 % → 11.63 %, because album-wide credits repeat on every track and inflate album producers' edge weights. This is evidence for OD7 at G1. `conductor` and `performing orchestra` (1.8 M relationships) stay out unless the allowlist changes (OD1/OD5).
+
+### D-023 — Plausible release years: 1877–snapshot year
+- **Date / phase:** 2026-10-11 · P2 (F2.4)
+- **Status:** Accepted
+- **Context:** FR-07 derives each recording's first release year from release dates. F1.4 found impossible values (minimum 206; dates up to 3036). The earliest date decides a recording's year, so one typo can move a recording by centuries.
+- **Decision:** A release date counts only if its year is in [`years.min_release_year` = 1877, snapshot year]. 1877 is the phonograph, so no sound recording can have been released earlier. The snapshot year is the latest year that can have happened at dump time. Out-of-range dates are ignored, not clamped; a recording with no counted date gets `first_year` null. New config key `years.min_release_year` (PRD §8.4).
+- **Consequences:** On the full dump, 1 date before 1877 and 225 after 2026 are ignored. 1,473 recordings change: 1,472 become null and 1 moves to its next real year. Genuine early recordings (1878, 1888, 1890s) are kept; plausible typos (e.g. 1884 for a 1980s single) survive. The F1.4 profile keeps reporting unbounded raw years.

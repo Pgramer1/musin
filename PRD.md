@@ -349,6 +349,9 @@ contributions:                       # MusicBrainz link_type names, verified aga
 genres:
   mapping_file: config/genre_mapping.csv   # official genre → parent genre (OD4)
 
+years:                               # F2.4 (D-023)
+  min_release_year: 1877             # earliest counted release date (phonograph); latest = snapshot year
+
 analysis:
   min_labelled_neighbours: 5
   top_k_bridges: 25

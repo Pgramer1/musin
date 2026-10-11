@@ -10,6 +10,8 @@ from pyspark.sql import DataFrame, Window
 from pyspark.sql import functions as F
 from pyspark.sql.types import StringType
 
+from musin.clean import years
+
 
 def credit_sizes(acn: DataFrame) -> DataFrame:
     """Distinct credited artists per artist credit.
@@ -48,34 +50,16 @@ def featuring_credits(acn: DataFrame, pattern: str) -> DataFrame:
 
 
 def release_years(release_country: DataFrame, release_unknown_country: DataFrame) -> DataFrame:
-    """Earliest known year per release.
+    """Earliest known year per release, without plausibility bounds.
 
-    In: release_country(release, date_year), release_unknown_country(release, date_year).
-    Out: (release, year); releases without any known year are absent.
+    The profile reports raw data, so no year is ignored here; the clean stage
+    applies D-023's bounds. In: release_country(release, date_year),
+    release_unknown_country(release, date_year). Out: (release, year).
     """
-    dated = release_country.select("release", "date_year").unionByName(
-        release_unknown_country.select("release", "date_year")
-    )
-    return (
-        dated.filter(F.col("date_year").isNotNull())
-        .groupBy("release")
-        .agg(F.min("date_year").cast("int").alias("year"))
-    )
+    return years.release_years(release_country, release_unknown_country, None, None)
 
 
-def recording_first_years(track: DataFrame, medium: DataFrame, rel_years: DataFrame) -> DataFrame:
-    """First release year per recording (FR-07 preview).
-
-    In: track(recording, medium), medium(id, release), release_years output.
-    Out: (recording, first_year); recordings with no dated release are absent.
-    """
-    return (
-        track.select("recording", F.col("medium").alias("medium_id"))
-        .join(medium.select(F.col("id").alias("medium_id"), "release"), "medium_id")
-        .join(rel_years, "release")
-        .groupBy("recording")
-        .agg(F.min("year").alias("first_year"))
-    )
+recording_first_years = years.recording_first_years
 
 
 def genre_tags(tag: DataFrame, genre: DataFrame, genre_alias: DataFrame) -> DataFrame:
