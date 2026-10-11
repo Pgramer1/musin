@@ -193,3 +193,14 @@ Entry format:
   2. The filter is applied when **building edges (F3.1)**, not in `clean/`. `clean/credits` keeps Character artists, so flipping the key only needs F3.1 onward to re-run. The excluded artists are removed the same way as special artists (D-020): roles are already decided, the remaining artists keep their roles, and "producer feat. 初音ミク" yields no edge.
   3. **Sensitivity run:** RQ1's bridge table and RQ4's top-20 lists are also produced from a graph built with `exclude_artist_types: []`, and the report states where the main results differ. How the second build is stored is decided in F3.2/F4.1.
 - **Consequences:** Main results exclude 2.5 % of pairs and about 3.1 k mostly Vocaloid producers; the report states this J-pop/Vocaloid coverage loss as a limitation. Changing the decision later costs one config line plus a re-run of F3.1 → F3.4 and the P4 scripts; it becomes expensive only once P4 figures and report text exist (after ≈ Oct 30). F3.1 reports the final counts from the real edge build.
+
+### D-022 — Contribution extraction rules
+- **Date / phase:** 2026-10-11 · P2 (F2.3)
+- **Status:** Accepted
+- **Context:** FR-06 extracts contribution credits through the `contributions.*` allowlists. The PRD leaves open how link types are matched, what one output row means, and how release-level credits (OD7) map to recordings.
+- **Decision:**
+  1. Allowlisted names are matched against `link_type` for the exact entity pair (artist → recording; artist → release for OD7). A configured name that doesn't exist stops the stage. The MusicBrainz link-type hierarchy is not followed automatically.
+  2. `clean/contributions` has one row per (recording, artist, edge type), with the sorted link-type names behind it and a `level` (`recording` wins over `release`), so F3.1 never counts one recording twice for the same pair.
+  3. If `filters.use_release_level_credits` is true, an artist → release relationship applies to every recording on that release.
+  4. Special artists are removed here (FR-04); excluded artist types (D-021), group members (FR-11), and self-edges are handled in F3.1.
+- **Consequences:** Default run: 11,097,331 rows on 4,011,210 recordings. With release level: 16,948,022 rows (+52.7 %) but recording coverage only 9.91 % → 11.63 %, because album-wide credits repeat on every track and inflate album producers' edge weights. This is evidence for OD7 at G1. `conductor` and `performing orchestra` (1.8 M relationships) stay out unless the allowlist changes (OD1/OD5).
