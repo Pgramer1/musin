@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1 and P2 done (raw ingest, profiling, Neo4j smoke test, clean layer with genres); P3 Graph build & Neo4j load next; scope gate G1 on Oct 16 · *Last updated 2026-10-11*
+> **Status:** P1 and P2 done (raw ingest, profiling, Neo4j smoke test, clean layer with genres); P3 Graph build & Neo4j load in progress (F3.1 graph build done); scope gate G1 on Oct 16 · *Last updated 2026-10-11*
 
 ## Research questions
 
@@ -29,7 +29,7 @@ Exact metric definitions are in [PRD §5](PRD.md#5-research-questions).
 | P0 Planning | Oct 10 | Done |
 | P1 Environment & ingestion | Oct 10–16 | Done |
 | P2 Cleaning & genre normalization | Oct 15–21 | Done |
-| P3 Graph build & Neo4j load | Oct 18–24 | Planned |
+| P3 Graph build & Neo4j load | Oct 18–24 | In progress |
 | P4 Graph analytics | Oct 19–30 | Planned |
 | P5 Benchmarks | Oct 22–30 | Planned |
 | P6 Presentation & report | Oct 28–Nov 9 | Planned |
@@ -121,6 +121,12 @@ docker compose exec spark python -m musin.clean.years --config config/pipeline.y
 docker compose exec spark python -m musin.clean.genres --config config/pipeline.yaml   # F2.5: 15 parent genres per artist
 ```
 
+**7. Build the graph** (P3; writes `$MUSIN_DATA/graph/` with nodes, genres, typed edges, and per-decade edges; `--sample 0.05` writes `$MUSIN_DATA/sample/f0.05/graph/`):
+
+```bash
+docker compose exec spark python -m musin.graph.build --config config/pipeline.yaml   # F3.1: edges + FR-10/FR-11/D-021/min_recordings filters
+```
+
 | Service | URL |
 |---|---|
 | Jupyter Lab (PySpark 3.5.9, Python 3.11) | http://localhost:8888 |
@@ -141,7 +147,7 @@ docker/            Spark/Jupyter and Neo4j/GDS images
 setup/             wslconfig.example, preflight.sh
 src/musin/         pipeline code (python -m musin.<stage>)
 neo4j/             numbered Cypher files (smoke/: F1.5 toy-graph test)
-reports/           generated tables and figures (profile_*: F1.4)
+reports/           generated tables and figures (profile_*: F1.4, genre_*: F2.5, graph_*: F3.1)
 tests/             pytest + fixtures (neo4j_toy/: F1.5 toy graph)
 docker-compose.yml two services: spark, neo4j
 .env.example       template for per-machine settings and secrets
@@ -156,6 +162,8 @@ More folders (`notebooks/`, `app/`) are added as the phases progress.
 **Data profile (F1.4):** 40.5 M recordings, 2.0 M credited artists; 86% of recordings have one credited artist; 92.6% have a first release year; genre tags cover 27% of credited artists (72% of artist appearances); producer credits cover 4.4% of recordings. Details and G1 evidence: [F1.4 build log](docs/features/F1.4-profiling.md), tables in `reports/tables/profile_*.csv`.
 
 **Genres (F2.5):** 15 parent genres cover 97.5% of genre votes; 26.6% of credited artists (69.9% of appearances) get a primary genre, led by electronic (26.7%) and rock (18.0%). Details: [F2.5 build log](docs/features/F2.5-genre-normalization.md), tables in `reports/tables/genre_*.csv`.
+
+**Graph (F3.1, provisional G1 thresholds):** 1.18 M artists and 4.20 M edges (1.73 M co-credited, 0.73 M featured, 0.33 M produced-for, 1.41 M performed-for); 23.4% of artists have a primary genre and 36.9% of edges are labelled at both ends. Classical artists are 2.2% of nodes but touch 18.6% of edges. Details: [F3.1 build log](docs/features/F3.1-edge-building.md), `reports/tables/graph_build_summary.csv`.
 
 ## Documentation
 

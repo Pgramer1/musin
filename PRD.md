@@ -226,7 +226,7 @@ This contract (§8.1–8.5) is the interface between Member A (producer) and Mem
 | `artist_type` | string | Person, Group, Orchestra, Choir, Character, Other, or null |
 | `area_name` | string | nullable |
 | `begin_year` | int | nullable |
-| `recording_count` | long | distinct recordings the artist is credited on |
+| `recording_count` | long | distinct recordings the artist is credited on, billed or through a contribution credit ([D-027](docs/decisions.md)) |
 | `primary_genre` | string | parent genre with the highest share. **Ties** are broken by alphabetical order of parent-genre name, and F2.5 reports how many artists tied. Null if untagged |
 | `genre_votes` | long | tag votes behind the genre profile |
 

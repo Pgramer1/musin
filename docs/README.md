@@ -18,7 +18,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | P0 Planning | Oct 10 | Done | [P0-planning.md](phases/P0-planning.md) |
 | P1 Environment & ingestion | Oct 10–16 | Done | [P1-environment-ingestion.md](phases/P1-environment-ingestion.md) |
 | P2 Cleaning & genre normalization | Oct 15–21 | Done | [P2-cleaning-genres.md](phases/P2-cleaning-genres.md) |
-| P3 Graph build & Neo4j load | Oct 18–24 | Planned | — |
+| P3 Graph build & Neo4j load | Oct 18–24 | In progress | — |
 | P4 Graph analytics | Oct 19–30 | Planned | — |
 | P5 Benchmarks | Oct 22–30 | Planned | — |
 | P6 Presentation & report | Oct 28–Nov 9 | Planned | — |
@@ -37,7 +37,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F2.3 | Contribution relationship extraction | P2 | A | Must | Done | [F2.3-contributions.md](features/F2.3-contributions.md) |
 | F2.4 | Recording first release year | P2 | A | Must | Done | [F2.4-first-release-year.md](features/F2.4-first-release-year.md) |
 | F2.5 | Genre normalization | P2 | A + B | Must | Done | [F2.5-genre-normalization.md](features/F2.5-genre-normalization.md) |
-| F3.1 | Edge building and filters | P3 | A | Must | Planned | — |
+| F3.1 | Edge building and filters | P3 | A | Must | Done | [F3.1-edge-building.md](features/F3.1-edge-building.md) |
 | F3.2 | Sample mode and dev sample graph | P3 | A | Must | Planned | — |
 | F3.3 | Graph-layer quality checks | P3 | A | Must | Planned | — |
 | F3.4 | Neo4j CSV export and bulk import | P3 | A | Must | Planned | — |
