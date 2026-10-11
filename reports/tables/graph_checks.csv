@@ -1,0 +1,50 @@
+table,check,violations,status,detail
+nodes_artist,schema,0,pass,
+artist_genre,schema,0,pass,
+edges,schema,0,pass,
+edges_by_decade,schema,0,pass,
+nodes_artist,null_artist_id,0,pass,
+nodes_artist,null_mbid_or_name,0,pass,
+nodes_artist,below_min_recordings,0,pass,
+nodes_artist,excluded_artist_type,0,pass,
+nodes_artist,unknown_primary_genre,0,pass,
+nodes_artist,genre_votes_mismatch,0,pass,
+nodes_artist,genre_votes_not_positive,0,pass,
+nodes_artist,duplicate_artist_id,0,pass,
+nodes_artist,duplicate_mbid,0,pass,
+nodes_artist,node_without_edge,0,pass,
+edges,null_key,0,pass,
+edges,self_loop,0,pass,
+edges,unknown_edge_type,0,pass,
+edges,co_credited_not_ordered,0,pass,
+edges,weight_below_1,0,pass,
+edges,year_null_mismatch,0,pass,
+edges,first_year_after_last,0,pass,
+edges,year_out_of_range,0,pass,
+edges,duplicate_key,0,pass,
+edges,endpoint_not_a_node,0,pass,
+edges_by_decade,null_key,0,pass,
+edges_by_decade,decade_not_multiple_of_10,0,pass,
+edges_by_decade,weight_below_1,0,pass,
+edges_by_decade,duplicate_key,0,pass,
+edges_by_decade,row_without_edge,0,pass,
+edges_by_decade,decade_outside_edge_years,0,pass,
+edges_by_decade,invariant_decades_exceed_weight,0,pass,
+edges_by_decade,dated_edge_without_decades,0,pass,
+edges_by_decade,first_decade_mismatch,0,pass,
+edges_by_decade,last_decade_mismatch,0,pass,
+artist_genre,null_key,0,pass,
+artist_genre,share_out_of_range,0,pass,
+artist_genre,unknown_parent_genre,0,pass,
+artist_genre,duplicate_key,0,pass,
+artist_genre,artist_not_a_node,0,pass,
+artist_genre,shares_not_summing_to_1,0,pass,
+nodes_artist,primary_genre_not_top_share,0,pass,
+run_to_run,nodes_artist,0,pass,1180939 -> 1180939 (+0.00%)
+run_to_run,artist_genre,0,pass,442104 -> 442104 (+0.00%)
+run_to_run,edges,0,pass,3541659 -> 3541659 (+0.00%)
+run_to_run,edges_by_decade,0,pass,3829423 -> 3829423 (+0.00%)
+run_to_run,edges_CO_CREDITED,0,pass,1731537 -> 1731537 (+0.00%)
+run_to_run,edges_FEATURED,0,pass,734524 -> 734524 (+0.00%)
+run_to_run,edges_PRODUCED_FOR,0,pass,291319 -> 291319 (+0.00%)
+run_to_run,edges_PERFORMED_FOR,0,pass,784279 -> 784279 (+0.00%)

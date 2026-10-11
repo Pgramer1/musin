@@ -65,6 +65,8 @@ SELF_LOOP, EXCLUDED_TYPE, EXCLUDED_CLASSICAL, BAND_MEMBER, SAME_RECORDING_PAIR =
 PAIR_PRECEDENCE = {CO_CREDITED: 0, FEATURED: 0, PRODUCED_FOR: 1, PERFORMED_FOR: 2}
 INSTANCE = ["recording_id", "src_id", "dst_id", "edge_type"]
 EDGE_KEY = ["src_id", "dst_id", "edge_type"]
+# The §8.1 tables this stage writes, in contract order.
+GRAPH_TABLES = ("nodes_artist", "artist_genre", "edges", "edges_by_decade")
 
 
 def credit_sizes(credits: DataFrame) -> DataFrame:

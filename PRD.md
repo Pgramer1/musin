@@ -369,6 +369,9 @@ profiling:                           # F1.4 report parameters (D-015); never aff
   top_k_hubs: 30
   top_k_genres: 150                  # OD4: candidate genres for the parent-genre mapping
   top_k_join_phrases: 30
+
+checks:                              # F3.3 (D-030); never affect the graph
+  max_row_change: 0.05               # largest relative row-count change vs the last passing check
 ```
 
 Rules:

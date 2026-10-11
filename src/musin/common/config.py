@@ -52,6 +52,7 @@ REQUIRED_KEYS: tuple[str, ...] = (
     "profiling.top_k_hubs",
     "profiling.top_k_genres",
     "profiling.top_k_join_phrases",
+    "checks.max_row_change",
 )
 
 # Keys whose value may legitimately be null (e.g. before F1.2 pins the snapshot).

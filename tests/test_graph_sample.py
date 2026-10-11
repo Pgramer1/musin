@@ -1,7 +1,8 @@
 """Tests for musin.graph.sample (F3.2) on tiny frames."""
 
+from musin.common.provenance import fingerprint, repo_commit
 from musin.graph.build import CO_CREDITED, FEATURED, PERFORMED_FOR, PRODUCED_FOR
-from musin.graph.sample import comparison_rows, fingerprint, graph_profile, repo_commit
+from musin.graph.sample import comparison_rows, graph_profile
 
 EDGES = "src_id long, dst_id long, edge_type string, weight long, first_year int, last_year int"
 

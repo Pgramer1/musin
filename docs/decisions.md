@@ -265,3 +265,14 @@ Entry format:
   3. The sample is for **developing and debugging** code. Weight-based shares (edge-type and decade weight shares) are within a few percent of the full graph, but counts, degrees, and label coverage are biased (labelled nodes 1.7×, classical nodes 2.6×). No report number comes from the sample.
   4. The D-021 sensitivity build stays with F4.1, which is its only consumer.
 - **Consequences:** Both members can confirm they hold an identical dev graph by comparing four numbers. Other fractions can be built side by side if needed, e.g. for the F5.1 scaling benchmark. Results computed on the sample must not be compared numerically with full-graph results.
+
+### D-030 — Graph quality checks: run-to-run tolerance and baseline
+- **Date / phase:** 2026-10-11 · P3 (F3.3)
+- **Status:** Accepted
+- **Context:** RULES §6 requires, after every graph build, "row counts within the expected range of the previous run", without defining the range or the previous run. PRD §8.4 forbids thresholds in code.
+- **Decision:**
+  1. New config key `checks.max_row_change` = **0.05**. A check fails when a table's row count, or an edge type's count, differs from the baseline by more than 5 % (relative).
+  2. The baseline is the **last passing check of the same graph folder** (full and each sample fraction separately), stored in `<graph>/_checks.json` with fingerprints. A failing check never overwrites it.
+  3. A deliberate change is accepted with `--accept-changes`. The accepted counts are listed in `_checks.json`, and the change must be explained in a decision entry (e.g. each G1 decision).
+  4. `python -m musin.graph.checks` is the required step after every full `graph.build`; the sample chain (F3.2) runs it automatically.
+- **Consequences:** Rebuilding the same inputs gives 0 % change, so any drift has to be explained. In a test on the sample graph, `max_credit_size: 20` moved total edges by +4.7 % (inside 5 %), but `CO_CREDITED` by +8.86 %. The per-type check caught it. After G1 the first rebuild will need `--accept-changes`. The key never changes results, so changing it needs no rebuild.

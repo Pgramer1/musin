@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1 and P2 done (raw ingest, profiling, Neo4j smoke test, clean layer with genres); P3 Graph build & Neo4j load in progress (F3.1 graph build and F3.2 dev sample graph done); scope gate G1 on Oct 16 · *Last updated 2026-10-11*
+> **Status:** P1 and P2 done (raw ingest, profiling, Neo4j smoke test, clean layer with genres); P3 Graph build & Neo4j load in progress (F3.1 graph build, F3.2 dev sample graph, F3.3 graph checks done); scope gate G1 on Oct 16 · *Last updated 2026-10-11*
 
 ## Research questions
 
@@ -125,7 +125,10 @@ docker compose exec spark python -m musin.clean.genres --config config/pipeline.
 
 ```bash
 docker compose exec spark python -m musin.graph.build --config config/pipeline.yaml   # F3.1: edges + FR-10/FR-11/D-021/min_recordings filters
+docker compose exec spark python -m musin.graph.checks --config config/pipeline.yaml  # F3.3: 49 checks, required after every build
 ```
+
+The checks compare row counts with the last passing check and fail on a change above 5%. After a deliberate change (e.g. a G1 decision), run them once with `--accept-changes` and record why in `docs/decisions.md`.
 
 **Dev sample graph** (F3.2; ~1.5 min, works with `SPARK_DRIVER_MEMORY=4g`). It rebuilds the whole recording-level chain for 5% of recordings into `$MUSIN_DATA/sample/f0.05/` and writes `graph/_manifest.json` with content fingerprints. Two members hold the same graph when the fingerprints match. Needs the full `clean/artists` and genre tables from step 6.
 
@@ -153,7 +156,7 @@ docker/            Spark/Jupyter and Neo4j/GDS images
 setup/             wslconfig.example, preflight.sh
 src/musin/         pipeline code (python -m musin.<stage>)
 neo4j/             numbered Cypher files (smoke/: F1.5 toy-graph test)
-reports/           generated tables and figures (profile_*: F1.4, genre_*: F2.5, graph_*: F3.1, sample_*: F3.2)
+reports/           generated tables and figures (profile_*: F1.4, genre_*: F2.5, graph_build_*: F3.1, graph_checks: F3.3, sample_*: F3.2)
 tests/             pytest + fixtures (neo4j_toy/: F1.5 toy graph)
 docker-compose.yml two services: spark, neo4j
 .env.example       template for per-machine settings and secrets

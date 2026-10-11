@@ -1,10 +1,11 @@
 """Dev sample graph: the recording-level chain for one fraction (F3.2, FR-12).
 
-    python -m musin.graph.sample --config config/pipeline.yaml --sample 0.05
+    python -m musin.graph.sample --config config/pipeline.yaml --sample 0.05 [--accept-changes]
 
 Runs, with the same --sample fraction, every stage that reads recordings:
 clean.credits (F2.2), clean.contributions (F2.3), clean.years (F2.4), and
-graph.build (F3.1). Everything is written under $MUSIN_DATA/sample/f<fraction>/
+graph.build (F3.1), followed by the graph checks (F3.3; --accept-changes is passed
+on). Everything is written under $MUSIN_DATA/sample/f<fraction>/
 (D-019); full-mode data is never touched. Artist-level inputs (clean/artists,
 special_artists, artist_genres, artist_primary_genre, F2.1 and F2.5) are not
 sampled and must already exist in the full clean layer.
@@ -34,32 +35,17 @@ from pyspark.sql import functions as F
 from musin.clean import contributions, credits, years
 from musin.common.config import Config, ConfigError, load_config
 from musin.common.layers import layer_path, sample_tag
+from musin.common.provenance import fingerprint, repo_commit
 from musin.common.spark import get_spark
-from musin.graph import build
-from musin.graph.build import EDGE_TYPES, write_table
+from musin.graph import build, checks
+from musin.graph.build import EDGE_TYPES, GRAPH_TABLES, write_table
 
 log = logging.getLogger("musin.graph.sample")
 
-GRAPH_TABLES = ("nodes_artist", "artist_genre", "edges", "edges_by_decade")
 FULL_ARTIST_TABLES = ("artists", "special_artists", "artist_genres", "artist_primary_genre")
 # Config sections whose values change the graph; copied into the manifest.
 RESULT_SECTIONS = ("snapshot_date", "filters", "credits", "contributions", "genres", "years")
 MANIFEST = "_manifest.json"
-
-
-def fingerprint(df: DataFrame) -> dict:
-    """Row count and an order-independent content hash of a frame.
-
-    In: any frame. Out: {"rows": int, "fingerprint": str}: the sum of the
-    xxhash64 of every row (all columns), as an exact decimal so the sum cannot
-    overflow. Partitioning and row order do not change it; any changed,
-    added, or removed row almost surely does.
-    """
-    row = df.agg(
-        F.count("*").alias("rows"),
-        F.sum(F.xxhash64(*df.columns).cast("decimal(38,0)")).alias("hash"),
-    ).collect()[0]
-    return {"rows": row["rows"], "fingerprint": str(row["hash"] or 0)}
 
 
 def degree_quantiles(edges: DataFrame) -> dict[str, float]:
@@ -175,26 +161,11 @@ def comparison_rows(full: dict[str, float], sample: dict[str, float]) -> list[di
     return rows
 
 
-def repo_commit(repo_root: Path) -> str | None:
-    """Commit hash of the checkout, read from .git without the git binary (absent in the image)."""
-    git = repo_root / ".git"
-    try:
-        head = (git / "HEAD").read_text(encoding="utf-8").strip()
-        if not head.startswith("ref: "):
-            return head
-        ref = head[5:]
-        if (git / ref).is_file():
-            return (git / ref).read_text(encoding="utf-8").strip()
-        for line in (git / "packed-refs").read_text(encoding="utf-8").splitlines():
-            if line.endswith(" " + ref):
-                return line.split()[0]
-    except OSError:
-        return None
-    return None
+def run(cfg: Config, sample: float, accept_changes: bool) -> dict:
+    """Run the chain and the checks for one fraction, then fingerprint and compare.
 
-
-def run(cfg: Config, sample: float) -> dict:
-    """Run the chain for one fraction, then fingerprint and compare; return the manifest."""
+    Returns the manifest. A failing check (F3.3) stops before the manifest is written.
+    """
     tag = sample_tag(sample)  # validates 0 < sample < 1
     clean = cfg.data_path("clean")
     missing = [t for t in FULL_ARTIST_TABLES if not (clean / t).is_dir()]
@@ -209,6 +180,7 @@ def run(cfg: Config, sample: float) -> dict:
         ("clean.contributions", contributions.run),
         ("clean.years", years.run),
         ("graph.build", build.run),
+        ("graph.checks", lambda c, s: checks.run(c, s, accept_changes)),
     ):
         start = time.monotonic()
         log.info("=== %s (sample %s)", name, sample)
@@ -264,10 +236,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--sample", type=float, required=True, help="fraction of recordings, e.g. 0.05"
     )
+    parser.add_argument(
+        "--accept-changes",
+        action="store_true",
+        help="passed to the graph checks: accept row-count changes beyond checks.max_row_change",
+    )
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     start = time.monotonic()
-    run(load_config(args.config), args.sample)
+    run(load_config(args.config), args.sample, args.accept_changes)
     log.info("done in %.0fs", time.monotonic() - start)
     return 0
 
