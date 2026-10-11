@@ -211,3 +211,20 @@ Entry format:
 - **Context:** FR-07 derives each recording's first release year from release dates. F1.4 found impossible values (minimum 206; dates up to 3036). The earliest date decides a recording's year, so one typo can move a recording by centuries.
 - **Decision:** A release date counts only if its year is in [`years.min_release_year` = 1877, snapshot year]. 1877 is the phonograph, so no sound recording can have been released earlier. The snapshot year is the latest year that can have happened at dump time. Out-of-range dates are ignored, not clamped; a recording with no counted date gets `first_year` null. New config key `years.min_release_year` (PRD §8.4).
 - **Consequences:** On the full dump, 1 date before 1877 and 225 after 2026 are ignored. 1,473 recordings change: 1,472 become null and 1 moves to its next real year. Genuine early recordings (1878, 1888, 1890s) are kept; plausible typos (e.g. 1884 for a 1980s single) survive. The F1.4 profile keeps reporting unbounded raw years.
+
+### D-024 — Parent genres and the genre mapping (OD4)
+- **Date / phase:** 2026-10-11 · P2 (F2.5)
+- **Status:** Accepted as the OD4 draft; G1 (Oct 16) may still adjust single rows of the mapping.
+- **Context:** RQ1–RQ3 need 12–15 parent genres (OD4), and MusicBrainz has 2,212 official genres. F2.5 has a 1-day timebox.
+- **Decision:**
+  1. 15 parents: rock, metal, punk, pop, electronic, hip hop, r&b & soul, jazz, blues, classical, folk & world, country, latin, reggae, experimental. Loosely Discogs' top-level styles, with metal and punk split from rock and experimental kept as its own parent.
+  2. `config/genre_mapping.csv` lists **all** 2,212 official genres with their parent (empty = deliberately unmapped) and the basis: a head-noun rule (the last word decides) plus 308 manual decisions, covering every genre above about 100 votes. Non-style tags (instrumental, lo-fi, comedy, spoken word, christmas music…) are unmapped.
+  3. The stage fails unless the CSV lists exactly the dump's official genres.
+- **Consequences:** 97.49 % of positive genre votes map to a parent; the unmapped rest is mostly non-style tags (about 0.4 % of votes are small real genres). Boundary cases (synth-pop, post-punk, disco, new age) are documented per row and can be changed by editing one line and re-running F2.5 onward.
+
+### D-025 — Genre profile source: artist tags first, then main-artist release-group tags
+- **Date / phase:** 2026-10-11 · P2 (F2.5)
+- **Status:** Accepted
+- **Context:** PRD §8.1 left open how artist tags and release-group tags combine into `artist_genre.share`. Artist tags alone label only 9.9 % of credited artists; release-group tags are about 10× more numerous, and propagating them to every credited artist mislabels featured guests (F1.4).
+- **Decision:** Each artist's profile comes from one source. It uses the artist's own genre tags if any map to a parent genre; otherwise it uses the tags of release groups on which the artist is a **main** credited artist (F2.2 featured rule). Only positive votes count. `share` = votes / artist total; the primary genre is the highest share with the alphabetical tie-break (PRD §8.1), and a `tied` flag is stored. No minimum-vote threshold.
+- **Consequences:** 558,473 artists get a primary genre (213,418 from artist tags, 345,055 from release-group tags), i.e. 26.6 % of credited artists and 69.9 % of appearances. 29.8 % of labelled artists rest on one vote and 11.4 % are tied; G1 may add a minimum-vote rule via a new `genres.*` key.

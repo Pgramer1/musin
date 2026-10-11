@@ -8,7 +8,7 @@
 | **Team** | Member A: `<name>` (data engineering) · Member B: `<name>` (graph analytics) |
 | **Version** | 1.1 (2026-10-10): contract v1 clarifications ([D-011](docs/decisions.md)) |
 | **Submission** | ~2026-11-09 — **confirm the exact deadline** |
-| **Current phase** | P1 Environment & ingestion ✅ → P2 Cleaning & genre normalization |
+| **Current phase** | P2 Cleaning & genre normalization ✅ → P3 Graph build & Neo4j load |
 
 Companion documents: [README.md](README.md) (overview and status) · [RULES.md](RULES.md) (how we work) · [CLAUDE.md](CLAUDE.md) (AI assistant guide) · [docs/README.md](docs/README.md) (build log) · [docs/decisions.md](docs/decisions.md)
 
@@ -238,7 +238,7 @@ This contract (§8.1–8.5) is the interface between Member A (producer) and Mem
 | `parent_genre` | string | |
 | `share` | double | sums to 1 per artist |
 
-How artist tags and release-group tags are combined into `share` is decided in F2.5 and recorded as a decision. This PRD does not fix it.
+How artist tags and release-group tags are combined into `share` was decided in F2.5: artist tags first, otherwise tags of release groups where the artist is a main credited artist ([D-025](docs/decisions.md)).
 
 **`edges`**
 
@@ -543,7 +543,7 @@ Nov 5–9 is buffer. Could-priority work starts only when every Must in its phas
 | OD1 | Include classical music, exclude it, or analyse it separately? | Hub sizes from F1.4 | `include_classical: true` |
 | OD2 | `min_recordings` threshold for the graph | Node/edge counts at several thresholds | `min_recordings: 1` |
 | OD3 | `max_credit_size` | Credit-size distribution | `max_credit_size: 10` |
-| OD4 | Final parent-genre list (12–15) | Top official genres by tag volume | draft mapping in F2.5 |
+| OD4 | Final parent-genre list (12–15) | Top official genres by tag volume | 15-parent draft in `config/genre_mapping.csv` (F2.5, [D-024](docs/decisions.md)) |
 | OD5 | Is producer coverage enough to analyse PRODUCED_FOR on its own? | Relationship coverage | keep PRODUCED_FOR as its own edge type |
 | OD6 | Snapshot date | Latest full export available | latest full export when F1.2 runs |
 | OD7 | Also use release-level credits (`l_artist_release`)? | Coverage compared with recording level | `use_release_level_credits: false` |

@@ -1,0 +1,2213 @@
+genre,parent_genre,basis
+electronic,electronic,rule
+rock,rock,rule
+pop,pop,rule
+jazz,jazz,rule
+hip hop,hip hop,rule
+experimental,experimental,rule
+ambient,electronic,rule
+punk,punk,rule
+classical,classical,rule
+pop rock,rock,rule
+indie rock,rock,rule
+alternative rock,rock,rule
+techno,electronic,rule
+house,electronic,rule
+downtempo,electronic,rule
+metal,metal,rule
+synth-pop,pop,manual
+folk,folk & world,rule
+electro,electronic,rule
+industrial,electronic,manual
+black metal,metal,rule
+hard rock,rock,rule
+instrumental,,manual
+lo-fi,,manual
+blues,blues,rule
+noise,experimental,manual
+country,country,rule
+heavy metal,metal,rule
+soul,r&b & soul,rule
+trance,electronic,rule
+death metal,metal,rule
+psychedelic rock,rock,rule
+latin,latin,rule
+disco,r&b & soul,manual
+folk rock,rock,manual
+drone,experimental,manual
+reggae,reggae,rule
+new wave,rock,manual
+funk,r&b & soul,rule
+indie pop,pop,rule
+chillwave,electronic,manual
+dance,electronic,rule
+rock and roll,rock,manual
+idm,electronic,rule
+dark ambient,electronic,rule
+deep house,electronic,rule
+instrumental hip hop,hip hop,rule
+schlager,pop,manual
+boom bap,hip hop,manual
+post-punk,rock,manual
+drum and bass,electronic,rule
+lo-fi hip hop,hip hop,rule
+post-rock,rock,rule
+electronica,electronic,rule
+ballad,pop,manual
+tech house,electronic,rule
+doom metal,metal,rule
+vaporwave,electronic,manual
+blues rock,rock,manual
+psychedelic,rock,manual
+ebm,electronic,rule
+garage rock,rock,rule
+progressive rock,rock,rule
+dub,reggae,rule
+singer-songwriter,folk & world,manual
+dubstep,electronic,rule
+breakbeat,electronic,rule
+r&b,r&b & soul,rule
+synthwave,electronic,rule
+j-pop,pop,rule
+avant-garde,experimental,rule
+shoegaze,rock,rule
+classic rock,rock,manual
+non-music,,manual
+contemporary jazz,jazz,rule
+progressive house,electronic,rule
+dark wave,electronic,manual
+euro house,electronic,rule
+stoner rock,rock,rule
+easy listening,pop,manual
+trip hop,electronic,manual
+punk rock,punk,manual
+psytrance,electronic,manual
+new age,electronic,manual
+soft rock,rock,rule
+art rock,rock,rule
+progressive metal,metal,rule
+emo,punk,manual
+breaks,electronic,rule
+europop,pop,rule
+jungle,electronic,rule
+pop punk,punk,rule
+swing,jazz,rule
+grindcore,metal,manual
+progressive trance,electronic,rule
+trap,hip hop,rule
+pop rap,hip hop,rule
+modern classical,classical,rule
+country rock,country,manual
+dream pop,pop,manual
+dance-pop,pop,manual
+metalcore,metal,rule
+contemporary r&b,r&b & soul,rule
+thrash metal,metal,rule
+hardcore punk,punk,manual
+leftfield,electronic,manual
+big band,jazz,manual
+bluegrass,country,rule
+power pop,rock,manual
+post-hardcore,punk,manual
+ska,reggae,rule
+edm,electronic,rule
+chiptune,electronic,rule
+breakcore,electronic,rule
+grunge,rock,rule
+rockabilly,rock,rule
+hard trance,electronic,rule
+free jazz,jazz,rule
+free improvisation,jazz,manual
+chillout,electronic,rule
+comedy,,manual
+glitch,electronic,rule
+electropop,pop,manual
+jazz-funk,jazz,manual
+baroque,classical,rule
+krautrock,rock,rule
+power metal,metal,rule
+space rock,rock,rule
+electro house,electronic,rule
+progressive,rock,manual
+gospel,r&b & soul,manual
+jazz rock,jazz,manual
+indie folk,folk & world,rule
+alternative metal,metal,rule
+sludge metal,metal,rule
+melodic death metal,metal,rule
+atmospheric black metal,metal,rule
+happy hardcore,electronic,manual
+spoken word,,manual
+noise rock,rock,manual
+americana,country,manual
+post-metal,metal,manual
+gabber,electronic,rule
+experimental rock,rock,manual
+dub techno,electronic,manual
+alternative pop,pop,rule
+math rock,rock,rule
+orchestral,classical,manual
+experimental electronic,electronic,manual
+hard house,electronic,rule
+harsh noise wall,experimental,manual
+post-bop,jazz,rule
+stoner metal,metal,rule
+gothic rock,rock,rule
+k-pop,pop,rule
+celtic,folk & world,rule
+dancehall,reggae,rule
+nu metal,metal,rule
+hardstyle,electronic,rule
+neofolk,folk & world,manual
+soul jazz,jazz,manual
+underground hip hop,hip hop,rule
+opera,classical,rule
+visual kei,rock,manual
+uk garage,electronic,manual
+jazz fusion,jazz,manual
+dungeon synth,electronic,manual
+plunderphonics,experimental,manual
+nu jazz,jazz,manual
+oi,punk,manual
+italo-disco,electronic,manual
+horror punk,punk,rule
+berlin school,electronic,manual
+hard bop,jazz,rule
+roots reggae,reggae,rule
+gothic metal,metal,rule
+doo-wop,r&b & soul,manual
+smooth jazz,jazz,rule
+symphonic metal,metal,rule
+bossa nova,latin,manual
+harsh noise,experimental,manual
+avant-garde jazz,jazz,manual
+latin jazz,jazz,manual
+christmas music,,manual
+grime,hip hop,rule
+hardcore hip hop,hip hop,manual
+glam,rock,manual
+lounge,jazz,manual
+symphonic rock,rock,manual
+power electronics,experimental,manual
+neo soul,r&b & soul,rule
+eurodance,electronic,rule
+future funk,electronic,manual
+gothic,rock,manual
+southern rock,rock,rule
+goa trance,electronic,rule
+industrial metal,metal,manual
+art pop,pop,manual
+nu disco,electronic,manual
+gangsta rap,hip hop,rule
+speed metal,metal,rule
+screamo,punk,rule
+coldwave,rock,manual
+musique concrète,experimental,manual
+britpop,rock,rule
+big beat,electronic,manual
+deathcore,metal,rule
+afrobeat,r&b & soul,manual
+acid jazz,jazz,manual
+garage house,electronic,rule
+acid house,electronic,rule
+field recording,experimental,manual
+cool jazz,jazz,rule
+folk metal,metal,manual
+salsa,latin,rule
+mpb,latin,rule
+aor,rock,rule
+barber beats,electronic,manual
+reggaeton,latin,rule
+alternative hip hop,hip hop,rule
+brutal death metal,metal,rule
+dark electro,electronic,rule
+folk punk,punk,manual
+cyberpunk,,manual
+slushwave,electronic,manual
+musical,pop,manual
+rave,electronic,rule
+darksynth,electronic,manual
+neo-psychedelia,rock,manual
+folk pop,pop,manual
+arena rock,rock,rule
+future bass,electronic,rule
+surf,rock,rule
+minimal techno,electronic,rule
+witch house,electronic,rule
+instrumental rock,rock,rule
+electric blues,blues,rule
+technical death metal,metal,rule
+broken beat,electronic,manual
+electroacoustic,experimental,manual
+broken transmission,,manual
+tango,latin,rule
+concerto,classical,rule
+mandopop,pop,rule
+medieval,classical,manual
+country blues,blues,manual
+heavy psych,rock,rule
+speedcore,electronic,rule
+noise pop,rock,manual
+psychedelic pop,pop,rule
+psychobilly,rock,rule
+eurobeat,electronic,rule
+bedroom pop,pop,rule
+industrial rock,rock,manual
+hard techno,electronic,rule
+experimental hip hop,hip hop,manual
+symphony,classical,rule
+latin pop,latin,manual
+contemporary christian,pop,manual
+dixieland,jazz,rule
+vocal jazz,jazz,rule
+melodic hardcore,punk,manual
+contemporary classical,classical,rule
+alternative r&b,r&b & soul,rule
+regional mexicano,latin,manual
+chicago blues,blues,rule
+post-grunge,rock,rule
+deep techno,electronic,rule
+conscious hip hop,hip hop,rule
+goregrind,metal,rule
+groove metal,metal,rule
+samba,latin,rule
+pop soul,r&b & soul,manual
+hyperpop,pop,rule
+club,electronic,rule
+reggae-pop,reggae,manual
+cloud rap,hip hop,rule
+contemporary folk,folk & world,rule
+depressive black metal,metal,rule
+j-rock,rock,manual
+electro-industrial,electronic,rule
+east coast hip hop,hip hop,rule
+horrorcore,hip hop,rule
+desert rock,rock,rule
+indietronica,electronic,manual
+djent,metal,rule
+hi-nrg,electronic,rule
+garage punk,punk,rule
+power noise,experimental,manual
+cantopop,pop,rule
+ska punk,punk,manual
+electronic rock,rock,manual
+powerviolence,punk,rule
+kayōkyoku,pop,manual
+italo dance,electronic,rule
+contemporary country,country,rule
+cumbia,latin,rule
+flamenco,folk & world,manual
+sound art,experimental,manual
+acid rock,rock,rule
+wave,electronic,manual
+mod,rock,manual
+renaissance,classical,rule
+melodic black metal,metal,rule
+post-industrial,electronic,rule
+rocksteady,reggae,rule
+acid techno,electronic,rule
+city pop,pop,rule
+tribal house,electronic,rule
+alternative folk,folk & world,rule
+boogie,r&b & soul,rule
+blackgaze,metal,rule
+deathrock,rock,manual
+acoustic rock,rock,rule
+footwork,electronic,rule
+glam rock,rock,rule
+crust punk,punk,rule
+glitch hop,hip hop,rule
+no wave,rock,manual
+death-doom metal,metal,rule
+chanson française,folk & world,rule
+opm,pop,manual
+chamber pop,pop,rule
+mathcore,metal,rule
+country pop,pop,rule
+viking metal,metal,rule
+alternative country,country,rule
+juke,electronic,rule
+psychedelic folk,folk & world,rule
+west coast hip hop,hip hop,rule
+aggrotech,electronic,manual
+poetry,,manual
+slowcore,rock,manual
+sound collage,experimental,manual
+hip house,electronic,rule
+noisecore,metal,manual
+bolero,latin,rule
+funeral doom metal,metal,rule
+alternative dance,electronic,rule
+g-funk,r&b & soul,rule
+funk metal,metal,rule
+filmi,pop,manual
+baroque pop,pop,rule
+surf rock,rock,rule
+electropunk,electronic,manual
+industrial techno,electronic,rule
+avant-garde metal,metal,rule
+minimalism,classical,rule
+new beat,rock,rule
+delta blues,blues,rule
+jangle pop,pop,rule
+ambient techno,electronic,rule
+anarcho-punk,punk,rule
+j-core,electronic,manual
+dreampunk,electronic,manual
+progressive electronic,electronic,rule
+dark folk,folk & world,rule
+blackened death metal,metal,rule
+skate punk,punk,rule
+hardcore techno,electronic,rule
+rap rock,rock,rule
+asmr,,manual
+ragga,reggae,manual
+futurepop,electronic,manual
+melodic house,electronic,rule
+children's music,,manual
+ambient pop,pop,rule
+melodic techno,electronic,rule
+folktronica,electronic,manual
+illbient,electronic,manual
+glam metal,metal,rule
+roots rock,rock,rule
+honky tonk,country,manual
+symphonic black metal,metal,rule
+mallsoft,electronic,manual
+classical crossover,classical,rule
+future garage,electronic,rule
+jazz rap,hip hop,rule
+electroclash,electronic,manual
+french house,electronic,rule
+freestyle,electronic,manual
+christian rock,rock,rule
+bebop,jazz,rule
+ragga hip-hop,hip hop,rule
+euro-disco,r&b & soul,rule
+deathgrind,metal,rule
+neurofunk,electronic,manual
+art punk,punk,rule
+traditional pop,pop,rule
+d-beat,punk,rule
+gypsy jazz,jazz,rule
+funk rock,rock,rule
+filk,folk & world,manual
+latin rock,rock,rule
+ragtime,jazz,rule
+uk hardcore,electronic,rule
+psybient,electronic,manual
+new jack swing,jazz,rule
+banda sinaloense,latin,rule
+norteño,latin,rule
+bassline,electronic,manual
+political hip hop,hip hop,rule
+anti-folk,folk & world,rule
+piano blues,blues,rule
+merengue,latin,rule
+afro-cuban jazz,jazz,rule
+southern hip hop,hip hop,rule
+teen pop,pop,rule
+midwest emo,punk,rule
+melodic metalcore,metal,rule
+jam band,rock,manual
+rumba,latin,manual
+emo rap,hip hop,rule
+production music,,manual
+phonk,hip hop,rule
+abstract hip hop,hip hop,rule
+texas blues,blues,rule
+minimal wave,,rule
+blue-eyed soul,r&b & soul,rule
+afrobeats,pop,manual
+nerdcore,hip hop,manual
+éntekhno,folk & world,manual
+minimal synth,electronic,rule
+progressive pop,pop,rule
+mambo,latin,manual
+jump blues,blues,rule
+vaportrap,electronic,manual
+drone metal,metal,rule
+tech trance,electronic,rule
+neue deutsche welle,rock,manual
+klezmer,folk & world,rule
+dance-punk,punk,rule
+fado,folk & world,rule
+lovers rock,rock,rule
+rap metal,metal,rule
+contra,folk & world,manual
+zouk,folk & world,rule
+jazz pop,pop,rule
+polka,folk & world,rule
+halftime,electronic,manual
+lo-fi house,electronic,rule
+traditional country,country,rule
+digital hardcore,electronic,rule
+pub rock,rock,rule
+bhangra,folk & world,rule
+calypso,reggae,rule
+indian classical,classical,rule
+symphonic prog,rock,rule
+turntablism,hip hop,manual
+interview,,manual
+space ambient,electronic,rule
+bass house,electronic,rule
+country folk,folk & world,rule
+freak folk,folk & world,rule
+hypnagogic pop,pop,rule
+speed garage,electronic,rule
+world fusion,jazz,rule
+cajun,folk & world,manual
+crossover thrash,metal,rule
+smooth soul,r&b & soul,rule
+vallenato,latin,rule
+bachata,latin,rule
+heartland rock,rock,rule
+ambient noise wall,experimental,rule
+neo-progressive rock,rock,rule
+levenslied,pop,manual
+persian pop,pop,rule
+dance-rock,electronic,rule
+emo pop,pop,rule
+cybergrind,metal,manual
+highlife,folk & world,rule
+crunk,hip hop,rule
+soft visual,rock,manual
+drill,hip hop,rule
+comedy rock,rock,rule
+progressive folk,folk & world,rule
+boogie-woogie,blues,rule
+ethereal wave,rock,manual
+post-punk revival,punk,rule
+irish folk,folk & world,rule
+avant-folk,folk & world,rule
+slacker rock,rock,rule
+tropical house,electronic,rule
+ranchera,latin,rule
+chillstep,electronic,manual
+alternative punk,punk,rule
+piano rock,rock,rule
+guaguancó,latin,manual
+makina,electronic,manual
+old-time,country,manual
+dark jazz,jazz,rule
+old school death metal,metal,rule
+afro house,electronic,rule
+hands up,electronic,manual
+beat music,rock,rule
+trap edm,electronic,rule
+classic country,country,rule
+glitch pop,pop,rule
+sophisti-pop,pop,rule
+avant-prog,rock,rule
+liquid funk,r&b & soul,rule
+louisiana blues,blues,rule
+audio drama,,manual
+microhouse,electronic,manual
+romantic classical,classical,rule
+jumpstyle,electronic,manual
+drumstep,electronic,manual
+synth funk,r&b & soul,rule
+soukous,folk & world,rule
+death industrial,electronic,rule
+electro swing,jazz,rule
+praise & worship,pop,manual
+nightcore,electronic,manual
+twee pop,pop,rule
+lolicore,electronic,manual
+bubblegum pop,pop,rule
+dirty south,hip hop,manual
+2-step,electronic,manual
+ritual ambient,electronic,rule
+beatdown hardcore,electronic,rule
+instrumental jazz,jazz,rule
+brass band,jazz,manual
+cinematic classical,classical,rule
+schranz,electronic,manual
+avant-garde pop,pop,rule
+garage rock revival,rock,rule
+deconstructed club,electronic,rule
+nwobhm,metal,rule
+proto-punk,punk,rule
+chalga,pop,manual
+chillsynth,electronic,manual
+complextro,electronic,manual
+queercore,punk,manual
+tape music,experimental,manual
+free tekno,electronic,manual
+exotica,jazz,manual
+pornogrind,metal,manual
+tribal ambient,electronic,rule
+christian hip hop,hip hop,rule
+frenchcore,electronic,manual
+soca,reggae,rule
+western swing,jazz,rule
+bounce,hip hop,manual
+cabaret,pop,manual
+western classical,classical,rule
+pigfuck,rock,manual
+industrial hip hop,hip hop,rule
+zydeco,folk & world,manual
+emoviolence,punk,manual
+chamber folk,folk & world,rule
+neoclassical dark wave,electronic,manual
+boogie rock,rock,rule
+street punk,punk,rule
+sunshine pop,pop,rule
+yé-yé,pop,rule
+string quartet,classical,manual
+pop metal,metal,rule
+slam death metal,metal,rule
+hauntology,electronic,manual
+eccojams,electronic,manual
+riot grrrl,punk,manual
+comfy synth,electronic,rule
+wonky,electronic,manual
+contemporary gospel,r&b & soul,rule
+deep tech,electronic,manual
+enka,folk & world,rule
+deep soul,r&b & soul,rule
+rebetiko,folk & world,rule
+idol kayō,pop,rule
+indian pop,pop,rule
+new romantic,classical,rule
+spiritual jazz,jazz,rule
+bubblegum bass,electronic,rule
+rock opera,classical,rule
+organic house,electronic,rule
+crossover prog,rock,rule
+acoustic blues,blues,rule
+melodic dubstep,electronic,rule
+motown,r&b & soul,rule
+western,country,rule
+christian metal,metal,rule
+mariachi,latin,rule
+future house,electronic,rule
+atmospheric drum and bass,electronic,rule
+classical period,classical,rule
+emocore,punk,manual
+post-classical,classical,rule
+detroit techno,electronic,rule
+dark psytrance,electronic,manual
+digicore,hip hop,manual
+pagan black metal,metal,rule
+outlaw country,country,rule
+guaracha,latin,rule
+dansband,pop,manual
+neo-rockabilly,rock,rule
+rapcore,hip hop,rule
+quiet storm,r&b & soul,rule
+occult rock,rock,rule
+digital fusion,jazz,rule
+psychedelic soul,r&b & soul,rule
+miami bass,electronic,rule
+war metal,metal,rule
+celtic rock,rock,rule
+raï,folk & world,rule
+jersey club,electronic,rule
+neoclassicism,classical,manual
+breakbeat hardcore,electronic,rule
+chopped and screwed,hip hop,manual
+electronicore,metal,manual
+uk funky,electronic,manual
+progressive bluegrass,country,rule
+trap latino,hip hop,rule
+ghettotech,electronic,manual
+hip hop soul,r&b & soul,rule
+disco polo,r&b & soul,rule
+funky house,electronic,rule
+ghetto house,electronic,rule
+brostep,electronic,manual
+ambient house,electronic,rule
+bitpop,electronic,manual
+electro-funk,electronic,rule
+forró,latin,rule
+southern soul,r&b & soul,rule
+big room house,electronic,rule
+music hall,pop,manual
+dark disco,r&b & soul,rule
+mashcore,electronic,manual
+melodic trance,electronic,rule
+atmospheric sludge metal,metal,rule
+comedy hip hop,hip hop,rule
+speech,,manual
+sertanejo,latin,rule
+post-dubstep,electronic,rule
+yacht rock,rock,rule
+donk,electronic,manual
+gorenoise,metal,manual
+trap metal,metal,rule
+easycore,punk,manual
+vocal trance,electronic,rule
+ambient dub,reggae,rule
+j-euro,electronic,manual
+boogaloo,latin,manual
+steampunk,,manual
+bluegrass gospel,r&b & soul,rule
+progressive psytrance,rock,rule
+celtic punk,punk,rule
+tropical rock,rock,rule
+laiko,folk & world,manual
+lowercase,experimental,rule
+rage,hip hop,manual
+descarga,latin,manual
+horror synth,electronic,rule
+black ambient,electronic,rule
+kawaii future bass,electronic,rule
+math pop,pop,rule
+doomcore,electronic,manual
+seapunk,electronic,manual
+swamp pop,pop,rule
+trap soul,r&b & soul,rule
+old school hip hop,hip hop,rule
+oratorio,classical,rule
+utopian virtual,electronic,manual
+bubblegum dance,electronic,rule
+techstep,electronic,manual
+uk drill,hip hop,rule
+dissonant death metal,metal,rule
+sovietwave,electronic,manual
+memphis rap,hip hop,rule
+punk blues,blues,rule
+shibuya-kei,pop,manual
+skiffle,rock,manual
+new rave,electronic,rule
+skacore,punk,manual
+neoclassical metal,metal,rule
+industrial hardcore,electronic,rule
+ballet,classical,rule
+crossover jazz,jazz,rule
+dark cabaret,rock,manual
+progressive country,country,rule
+doomgaze,metal,manual
+neue deutsche härte,metal,manual
+canzone napoletana,folk & world,manual
+hybrid trap,hip hop,rule
+zeuhl,rock,manual
+christian hardcore,electronic,rule
+drill and bass,electronic,rule
+italo house,electronic,rule
+piedmont blues,blues,rule
+amapiano,electronic,manual
+c-pop,pop,rule
+crossbreed,electronic,manual
+soul blues,blues,rule
+thrashcore,punk,manual
+traditional doom metal,metal,rule
+dariacore,electronic,manual
+technical thrash metal,metal,rule
+gamelan,folk & world,rule
+hexd,electronic,manual
+hyphy,hip hop,rule
+festival progressive house,electronic,rule
+forest psytrance,electronic,manual
+tejano,latin,manual
+progressive breaks,electronic,rule
+nintendocore,metal,manual
+latin ballad,pop,rule
+peak time techno,electronic,rule
+artcore,electronic,manual
+corrido,latin,rule
+epic doom metal,metal,rule
+standup comedy,,manual
+modal jazz,jazz,rule
+neo-traditional country,country,rule
+country gospel,country,manual
+plugg,hip hop,manual
+surf punk,punk,rule
+hardvapour,electronic,manual
+sierreño,latin,manual
+american primitive guitar,folk & world,manual
+anatolian rock,rock,rule
+country rap,hip hop,rule
+merseybeat,rock,manual
+moombahton,electronic,manual
+canterbury scene,rock,manual
+post-minimalism,classical,rule
+sonata,classical,rule
+liedermacher,folk & world,manual
+zolo,rock,manual
+martial industrial,electronic,rule
+cowpunk,punk,manual
+hardbass,electronic,manual
+british blues,blues,rule
+guajira,latin,manual
+post-britpop,rock,rule
+asian rock,rock,rule
+nature sounds,,manual
+darkstep,electronic,manual
+french electro,electronic,rule
+korean ballad,pop,rule
+microsound,experimental,manual
+noisegrind,metal,manual
+madchester,rock,manual
+southern gospel,r&b & soul,rule
+southern metal,metal,rule
+acousmatic,experimental,rule
+bakersfield sound,country,manual
+pachanga,latin,manual
+dreamwave,electronic,manual
+modern creative,jazz,manual
+progressive metalcore,metal,rule
+terrorcore,electronic,manual
+barbershop,pop,manual
+hardwave,electronic,manual
+spacesynth,electronic,manual
+free folk,folk & world,rule
+gothic country,country,rule
+reggae rock,rock,rule
+chinese classical,classical,rule
+northern soul,r&b & soul,rule
+third stream,jazz,manual
+uptempo hardcore,electronic,rule
+eai,experimental,manual
+hindustani classical,classical,rule
+riddim dubstep,electronic,rule
+british folk rock,rock,rule
+electro-disco,electronic,rule
+son montuno,latin,manual
+operetta,classical,rule
+fm synthesis,,manual
+axé,latin,rule
+british rhythm & blues,blues,rule
+néo-trad,country,manual
+winter synth,electronic,rule
+desert blues,blues,rule
+funkot,electronic,manual
+baltimore club,electronic,rule
+compas,latin,manual
+outsider house,electronic,rule
+sasscore,punk,manual
+space rock revival,rock,rule
+ambient americana,country,rule
+pop screamo,punk,rule
+c86,rock,manual
+philly soul,r&b & soul,rule
+hi-tech,electronic,manual
+chicago house,electronic,rule
+go-go,r&b & soul,manual
+p-funk,r&b & soul,rule
+vapornoise,electronic,manual
+chicago drill,hip hop,rule
+cyber metal,metal,rule
+midtempo bass,electronic,rule
+ragga jungle,electronic,rule
+extratone,electronic,manual
+swamp rock,rock,rule
+qawwali,folk & world,rule
+séga,folk & world,manual
+dancefloor drum and bass,electronic,rule
+kizomba,folk & world,rule
+persian classical,classical,rule
+vocal house,electronic,rule
+jazz blues,blues,rule
+stride,jazz,rule
+arabesk,folk & world,manual
+mainstream rock,rock,rule
+ethio-jazz,jazz,rule
+glam punk,punk,rule
+nederpop,pop,manual
+pluggnb,hip hop,manual
+sound poetry,experimental,manual
+new orleans r&b,r&b & soul,rule
+nyū myūjikku,pop,manual
+neoclassical new age,electronic,manual
+sea shanty,folk & world,rule
+ambient trance,electronic,rule
+freakbeat,rock,rule
+luk thung,folk & world,manual
+garage psych,rock,rule
+turbo-folk,folk & world,rule
+2 tone,reggae,manual
+dub poetry,reggae,rule
+minneapolis sound,r&b & soul,manual
+neocrust,punk,manual
+t-pop,pop,rule
+blackened crust,punk,rule
+drift phonk,hip hop,rule
+hardcore breaks,electronic,rule
+space disco,r&b & soul,rule
+sketch comedy,,manual
+mbalax,folk & world,rule
+spirituals,r&b & soul,manual
+visa,,manual
+batucada,latin,manual
+brill building,pop,manual
+dembow,latin,manual
+nueva canción,,rule
+country soul,r&b & soul,rule
+denpa,,rule
+electric texas blues,blues,rule
+raw punk,punk,rule
+rominimal,,rule
+cantata,classical,rule
+funktronica,,rule
+loud kei,,rule
+us power metal,metal,rule
+black noise,experimental,rule
+maloya,,rule
+tex-mex,,rule
+dubwise,,rule
+kwaito,,rule
+pagan folk,folk & world,rule
+skweee,,rule
+dream trance,electronic,rule
+gqom,,rule
+group sounds,,rule
+outrun,,rule
+min'yō,,rule
+afro-funk,r&b & soul,rule
+balearic beat,rock,rule
+chicago soul,r&b & soul,rule
+kabarett,,rule
+muzika mizrahit,,rule
+phonk house,electronic,rule
+plena,,rule
+timba,latin,rule
+geek rock,rock,rule
+space age pop,pop,rule
+technobanda,,rule
+britcore,,rule
+lullaby,,rule
+raggacore,,rule
+battle rap,hip hop,rule
+brutal prog,rock,rule
+footwork jungle,electronic,rule
+nueva trova,,rule
+drumfunk,,rule
+neurohop,,rule
+nerdcore techno,electronic,rule
+v-pop,pop,rule
+euro-trance,electronic,rule
+samba-jazz,jazz,rule
+choro,latin,rule
+hiplife,,rule
+rawstyle,,rule
+afroswing,,rule
+cowboy poetry,,rule
+indie surf,rock,rule
+champeta,,rule
+swancore,,rule
+dutch house,electronic,rule
+punk rap,hip hop,rule
+kawaii metal,metal,rule
+texas country,country,rule
+trova,,rule
+chipmunk soul,r&b & soul,rule
+funk brasileiro,r&b & soul,rule
+vaudeville blues,blues,rule
+waltz,,rule
+gregorian chant,classical,rule
+chanson à texte,folk & world,rule
+new jazz,jazz,rule
+celtic new age,folk & world,rule
+jump up,,rule
+nashville sound,,rule
+afro-jazz,jazz,rule
+crack rock steady,rock,rule
+manele,,rule
+worldbeat,,rule
+acidcore,,rule
+drumless hip hop,hip hop,rule
+fairy tale,,rule
+griot,folk & world,rule
+zenonesque,,rule
+hyper techno,electronic,rule
+kleinkunst,,rule
+beatboxing,,rule
+copla,,rule
+porro,,rule
+viking rock,rock,rule
+andalusian classical,classical,rule
+impressionism,classical,rule
+gypsy punk,punk,rule
+thall,,rule
+cape jazz,jazz,rule
+full-on,,rule
+art song,,rule
+sound effects,,manual
+celtic metal,metal,rule
+charanga,,rule
+dance-punk revival,punk,rule
+deep funk,r&b & soul,rule
+jug band,,rule
+mod revival,,rule
+electro hop,hip hop,rule
+jazz house,electronic,rule
+latin house,electronic,rule
+experimental big band,experimental,rule
+jackin house,electronic,rule
+son cubano,,rule
+appalachian folk,folk & world,rule
+church music,,rule
+new mexico music,,rule
+paisley underground,,rule
+afro trap,hip hop,rule
+hardgroove techno,electronic,rule
+black 'n' roll,,rule
+epic collage,,rule
+q-pop,pop,rule
+slap house,electronic,rule
+turkish pop,pop,rule
+deathstep,,rule
+guided meditation,,rule
+nederbeat,,rule
+vaudeville,,rule
+hard trap,hip hop,rule
+mass,,rule
+mincecore,,rule
+red dirt,,rule
+kuduro,,rule
+stenchcore,,rule
+stutter house,electronic,rule
+acid trance,electronic,rule
+dissonant black metal,metal,rule
+pagode,latin,rule
+dansktop,,rule
+orthodox pop,pop,rule
+ytpmv,,rule
+death 'n' roll,,rule
+future core,,rule
+tropicália,latin,rule
+candombe,,rule
+ghazal,folk & world,rule
+neo-medieval folk,folk & world,rule
+raga rock,rock,rule
+medieval metal,metal,rule
+nuevo flamenco,folk & world,rule
+tearout,,rule
+turkish folk,folk & world,rule
+dangdut,,rule
+flamenco pop,pop,rule
+gnawa,folk & world,rule
+hard drum,electronic,rule
+livetronica,,rule
+neoperreo,,rule
+brazilian phonk,hip hop,rule
+darkcore,,rule
+hill country blues,blues,rule
+modern blues,blues,rule
+ryūkōka,,rule
+sampledelia,,rule
+detroit trap,hip hop,rule
+morna,folk & world,rule
+musette,,rule
+operatic pop,pop,rule
+acid breaks,electronic,rule
+central asian throat singing,,rule
+future bounce,,rule
+samba-canção,latin,rule
+swamp blues,blues,rule
+uk street soul,r&b & soul,rule
+baião,,rule
+bro-country,country,rule
+russian chanson,folk & world,rule
+sleaze rock,rock,rule
+freeform hardcore,electronic,rule
+funk carioca,r&b & soul,rule
+gagaku,,rule
+indorock,,rule
+lambada,,rule
+mantra,,rule
+neo-acoustic,,rule
+nhạc vàng,,rule
+psycore,,rule
+lecture,,rule
+turkish classical,classical,rule
+diva house,electronic,rule
+flashcore,,rule
+jerk,,rule
+moombahcore,,rule
+trance metal,metal,rule
+urban cowboy,,rule
+campus folk,folk & world,rule
+cumbia peruana,latin,rule
+medieval rock,rock,rule
+sermon,,rule
+third wave ska,reggae,rule
+bhavageethe,,rule
+close harmony,,rule
+g-house,electronic,rule
+latin soul,r&b & soul,rule
+música criolla,,rule
+slam poetry,,rule
+bardcore,,rule
+fidget house,electronic,rule
+colour bass,electronic,rule
+glitch hop edm,electronic,rule
+mento,reggae,rule
+chamamé,,rule
+futurism,,rule
+progressive soul,r&b & soul,rule
+techno kayō,electronic,rule
+trot,,rule
+afro rock,rock,rule
+brit funk,r&b & soul,rule
+classic jazz,jazz,rule
+danzón,,rule
+garba,,rule
+orchestral jazz,jazz,rule
+shidaiqu,,rule
+dark plugg,,rule
+dunedin sound,,rule
+jersey club rap,hip hop,rule
+mbaqanga,,rule
+minimal drum and bass,electronic,rule
+swing revival,jazz,rule
+algorave,,rule
+euphoric hardstyle,electronic,rule
+future rave,electronic,rule
+overture,,rule
+suomisaundi,,rule
+yakousei,,rule
+zamrock,,rule
+bouncy techno,electronic,rule
+buchiage trance,electronic,rule
+chacarera,latin,rule
+congolese rumba,,rule
+estrada,,rule
+future riddim,,rule
+grebo,,rule
+hardstep,,rule
+theme and variations,,rule
+beat poetry,rock,rule
+belgian techno,electronic,rule
+canción melódica,,rule
+chicano rap,hip hop,rule
+sigilkore,,rule
+bomba,,rule
+classic blues,blues,rule
+cumbia argentina,latin,rule
+nu skool breaks,electronic,rule
+onkyo,experimental,rule
+pasodoble,,rule
+alté,,rule
+bleep techno,electronic,rule
+choral symphony,classical,rule
+cocktail nation,,rule
+cumbia mexicana,latin,rule
+requiem,classical,rule
+snap,,rule
+uk82,,rule
+urban contemporary gospel,r&b & soul,rule
+acoustic texas blues,blues,rule
+crunkcore,,rule
+guggenmusik,,rule
+japanese classical,classical,rule
+new orleans blues,blues,rule
+nuevo tango,latin,rule
+spamwave,,rule
+splittercore,,rule
+bongo flava,,rule
+carnatic classical,classical,rule
+chazzanut,,rule
+cumbia villera,latin,rule
+latin disco,r&b & soul,rule
+twerk,,rule
+zamba,latin,rule
+african blues,blues,rule
+akishibu-kei,,rule
+big room trance,electronic,rule
+birdsong,,rule
+bit music,,rule
+corrido tumbado,latin,rule
+funky breaks,electronic,rule
+kaseko,,rule
+melbourne bounce,,rule
+melodic bass,electronic,rule
+milonga,,rule
+red song,,rule
+reductionism,,rule
+shitgaze,,rule
+brega,,rule
+latin funk,r&b & soul,rule
+madrigal,classical,rule
+narcocorrido,,rule
+steel band,,rule
+wonky techno,electronic,rule
+chanson québécoise,folk & world,rule
+deep drum and bass,electronic,rule
+fantasia,,rule
+indeterminacy,,rule
+jazz poetry,jazz,rule
+moogsploitation,,rule
+skullstep,,rule
+stomp and holler,,rule
+traditional bluegrass,country,rule
+afropiano,,rule
+flamenco jazz,jazz,rule
+mafioso rap,hip hop,rule
+mugham,folk & world,rule
+spectralism,,rule
+electrotango,,rule
+fantezi,,rule
+keroncong,,rule
+neon pop punk,punk,rule
+psybreaks,,rule
+slimepunk,,rule
+techno bass,electronic,rule
+acoustic chicago blues,blues,rule
+cosmic country,country,rule
+cumbia norteña mexicana,latin,rule
+digital cumbia,latin,rule
+funaná,,rule
+hamburger schule,,rule
+lento violento,,rule
+microtonal classical,classical,rule
+motet,classical,rule
+nasheed,,rule
+porn groove,,rule
+prelude,,rule
+briddim,,rule
+chachachá,,rule
+chanson réaliste,folk & world,rule
+electro latino,electronic,rule
+marching band,,rule
+salegy,,rule
+weightless,,rule
+country boogie,country,manual
+jungle terror,electronic,rule
+march,,rule
+semba,folk & world,rule
+serenade,,rule
+shaabi,,rule
+tough guy hardcore,electronic,rule
+vocal surf,rock,rule
+bhajan,,rule
+dungeon rap,hip hop,rule
+frat rock,rock,rule
+jovem guarda,,rule
+nueva canción chilena,,rule
+punk poetry,punk,rule
+raggatek,,rule
+sertanejo universitário,latin,rule
+data sonification,,rule
+huayno,latin,rule
+jerk rap,hip hop,rule
+lied,classical,rule
+neo-trance,electronic,rule
+rumba flamenca,,rule
+samba-rock,latin,rule
+sample drill,hip hop,rule
+taarab,,rule
+carimbó,,rule
+country and irish,country,rule
+jamaican ska,reggae,rule
+jersey drill,hip hop,rule
+pop yeh-yeh,pop,rule
+purple sound,,rule
+scam rap,hip hop,rule
+serialism,classical,rule
+chimurenga,,rule
+cuddlecore,,rule
+free funk,r&b & soul,rule
+jesus music,,rule
+natya sangeet,,rule
+new york drill,hip hop,rule
+picopop,,rule
+rock musical,rock,rule
+rock urbano,rock,rule
+seishun punk,punk,rule
+slack-key guitar,,rule
+tearout brostep,,rule
+traditional black gospel,r&b & soul,rule
+breakstep,,rule
+countrypolitan,country,manual
+festival trap,hip hop,rule
+joik,,rule
+modern hardtek,,rule
+sevillanas,,rule
+vietnamese bolero,latin,rule
+coke rap,hip hop,rule
+deejay,,rule
+gwo ka,,rule
+rumba catalana,,rule
+salsa romántica,latin,rule
+skinhead reggae,reggae,rule
+son jarocho,,rule
+totalism,,rule
+vocalese,,rule
+zarzuela,,rule
+humppa,,rule
+jazzstep,electronic,manual
+jùjú,,rule
+makossa,,rule
+mor lam,,rule
+truck driving country,country,rule
+tsugaru-jamisen,,rule
+avtorskaya pesnya,,rule
+ballroom house,electronic,rule
+cape breton fiddling,,rule
+cumbia colombiana,latin,rule
+dabke,,rule
+dhrupad,,rule
+frat rap,hip hop,rule
+graphical sound,,rule
+hungarian folk,folk & world,rule
+luk krung,,rule
+samba soul,r&b & soul,rule
+stochastic music,,rule
+volkstümliche musik,folk & world,rule
+beat rock,rock,rule
+brega funk,r&b & soul,rule
+candombe beat,rock,rule
+cuarteto,,rule
+dikir barat,,rule
+downtempo deathcore,metal,rule
+forró eletrônico,latin,rule
+kirtan,,rule
+modern laiko,,rule
+nocturne,,rule
+prank calls,,rule
+process music,,rule
+psystyle,,rule
+sertanejo romântico,latin,rule
+speed house,electronic,rule
+sōkyoku,,rule
+tread,,rule
+binaural beats,,rule
+chap hop,hip hop,rule
+folkhop,,rule
+funk ostentação,r&b & soul,rule
+gospel reggae,reggae,rule
+microfunk,,rule
+moe song,,rule
+odissi classical,classical,rule
+trancestep,,rule
+wyrd folk,folk & world,rule
+batida,,rule
+brazilian bass,electronic,rule
+coladeira,,rule
+funk mandelão,r&b & soul,rule
+grupera,,rule
+junkanoo,,rule
+maloya élektrik,,rule
+orchestral song,classical,rule
+philly club,electronic,rule
+afro-zouk,folk & world,rule
+beijing opera,classical,rule
+conducted improvisation,experimental,rule
+hypertechno,,rule
+industrial musical,electronic,rule
+isicathamiya,,rule
+murga,,rule
+neo-grime,hip hop,rule
+neofolklore,,rule
+rain sounds,,rule
+sean-nós,,rule
+tecnobrega,,rule
+algerian chaabi,folk & world,rule
+balinese gamelan,folk & world,rule
+beach music,,rule
+burmese stereo,,rule
+bytebeat,,rule
+cantonese opera,classical,rule
+chicha,,rule
+crime jazz,jazz,rule
+dungeon sound,electronic,rule
+għana,,rule
+holy minimalism,classical,rule
+houston sound,,rule
+mood kayō,,rule
+night full-on,,rule
+oriental ballad,pop,rule
+samba-enredo,latin,rule
+thai classical,classical,rule
+zhongguo feng,,rule
+concerto grosso,classical,rule
+forró universitário,latin,rule
+kumi-daiko,,rule
+phleng phuea chiwit,,rule
+ratchet music,,rule
+rock andino,rock,rule
+shatta,,rule
+singeli,,rule
+trap dancehall,reggae,rule
+west coast swing,jazz,rule
+balearic trance,electronic,rule
+bubbling,,rule
+celtic electronica,electronic,rule
+cumbia sonidera,latin,rule
+expressionism,,rule
+finnish tango,latin,rule
+ghetto funk,r&b & soul,rule
+marrabenta,,rule
+neo-city pop,pop,rule
+nova cançó,,rule
+nu style gabber,electronic,rule
+pacific reggae,reggae,rule
+palingsound,,rule
+rautalanka,,rule
+slowed & reverb,,rule
+yodeling,,rule
+animal sounds,,rule
+aquacrunk,,rule
+biguine,,rule
+darkcore edm,electronic,rule
+guoyue,,rule
+indo jazz,jazz,rule
+jamgrass,,rule
+krushclub,,rule
+lowend,,rule
+mahraganat,,rule
+manila sound,,rule
+neo kyma,,rule
+rawphoric,,rule
+samba-reggae,reggae,rule
+sexy drill,hip hop,rule
+symphonic poem,classical,rule
+zouk love,folk & world,rule
+british brass band,,rule
+burning spirits,,rule
+chopper,,rule
+chutney,,rule
+funk melody,r&b & soul,rule
+maskanda,,rule
+musique concrète instrumentale,experimental,rule
+piseiro,,rule
+plainchant,,rule
+polca criolla,,rule
+rapso,,rule
+terror plugg,,rule
+township bubblegum,,rule
+vals criollo,,rule
+ambient plugg,electronic,rule
+benga,,rule
+birmingham sound,,rule
+byzantine chant,classical,rule
+coupé-décalé,,rule
+cumbia pop,pop,rule
+fado de coimbra,folk & world,rule
+khyal,,rule
+mobb music,,rule
+mugithi,,rule
+nagauta,,rule
+neue deutsche todeskunst,,rule
+pop raï,folk & world,rule
+rkt,,rule
+tin pan alley,,rule
+toytown pop,pop,rule
+ars nova,,rule
+audio documentary,,rule
+bouyon,,rule
+cadence lypso,,rule
+cantu a tenore,,rule
+coco,,rule
+country yodeling,country,rule
+duranguense,latin,rule
+frevo,,rule
+gospel house,electronic,rule
+guarania,,rule
+hopepunk,,rule
+iraqi maqam,folk & world,rule
+joropo,,rule
+jota,,rule
+kankyō ongaku,,rule
+kwela,,rule
+mad,,rule
+moroccan chaabi,folk & world,rule
+música cebolla,,rule
+novelty piano,,rule
+powerstomp,,rule
+revue,,rule
+rhumba,,rule
+rock andaluz,rock,rule
+russian romance,,rule
+salsa dura,latin,rule
+sambass,,rule
+stoner rap,hip hop,rule
+thumri,,rule
+toypop,,rule
+trapfunk,,rule
+tropipop,,rule
+andean new age,,rule
+black midi,,rule
+concert band,,rule
+cubatón,,rule
+demostyle,,rule
+hardbag,,rule
+kan ha diskan,,rule
+maloya électronique,,rule
+mbube,,rule
+muziki wa dansi,,rule
+mūsīqā lubnāniyya,,rule
+nitzhonot,,rule
+nortec,,rule
+russian orthodox liturgical music,,rule
+slow waltz,,rule
+son calentano,,rule
+stotra,,rule
+sufi rock,rock,rule
+taizé chant,classical,rule
+tizita,,rule
+tradi-moderne congolais,,rule
+tropicanibalismo,,rule
+white voice,,rule
+xote,,rule
+zouglou,,rule
+al jeel,,rule
+arrocha,,rule
+autonomic,,rule
+bolero español,latin,rule
+break-in,,rule
+burmese classical,classical,rule
+conga,,rule
+doskpop,,rule
+electro trance,electronic,rule
+frapcore,,rule
+hard nrg,,rule
+hardtekk,,rule
+hi-tech full-on,,rule
+huapango,,rule
+industrial folk song,folk & world,rule
+jit,,rule
+kuda lumping,,rule
+könsrock,,rule
+liscio,,rule
+native american new age,,rule
+neo rave,electronic,rule
+pagodão,,rule
+philly club rap,hip hop,rule
+pipe band music,,rule
+romantic flow,classical,rule
+salsa choke,latin,rule
+seggae,,rule
+sevdalinka,,rule
+shan'ge,,rule
+singspiel,,rule
+takamba,,rule
+technoid,,rule
+trap shaabi,hip hop,rule
+uk jackin,,rule
+özgün müzik,,rule
+afoxê,,rule
+amigacore,,rule
+arabesk rap,hip hop,rule
+baithak gana,,rule
+bolero son,latin,rule
+brega calypso,reggae,rule
+bubbling house,electronic,rule
+bulería,,rule
+burmese mono,,rule
+cabo zouk,folk & world,rule
+cantoria,,rule
+canzone d'autore,,rule
+capriccio,,rule
+circus march,,rule
+cruise,,rule
+cumbia amazónica,latin,rule
+cumbia chilena,latin,rule
+currulao,,rule
+free car music,,rule
+funk automotivo,r&b & soul,rule
+jiangnan sizhu,,rule
+keller synth,electronic,rule
+koplo,,rule
+lavani,,rule
+mangue beat,rock,rule
+marabi,,rule
+música llanera,,rule
+new complexity,,rule
+nhạc đỏ,,rule
+no melody trap,hip hop,rule
+novo dub,reggae,rule
+nueva cumbia chilena,latin,rule
+pagode romântico,latin,rule
+pansori,,rule
+progressive post-hardcore,electronic,rule
+punta,,rule
+rara,,rule
+rasteirinha,,rule
+regalia,,rule
+rock urbano mexicano,rock,rule
+rumba cubana,,rule
+samba-joia,latin,rule
+sardana,,rule
+sonorism,,rule
+spiritual art song,,rule
+wassoulou,,rule
+work song,,rule
+abhang,,rule
+bandari,,rule
+baroque suite,classical,rule
+bolero-beat,latin,rule
+bomba del chota,,rule
+chamarrita rioplatense,,rule
+chinese opera,classical,rule
+cumbia rebajada,latin,rule
+cumbia santafesina,latin,rule
+cuplé,,rule
+dark garage,electronic,rule
+dimotiko,,rule
+drumline,,rule
+early hardstyle,electronic,rule
+eleki,,rule
+embolada,,rule
+falak,,rule
+fandango,,rule
+fife and drum blues,blues,rule
+florida breaks,electronic,rule
+football chant,classical,rule
+forró de favela,latin,rule
+fuji,,rule
+funknejo,,rule
+haitian vodou drumming,,rule
+javanese gamelan,folk & world,rule
+kaneka,,rule
+klasik,,rule
+loner folk,folk & world,rule
+mambo urbano,,rule
+marchinha,,rule
+merengue típico,latin,rule
+minatory,,rule
+muzika yehudit mekorit,,rule
+philly drill,hip hop,rule
+romanian popcorn,,rule
+sertanejo raiz,latin,rule
+shima-uta,,rule
+sundanese pop,pop,rule
+tribal guarachero,,rule
+vinahouse,,rule
+whale song,,rule
+xian psych,rock,rule
+alpenrock,,rule
+ars subtilior,,rule
+batidão romântico,,rule
+batuque,,rule
+beat bolha,rock,rule
+bikutsi,,rule
+budots,,rule
+burger-highlife,folk & world,rule
+cante alentejano,,rule
+changa tuki,,rule
+chicago bop,jazz,rule
+chilena,,rule
+chinese revolutionary opera,classical,rule
+concerto for orchestra,classical,rule
+cueca,,rule
+deathchant hardcore,electronic,rule
+doina,,rule
+donosti sound,,rule
+eletrofunk,,rule
+fife and drum,electronic,rule
+flex dance music,electronic,rule
+fungi,,rule
+funk de bh,r&b & soul,rule
+funk proibidão,r&b & soul,rule
+fusion gugak,jazz,rule
+grand opera,classical,rule
+guaracha edm,electronic,rule
+hard beat,rock,rule
+heaven trap,hip hop,rule
+honkyoku,,rule
+integral serialism,classical,rule
+islamic modal music,,rule
+izlan,,rule
+izvorna bosanska muzika,,rule
+jaipongan,,rule
+jungle dutch,electronic,rule
+konnakol,,rule
+maracatu,,rule
+merenhouse,,rule
+nigun,,rule
+noh,,rule
+nuevo cancionero,,rule
+nustyle,,rule
+opera seria,classical,rule
+parang,,rule
+partyschlager,,rule
+pasillo,,rule
+pep band,,rule
+pilón,,rule
+pimba,,rule
+pizzica,,rule
+pop kreatif,pop,rule
+pumpcore,,rule
+puxa,,rule
+ragtime song,jazz,rule
+rasin,,rule
+red disco,r&b & soul,rule
+reparto,,rule
+ring shout,,rule
+samba de breque,latin,rule
+scottish country dance music,folk & world,manual
+songo,,rule
+sufiana kalam,,rule
+talking blues,blues,rule
+tecnorumba,,rule
+tragédie en musique,,rule
+tsonga disco,r&b & soul,rule
+waka,,rule
+west coast breaks,electronic,rule
+étude,,rule
+aita,,rule
+arrocha sertanejo,latin,rule
+ars antiqua,,rule
+bachatón,,rule
+balani show,,rule
+banga,,rule
+bard rock,rock,rule
+beat bruxaria,rock,rule
+breakbeat kota,electronic,rule
+budget rock,rock,rule
+bullerengue,,rule
+carranga,,rule
+changüí,,rule
+chutney soca,reggae,rule
+ciranda,,rule
+cumbiatón,,rule
+danmono,,rule
+drinking song,,rule
+dungeon chip,electronic,rule
+festejo,,rule
+fugue,,rule
+funk consciente,r&b & soul,rule
+gaita zuliana,,rule
+gamelan degung,folk & world,rule
+gengetone,,rule
+impromptu,,rule
+jiuta,,rule
+jubilee,,rule
+jōruri,,rule
+kai,,rule
+kasékò,,rule
+kecak,,rule
+kete,,rule
+korean classical,classical,rule
+kulintang,,rule
+kwassa kwassa,,rule
+liquid riddim,,rule
+lute song,,rule
+ländlermusik,,rule
+malouf,,rule
+maxixe,,rule
+mazurka,,rule
+merecumbé,,rule
+meyxana,,rule
+modinha,,rule
+méringue,,rule
+nhạc tiền chiến,,rule
+nueva canción española,,rule
+opera buffa,classical,rule
+palm-wine,,rule
+parlour music,,rule
+polifonia occitana,,rule
+pop ghazal,folk & world,rule
+psichedelia occulta italiana,,rule
+qaraami,,rule
+rock rural,rock,rule
+sacred harp,,rule
+saeta,,rule
+samba-choro,latin,rule
+samba-exaltação,latin,rule
+seresta,,rule
+shangaan electro,electronic,rule
+shōmyō,,rule
+son huasteco,,rule
+tallava,,rule
+tibetan buddhist chant,classical,rule
+trallalero,,rule
+trampská hudba,,rule
+tsapiky,,rule
+udigrudi,,rule
+unyago,,rule
+uzun hava,,rule
+verismo,,rule
+waila,,rule
+whistling,,rule
+zess,,rule
+3-step,,rule
+aak,,rule
+adhunik geet,,rule
+apala,,rule
+arrocha funk,r&b & soul,rule
+arrochadeira,,rule
+assiko,,rule
+bacardi,,rule
+bagatelle,,rule
+baguala,,rule
+baila,,rule
+bambuco,,rule
+bandinha,,rule
+bashment soca,reggae,rule
+biraha,,rule
+bogino duu,,rule
+bounce beat,rock,rule
+broadband noise,experimental,rule
+cachaca,,rule
+cakewalk,,rule
+campursari,,rule
+cantu a chiterra,,rule
+canzone neomelodica,,rule
+caporal,,rule
+celtic chant,classical,rule
+chöd,,rule
+colindă,,rule
+coon song,,rule
+csárdás,,rule
+cumbia sanjuanera,latin,rule
+cải lương,,rule
+dennery segment,,rule
+dubstyle,,rule
+duma,,rule
+eastern-style polka,folk & world,rule
+english pastoral school,,rule
+epic house,electronic,rule
+fakaseasea,,rule
+funeral march,,rule
+gaana,,rule
+gamelan selunding,folk & world,rule
+gamelan semar pegulingan,folk & world,rule
+gospel hymn,r&b & soul,rule
+guayla,,rule
+guitarrada,,rule
+gumbe,,rule
+hapa haole,,rule
+hard renaissance,classical,rule
+heikyoku,,rule
+jawaiian,,rule
+jersey sound,,rule
+jongo,,rule
+jungle techno,electronic,rule
+kacapi suling,,rule
+kalindula,,rule
+kantan chamorrita,,rule
+kanto,,rule
+kundiman,,rule
+kunqu,,rule
+landó,,rule
+maddahi,,rule
+malhun,,rule
+mambo chileno,,rule
+manyao,,rule
+medieval lyric poetry,classical,rule
+mega funk,r&b & soul,rule
+minstrelsy,,rule
+moda de viola,,rule
+mor lam sing,,rule
+movimiento alterado,,rule
+murga uruguaya,,rule
+narodnozabavna glasba,,rule
+neoromanticism,,rule
+nepali lok geet,,rule
+old roman chant,classical,rule
+ondō,,rule
+partido alto,,rule
+pop minang,pop,rule
+power soca,reggae,rule
+psychploitation,,rule
+puirt à beul,,rule
+pìobaireachd,,rule
+reggae panameño,reggae,rule
+romantische oper,,rule
+rōkyoku,,rule
+sacred steel,,rule
+samba de roda,latin,rule
+samba rap,hip hop,rule
+semi-trot,,rule
+shanto,,rule
+shinkyoku,,rule
+sinawi,,rule
+sissy bounce,,rule
+sitarsploitation,,rule
+son istmeño,,rule
+staïfi,,rule
+tammurriata,,rule
+tappa,,rule
+tarantella,,rule
+tarawangsa,,rule
+tarraxinha,,rule
+tbm,,rule
+tecnofunk,,rule
+tecnomerengue,,rule
+toccata,,rule
+township jive,,rule
+trance 2.0,electronic,rule
+upopo,,rule
+uyghur muqam,,rule
+valsa brasileira,,rule
+villancico,,rule
+yayue,,rule
+yu-mex,,rule
+zeitoper,,rule
+zeybek,,rule
+ziglibithy,,rule
+zoblazo,,rule
+aboio,,rule
+acholitronix,,rule
+agbadza,,rule
+agbekor,,rule
+agronejo,,rule
+ahwash,,rule
+aleke,,rule
+alloukou,,rule
+ambasse bey,,rule
+ambrosian chant,classical,rule
+american gamelan,folk & world,rule
+anglican chant,classical,rule
+ashkenazi cantorial music,,rule
+avanzada,,rule
+bagad,,rule
+baisha xiyue,,rule
+balitaw,,rule
+ballad opera,classical,rule
+ballet de cour,classical,rule
+bantengan,,rule
+baqashot,,rule
+batonebi songs,,rule
+battle record,,rule
+baul gaan,,rule
+beat fino,rock,rule
+bedoui wahrani,,rule
+bend-skin,,rule
+beneventan chant,classical,rule
+beni,,rule
+benna,,rule
+beompae,,rule
+bhojpuri pop,pop,rule
+bocet,,rule
+boduberu,,rule
+boedra,,rule
+boyfriend country,country,rule
+burrakatha,,rule
+bélé,,rule
+bérite club,electronic,rule
+ca trù,,rule
+cadence rampa,,rule
+calipso venezolano,,rule
+canto a lo poeta,,rule
+canto cardenche,,rule
+canto degli alpini,,rule
+canzona,,rule
+carnavalito,,rule
+chakacha,,rule
+chamamé tropical,,rule
+chamarrita açoriana,,rule
+change ringing,,rule
+changjak gugak,,rule
+chaozhou xianshi,,rule
+character piece,,rule
+chicago polka,folk & world,rule
+chimayche,,rule
+chinese literati music,,rule
+chotis madrileño,,rule
+chuscada,,rule
+chèo,,rule
+cilokaq,,rule
+classic ragtime,jazz,rule
+comédie-ballet,classical,rule
+concert spiritual,,rule
+concertina band,,rule
+contenance angloise,,rule
+copla cajamarquina,,rule
+cueca brava,,rule
+cumbia norteña peruana,latin,rule
+cumbia salvadoreña,latin,rule
+cumbia sureña peruana,latin,rule
+cumbia turra,latin,rule
+cururu,,rule
+cut-up noise,experimental,rule
+dangak,,rule
+dechovka,,rule
+desgarrada,,rule
+dhaanto,,rule
+dhol tasha,,rule
+divertissement,,rule
+djanba,,rule
+doble paso,,rule
+dobrado,,rule
+dohori,,rule
+dondang sayang,,rule
+dongjing,,rule
+dongzu dage,,rule
+drum and bugle corps,electronic,rule
+dutch trancecore,,rule
+euskal kantagintza berria,,rule
+fahrtenlied,,rule
+famo,,rule
+fandango caiçara,,rule
+fijiri,,rule
+filin,,rule
+filipino rondalla,,rule
+fon leb,,rule
+frenchtek,,rule
+frevo de bloco,,rule
+frevo de rua,,rule
+frevo elétrico,,rule
+frevo-canção,,rule
+gaelic psalm singing,,rule
+gagok,,rule
+gallican chant,classical,rule
+gambang kromong,,rule
+gamelan angklung,folk & world,rule
+gamelan beleganjur,folk & world,rule
+gamelan gambang,folk & world,rule
+gamelan gender wayang,folk & world,rule
+gamelan gong gede,folk & world,rule
+gamelan gong kebyar,folk & world,rule
+gamelan jegog,folk & world,rule
+gamelan joged bumbung,folk & world,rule
+gamelan salendro,folk & world,rule
+gamelan sekaten,folk & world,rule
+gamelan siteran,folk & world,rule
+gamelan surakarta,folk & world,rule
+genge,,rule
+ginan,,rule
+gommance,,rule
+gondang,,rule
+goombay,,rule
+gstanzl,,rule
+guangdong yinyue,,rule
+guaracha santiagueña,latin,rule
+gufeng,,rule
+género chico,,rule
+género grande,,rule
+habanera,,rule
+hambo,,rule
+hanmai,,rule
+haozi,,rule
+harana,,rule
+harawi,,rule
+henan opera,classical,rule
+himene tarava,,rule
+hipco,,rule
+hornpipe,,rule
+hot rod music,,rule
+huaylarsh,,rule
+huayno con arpa,latin,rule
+hyangak,,rule
+hát tuồng,,rule
+iavnana,,rule
+isa,,rule
+james bay fiddling,,rule
+jazz guachaca,jazz,rule
+jazz mugham,folk & world,rule
+jeongak,,rule
+jhumar,,rule
+jibonmukhi gaan,,rule
+jácara,,rule
+kadodi,,rule
+kadongo kamu,,rule
+kafi,,rule
+kagura,,rule
+kakawin,,rule
+kalattut,,rule
+kalon'ny fahiny,,rule
+kantruem,,rule
+kapuka,,rule
+ketuk tilu,,rule
+khrueang sai,,rule
+kidandali,,rule
+kidumbak,,rule
+kilapanga,,rule
+klapa,,rule
+kliningan,,rule
+kontakion,,rule
+korean revolutionary opera,classical,rule
+kouta,,rule
+krakowiak,,rule
+kréyol djaz,,rule
+kujawiak,,rule
+kumiuta,,rule
+kyivan chant,classical,rule
+langgam jawa,,rule
+lauda,,rule
+liwa,,rule
+lundu,,rule
+machine rock,rock,rule
+maftirim,,rule
+mahori,,rule
+malagueña venezolana,,rule
+malay gamelan,folk & world,rule
+mangambeu,,rule
+mappila,,rule
+marinera,,rule
+marinera norteña,,rule
+mataali,,rule
+mbolé,,rule
+mchiriku,,rule
+meiji shinkyoku,,rule
+menzuma,,rule
+merequetengue,,rule
+mgodro,,rule
+miejski folk,folk & world,rule
+military cadence,,rule
+minnesang,,rule
+monodrama,,rule
+morenada,,rule
+moutya,,rule
+mozarabic chant,classical,rule
+muak,,rule
+muiñeira,,rule
+mulatós,,rule
+muliza,,rule
+muzikat dika'on,,rule
+mélodie,,rule
+métis fiddling,,rule
+música de intervenção,,rule
+música festera,,rule
+música típica chilena,,rule
+nagara naam,,rule
+nanguan,,rule
+neo-bop,jazz,rule
+ngoma,,rule
+ngâm thơ,,rule
+njuup,,rule
+noiadance,,rule
+nouveau zydeco,,rule
+nóta,,rule
+oberek,,rule
+ogene music,,rule
+omutibo,,rule
+onda nueva,,rule
+opera semiseria,classical,rule
+opera-ballet,classical,rule
+opéra comique,,rule
+ori deck,,rule
+orkes gambus,,rule
+paghjella,,rule
+pala,,rule
+palo de mayo,,rule
+pandilla,,rule
+paramaribop,,rule
+passion setting,,rule
+payada,,rule
+pinpeat,,rule
+piosenka aktorska,,rule
+piphat,,rule
+pirekua,,rule
+piyyut,,rule
+polka paraguaya,folk & world,rule
+polonaise,,rule
+pon-chak disco,r&b & soul,rule
+powada,,rule
+praise break,,rule
+pungmul,,rule
+punto,,rule
+pásztordal,,rule
+qasidah modern,,rule
+quan họ,,rule
+quyi,,rule
+rabbit song,,rule
+rabiz,,rule
+raqs baladi,,rule
+rasqueado cuiabano,,rule
+repente,,rule
+ricercar,,rule
+rigsar,,rule
+ripsaw,,rule
+ritmada,,rule
+rizitika,,rule
+rock jiwang,rock,rule
+rock kapak,rock,rule
+rockaballad,,rule
+rom kbach,,rule
+runo song,,rule
+rustic stomp,,rule
+sa'idi,,rule
+saluang klasik,,rule
+samba de gafieira,latin,rule
+samba de terreiro,latin,rule
+sambalanço,,rule
+samri,,rule
+sanjo,,rule
+sanjuanito,,rule
+santé engagé,,rule
+sarala gee,,rule
+sarum chant,classical,rule
+sawt,,rule
+saya afroboliviana,,rule
+schottische,,rule
+scrumpy and western,country,rule
+seguidilla,,rule
+seto leelo,,rule
+shabad kirtan,,rule
+shashmaqam,,rule
+shoor,,rule
+sichuan opera,classical,rule
+sigidrigi,,rule
+sikuri,,rule
+sinfonia concertante,,rule
+sizhu music,,rule
+skiladiko,,rule
+skizzo,,rule
+son de pascua,,rule
+son nica,,rule
+southeast asian classical,classical,rule
+spouge,,rule
+sticheron,,rule
+stornello,,rule
+sungura,,rule
+sutartinės,,rule
+sweet jazz,jazz,rule
+symphonic mugham,folk & world,rule
+séga tambour,,rule
+tajaraste,,rule
+talempong,,rule
+talempong goyang,,rule
+tamborera,,rule
+tamborito,,rule
+tamborzão,,rule
+tanjidor,,rule
+taoist ritual music,,rule
+taquirari,,rule
+tarana,,rule
+tassa,,rule
+tassu,,rule
+tchinkoumé,,rule
+tecnocumbia,,rule
+tembang cianjuran,,rule
+tiento,,rule
+timbila,,rule
+tivaner inngernerlu,,rule
+toada de boi,,rule
+tonada asturiana,,rule
+tonada potosina,,rule
+tonadilla,,rule
+tondero,,rule
+tontipop,,rule
+toytown techno,electronic,rule
+tradi-moderne ivoirien,,rule
+traditional séga,folk & world,rule
+trikitixa,,rule
+troparion,,rule
+troubadour song,,rule
+trova yucateca,,rule
+tumba,,rule
+tumba francesa,,rule
+tumbélé,,rule
+twoubadou,,rule
+tân cổ giao duyên,,rule
+uaajeerneq,,rule
+unakesa,,rule
+urtiin duu,,rule
+urumi melam,,rule
+vaigat,,rule
+valaam chant,classical,rule
+vals venezolano,,rule
+vanera,,rule
+vedic chant,classical,rule
+verbunkos,,rule
+vietnamese classical,classical,rule
+vude,,rule
+wa euro,,rule
+wangga,,rule
+waulking song,,rule
+wong shadow,,rule
+xaxado,,rule
+xtra raw,,rule
+xuc,,rule
+xẩm,,rule
+yangzhou opera,classical,rule
+yanyue,,rule
+yaraví,,rule
+yue opera,classical,rule
+yukar,,rule
+zamacueca,,rule
+zarzuela barroca,,rule
+zema,,rule
+zemirot,,rule
+zinli,,rule
+znamenny chant,classical,rule
+zohioliin duu,,rule
+čalgija,,rule
+ʻōteʻa,,rule

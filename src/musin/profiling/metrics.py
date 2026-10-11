@@ -10,7 +10,7 @@ from pyspark.sql import DataFrame, Window
 from pyspark.sql import functions as F
 from pyspark.sql.types import StringType
 
-from musin.clean import years
+from musin.clean import genres, years
 
 
 def credit_sizes(acn: DataFrame) -> DataFrame:
@@ -62,24 +62,7 @@ def release_years(release_country: DataFrame, release_unknown_country: DataFrame
 recording_first_years = years.recording_first_years
 
 
-def genre_tags(tag: DataFrame, genre: DataFrame, genre_alias: DataFrame) -> DataFrame:
-    """Tags that name an official genre, directly or through a genre alias.
-
-    Matching is case-insensitive on the whole name.
-    In: tag(id, name), genre(id, name), genre_alias(genre, name).
-    Out: (tag, genre_name) with genre_name = the official genre's name.
-    """
-    names = genre.select(F.col("id").alias("genre_id"), F.lower("name").alias("lname")).unionByName(
-        genre_alias.select(F.col("genre").alias("genre_id"), F.lower("name").alias("lname"))
-    )
-    official = genre.select(F.col("id").alias("genre_id"), F.col("name").alias("genre_name"))
-    return (
-        tag.select(F.col("id").alias("tag"), F.lower("name").alias("lname"))
-        .join(names.distinct(), "lname")
-        .join(official, "genre_id")
-        .select("tag", "genre_name")
-        .distinct()
-    )
+genre_tags = genres.genre_tags
 
 
 def size_histogram(sizes_per_recording: DataFrame, cap: int) -> DataFrame:

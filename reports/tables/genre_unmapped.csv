@@ -1,0 +1,643 @@
+genre,artist_votes,rg_votes,share_of_genre_votes
+instrumental,6326,36516,0.007555
+lo-fi,5726,35782,0.00732
+non-music,71,14491,0.002568
+comedy,754,6941,0.001357
+spoken word,352,5456,0.001024
+christmas music,125,3605,0.000658
+cyberpunk,101,2722,0.000498
+broken transmission,27,2443,0.000436
+poetry,198,1126,0.000233
+asmr,33,1065,0.000194
+children's music,305,754,0.000187
+production music,669,146,0.000144
+minimal wave,191,587,0.000137
+interview,4,649,0.000115
+audio drama,288,205,8.7e-05
+speech,6,274,4.9e-05
+steampunk,57,207,4.7e-05
+standup comedy,52,149,3.5e-05
+nature sounds,33,143,3.1e-05
+fm synthesis,7,151,2.8e-05
+sketch comedy,20,97,2.1e-05
+visa,40,75,2e-05
+nueva canción,22,92,2e-05
+denpa,47,66,2e-05
+rominimal,2,111,2e-05
+funktronica,28,84,2e-05
+loud kei,67,45,2e-05
+maloya,22,89,2e-05
+tex-mex,17,94,2e-05
+dubwise,14,96,1.9e-05
+kwaito,16,94,1.9e-05
+skweee,1,108,1.9e-05
+gqom,35,73,1.9e-05
+group sounds,29,78,1.9e-05
+outrun,18,89,1.9e-05
+min'yō,23,82,1.9e-05
+kabarett,79,25,1.8e-05
+muzika mizrahit,67,37,1.8e-05
+plena,3,100,1.8e-05
+technobanda,92,7,1.7e-05
+britcore,10,88,1.7e-05
+lullaby,14,84,1.7e-05
+raggacore,32,66,1.7e-05
+nueva trova,17,80,1.7e-05
+drumfunk,19,77,1.7e-05
+neurohop,17,79,1.7e-05
+hiplife,22,71,1.6e-05
+rawstyle,27,66,1.6e-05
+afroswing,58,34,1.6e-05
+cowboy poetry,20,72,1.6e-05
+champeta,43,48,1.6e-05
+swancore,35,56,1.6e-05
+trova,23,65,1.6e-05
+waltz,6,80,1.5e-05
+jump up,16,67,1.5e-05
+nashville sound,37,46,1.5e-05
+manele,80,2,1.4e-05
+worldbeat,36,46,1.4e-05
+acidcore,8,73,1.4e-05
+fairy tale,12,69,1.4e-05
+zenonesque,4,77,1.4e-05
+kleinkunst,58,22,1.4e-05
+beatboxing,49,30,1.4e-05
+copla,14,65,1.4e-05
+porro,2,77,1.4e-05
+thall,23,54,1.4e-05
+full-on,5,71,1.3e-05
+art song,20,55,1.3e-05
+sound effects,13,62,1.3e-05
+charanga,11,63,1.3e-05
+jug band,13,61,1.3e-05
+mod revival,28,46,1.3e-05
+son cubano,42,30,1.3e-05
+church music,24,47,1.3e-05
+new mexico music,62,9,1.3e-05
+paisley underground,17,54,1.3e-05
+black 'n' roll,32,37,1.2e-05
+epic collage,5,64,1.2e-05
+deathstep,15,53,1.2e-05
+guided meditation,7,61,1.2e-05
+nederbeat,21,47,1.2e-05
+vaudeville,10,58,1.2e-05
+mass,4,63,1.2e-05
+mincecore,23,44,1.2e-05
+red dirt,30,37,1.2e-05
+kuduro,16,50,1.2e-05
+stenchcore,35,31,1.2e-05
+dansktop,63,1,1.1e-05
+ytpmv,16,48,1.1e-05
+death 'n' roll,32,31,1.1e-05
+future core,3,60,1.1e-05
+candombe,22,40,1.1e-05
+tearout,14,47,1.1e-05
+dangdut,33,27,1.1e-05
+livetronica,11,49,1.1e-05
+neoperreo,21,39,1.1e-05
+darkcore,13,46,1e-05
+ryūkōka,46,13,1e-05
+sampledelia,20,39,1e-05
+musette,28,30,1e-05
+central asian throat singing,30,27,1e-05
+future bounce,15,42,1e-05
+baião,4,52,1e-05
+gagaku,2,53,1e-05
+indorock,15,40,1e-05
+lambada,3,52,1e-05
+mantra,9,46,1e-05
+neo-acoustic,23,32,1e-05
+nhạc vàng,47,8,1e-05
+psycore,5,50,1e-05
+lecture,0,54,1e-05
+flashcore,8,44,9e-06
+jerk,18,34,9e-06
+moombahcore,6,46,9e-06
+urban cowboy,6,46,9e-06
+sermon,1,50,9e-06
+bhavageethe,6,44,9e-06
+close harmony,9,40,9e-06
+música criolla,15,34,9e-06
+slam poetry,30,19,9e-06
+bardcore,16,32,8e-06
+chamamé,14,31,8e-06
+futurism,12,33,8e-06
+trot,41,4,8e-06
+danzón,2,42,8e-06
+garba,15,29,8e-06
+shidaiqu,22,22,8e-06
+dark plugg,13,30,8e-06
+dunedin sound,27,16,8e-06
+mbaqanga,8,35,8e-06
+algorave,4,38,7e-06
+overture,2,40,7e-06
+suomisaundi,11,31,7e-06
+yakousei,18,24,7e-06
+zamrock,19,23,7e-06
+congolese rumba,31,10,7e-06
+estrada,38,3,7e-06
+future riddim,8,33,7e-06
+grebo,28,12,7e-06
+hardstep,7,33,7e-06
+theme and variations,2,38,7e-06
+canción melódica,27,12,7e-06
+sigilkore,14,25,7e-06
+bomba,6,32,7e-06
+pasodoble,3,35,7e-06
+alté,16,21,7e-06
+cocktail nation,15,22,7e-06
+snap,3,34,7e-06
+uk82,7,30,7e-06
+crunkcore,19,17,6e-06
+guggenmusik,34,2,6e-06
+spamwave,10,26,6e-06
+splittercore,8,28,6e-06
+bongo flava,16,19,6e-06
+chazzanut,33,2,6e-06
+twerk,10,25,6e-06
+akishibu-kei,5,29,6e-06
+birdsong,3,31,6e-06
+bit music,15,19,6e-06
+kaseko,11,23,6e-06
+melbourne bounce,14,20,6e-06
+milonga,4,30,6e-06
+red song,25,9,6e-06
+reductionism,9,25,6e-06
+shitgaze,9,25,6e-06
+brega,30,3,6e-06
+narcocorrido,31,2,6e-06
+steel band,1,32,6e-06
+fantasia,3,29,6e-06
+indeterminacy,8,24,6e-06
+moogsploitation,17,15,6e-06
+skullstep,2,30,6e-06
+stomp and holler,11,21,6e-06
+afropiano,19,12,5e-06
+spectralism,5,26,5e-06
+electrotango,20,10,5e-06
+fantezi,21,9,5e-06
+keroncong,6,24,5e-06
+psybreaks,4,26,5e-06
+slimepunk,2,28,5e-06
+funaná,5,24,5e-06
+hamburger schule,19,10,5e-06
+lento violento,0,29,5e-06
+nasheed,20,9,5e-06
+porn groove,5,24,5e-06
+prelude,1,28,5e-06
+briddim,5,23,5e-06
+chachachá,11,17,5e-06
+marching band,8,20,5e-06
+salegy,3,25,5e-06
+weightless,5,23,5e-06
+march,10,17,5e-06
+serenade,2,25,5e-06
+shaabi,7,20,5e-06
+bhajan,17,9,5e-06
+jovem guarda,24,2,5e-06
+nueva canción chilena,18,8,5e-06
+raggatek,5,21,5e-06
+data sonification,4,21,4e-06
+rumba flamenca,16,9,4e-06
+taarab,8,17,4e-06
+carimbó,7,17,4e-06
+purple sound,8,16,4e-06
+chimurenga,11,12,4e-06
+cuddlecore,3,20,4e-06
+jesus music,7,16,4e-06
+natya sangeet,5,18,4e-06
+picopop,5,18,4e-06
+slack-key guitar,1,22,4e-06
+tearout brostep,5,18,4e-06
+breakstep,4,18,4e-06
+joik,7,15,4e-06
+modern hardtek,14,8,4e-06
+sevillanas,18,4,4e-06
+deejay,15,6,4e-06
+gwo ka,4,17,4e-06
+rumba catalana,10,11,4e-06
+son jarocho,9,12,4e-06
+totalism,2,19,4e-06
+vocalese,3,18,4e-06
+zarzuela,1,20,4e-06
+humppa,8,12,4e-06
+jùjú,9,11,4e-06
+makossa,14,6,4e-06
+mor lam,12,8,4e-06
+tsugaru-jamisen,12,8,4e-06
+avtorskaya pesnya,17,2,3e-06
+cape breton fiddling,17,2,3e-06
+dabke,6,13,3e-06
+dhrupad,10,9,3e-06
+graphical sound,4,15,3e-06
+luk krung,12,7,3e-06
+stochastic music,3,16,3e-06
+cuarteto,14,4,3e-06
+dikir barat,18,0,3e-06
+kirtan,2,16,3e-06
+modern laiko,16,2,3e-06
+nocturne,1,17,3e-06
+prank calls,5,13,3e-06
+process music,1,17,3e-06
+psystyle,0,18,3e-06
+sōkyoku,17,1,3e-06
+tread,4,14,3e-06
+binaural beats,4,13,3e-06
+folkhop,6,11,3e-06
+microfunk,6,11,3e-06
+moe song,5,12,3e-06
+trancestep,2,15,3e-06
+batida,3,13,3e-06
+coladeira,3,13,3e-06
+grupera,5,11,3e-06
+junkanoo,8,8,3e-06
+maloya élektrik,7,9,3e-06
+hypertechno,10,5,3e-06
+isicathamiya,2,13,3e-06
+murga,5,10,3e-06
+neofolklore,7,8,3e-06
+rain sounds,12,3,3e-06
+sean-nós,7,8,3e-06
+tecnobrega,4,11,3e-06
+beach music,4,10,2e-06
+burmese stereo,12,2,2e-06
+bytebeat,0,14,2e-06
+chicha,3,11,2e-06
+għana,9,5,2e-06
+houston sound,11,3,2e-06
+mood kayō,12,2,2e-06
+night full-on,1,13,2e-06
+zhongguo feng,5,9,2e-06
+kumi-daiko,12,1,2e-06
+phleng phuea chiwit,6,7,2e-06
+ratchet music,7,6,2e-06
+shatta,12,1,2e-06
+singeli,4,9,2e-06
+bubbling,3,9,2e-06
+expressionism,4,8,2e-06
+marrabenta,12,0,2e-06
+nova cançó,4,8,2e-06
+palingsound,5,7,2e-06
+rautalanka,6,6,2e-06
+slowed & reverb,1,11,2e-06
+yodeling,2,10,2e-06
+animal sounds,3,8,2e-06
+aquacrunk,2,9,2e-06
+biguine,2,9,2e-06
+guoyue,11,0,2e-06
+jamgrass,7,4,2e-06
+krushclub,7,4,2e-06
+lowend,1,10,2e-06
+mahraganat,5,6,2e-06
+manila sound,8,3,2e-06
+neo kyma,9,2,2e-06
+rawphoric,4,7,2e-06
+british brass band,7,3,2e-06
+burning spirits,3,7,2e-06
+chopper,5,5,2e-06
+chutney,4,6,2e-06
+maskanda,9,1,2e-06
+piseiro,5,5,2e-06
+plainchant,1,9,2e-06
+polca criolla,8,2,2e-06
+rapso,2,8,2e-06
+terror plugg,1,9,2e-06
+township bubblegum,8,2,2e-06
+vals criollo,7,3,2e-06
+benga,6,3,2e-06
+birmingham sound,7,2,2e-06
+coupé-décalé,8,1,2e-06
+khyal,9,0,2e-06
+mobb music,3,6,2e-06
+mugithi,9,0,2e-06
+nagauta,5,4,2e-06
+neue deutsche todeskunst,3,6,2e-06
+rkt,4,5,2e-06
+tin pan alley,4,5,2e-06
+ars nova,3,5,1e-06
+audio documentary,1,7,1e-06
+bouyon,4,4,1e-06
+cadence lypso,6,2,1e-06
+cantu a tenore,3,5,1e-06
+coco,3,5,1e-06
+frevo,4,4,1e-06
+guarania,0,8,1e-06
+hopepunk,5,3,1e-06
+joropo,3,5,1e-06
+jota,1,7,1e-06
+kankyō ongaku,4,4,1e-06
+kwela,3,5,1e-06
+mad,4,4,1e-06
+música cebolla,4,4,1e-06
+novelty piano,6,2,1e-06
+powerstomp,0,8,1e-06
+revue,6,2,1e-06
+rhumba,3,5,1e-06
+russian romance,7,1,1e-06
+sambass,0,8,1e-06
+thumri,7,1,1e-06
+toypop,2,6,1e-06
+trapfunk,7,1,1e-06
+tropipop,4,4,1e-06
+andean new age,2,5,1e-06
+black midi,3,4,1e-06
+concert band,5,2,1e-06
+cubatón,5,2,1e-06
+demostyle,3,4,1e-06
+hardbag,4,3,1e-06
+kan ha diskan,7,0,1e-06
+maloya électronique,0,7,1e-06
+mbube,2,5,1e-06
+muziki wa dansi,4,3,1e-06
+mūsīqā lubnāniyya,2,5,1e-06
+nitzhonot,0,7,1e-06
+nortec,5,2,1e-06
+russian orthodox liturgical music,3,4,1e-06
+slow waltz,7,0,1e-06
+son calentano,7,0,1e-06
+stotra,0,7,1e-06
+tizita,4,3,1e-06
+tradi-moderne congolais,4,3,1e-06
+tropicanibalismo,3,4,1e-06
+white voice,3,4,1e-06
+xote,4,3,1e-06
+zouglou,7,0,1e-06
+al jeel,2,4,1e-06
+arrocha,1,5,1e-06
+autonomic,3,3,1e-06
+break-in,0,6,1e-06
+conga,2,4,1e-06
+doskpop,1,5,1e-06
+frapcore,5,1,1e-06
+hard nrg,4,2,1e-06
+hardtekk,2,4,1e-06
+hi-tech full-on,1,5,1e-06
+huapango,6,0,1e-06
+jit,4,2,1e-06
+kuda lumping,2,4,1e-06
+könsrock,1,5,1e-06
+liscio,0,6,1e-06
+native american new age,4,2,1e-06
+pagodão,5,1,1e-06
+pipe band music,3,3,1e-06
+seggae,4,2,1e-06
+sevdalinka,2,4,1e-06
+shan'ge,5,1,1e-06
+singspiel,2,4,1e-06
+takamba,3,3,1e-06
+technoid,3,3,1e-06
+uk jackin,0,6,1e-06
+özgün müzik,0,6,1e-06
+afoxê,1,4,1e-06
+amigacore,1,4,1e-06
+baithak gana,4,1,1e-06
+bulería,1,4,1e-06
+burmese mono,5,0,1e-06
+cantoria,5,0,1e-06
+canzone d'autore,2,3,1e-06
+capriccio,0,5,1e-06
+circus march,1,4,1e-06
+cruise,0,5,1e-06
+currulao,0,5,1e-06
+free car music,1,4,1e-06
+jiangnan sizhu,3,2,1e-06
+koplo,1,4,1e-06
+lavani,3,2,1e-06
+marabi,1,4,1e-06
+música llanera,4,1,1e-06
+new complexity,4,1,1e-06
+nhạc đỏ,5,0,1e-06
+pansori,3,2,1e-06
+punta,4,1,1e-06
+rara,1,4,1e-06
+rasteirinha,1,4,1e-06
+regalia,2,3,1e-06
+rumba cubana,2,3,1e-06
+sardana,2,3,1e-06
+sonorism,0,5,1e-06
+spiritual art song,1,4,1e-06
+wassoulou,2,3,1e-06
+work song,3,2,1e-06
+abhang,1,3,1e-06
+bandari,2,2,1e-06
+bomba del chota,4,0,1e-06
+chamarrita rioplatense,1,3,1e-06
+cuplé,3,1,1e-06
+dimotiko,4,0,1e-06
+drumline,2,2,1e-06
+eleki,0,4,1e-06
+embolada,4,0,1e-06
+falak,2,2,1e-06
+fandango,2,2,1e-06
+fuji,3,1,1e-06
+funknejo,1,3,1e-06
+haitian vodou drumming,2,2,1e-06
+kaneka,3,1,1e-06
+klasik,3,1,1e-06
+mambo urbano,1,3,1e-06
+marchinha,3,1,1e-06
+minatory,1,3,1e-06
+muzika yehudit mekorit,2,2,1e-06
+romanian popcorn,2,2,1e-06
+shima-uta,3,1,1e-06
+tribal guarachero,4,0,1e-06
+vinahouse,3,1,1e-06
+whale song,2,2,1e-06
+alpenrock,2,1,1e-06
+ars subtilior,2,1,1e-06
+batidão romântico,2,1,1e-06
+batuque,0,3,1e-06
+bikutsi,1,2,1e-06
+budots,1,2,1e-06
+cante alentejano,2,1,1e-06
+changa tuki,0,3,1e-06
+chilena,2,1,1e-06
+cueca,2,1,1e-06
+doina,2,1,1e-06
+donosti sound,1,2,1e-06
+eletrofunk,2,1,1e-06
+fungi,1,2,1e-06
+honkyoku,1,2,1e-06
+islamic modal music,2,1,1e-06
+izlan,2,1,1e-06
+izvorna bosanska muzika,3,0,1e-06
+jaipongan,1,2,1e-06
+konnakol,0,3,1e-06
+maracatu,2,1,1e-06
+merenhouse,1,2,1e-06
+nigun,0,3,1e-06
+noh,0,3,1e-06
+nuevo cancionero,2,1,1e-06
+nustyle,0,3,1e-06
+parang,0,3,1e-06
+partyschlager,2,1,1e-06
+pasillo,3,0,1e-06
+pep band,0,3,1e-06
+pilón,3,0,1e-06
+pimba,3,0,1e-06
+pizzica,1,2,1e-06
+pumpcore,0,3,1e-06
+puxa,0,3,1e-06
+rasin,2,1,1e-06
+reparto,2,1,1e-06
+ring shout,2,1,1e-06
+songo,2,1,1e-06
+sufiana kalam,2,1,1e-06
+tecnorumba,3,0,1e-06
+tragédie en musique,0,3,1e-06
+waka,0,3,1e-06
+étude,0,3,1e-06
+aita,2,0,0.0
+ars antiqua,2,0,0.0
+bachatón,1,1,0.0
+balani show,0,2,0.0
+banga,1,1,0.0
+bullerengue,2,0,0.0
+carranga,2,0,0.0
+changüí,0,2,0.0
+ciranda,2,0,0.0
+cumbiatón,2,0,0.0
+danmono,2,0,0.0
+drinking song,1,1,0.0
+festejo,2,0,0.0
+fugue,0,2,0.0
+gaita zuliana,2,0,0.0
+gengetone,1,1,0.0
+impromptu,2,0,0.0
+jiuta,1,1,0.0
+jubilee,0,2,0.0
+jōruri,2,0,0.0
+kai,1,1,0.0
+kasékò,2,0,0.0
+kecak,0,2,0.0
+kete,0,2,0.0
+kulintang,0,2,0.0
+kwassa kwassa,1,1,0.0
+liquid riddim,2,0,0.0
+lute song,1,1,0.0
+ländlermusik,2,0,0.0
+malouf,1,1,0.0
+maxixe,2,0,0.0
+mazurka,0,2,0.0
+merecumbé,2,0,0.0
+meyxana,0,2,0.0
+modinha,2,0,0.0
+méringue,0,2,0.0
+nhạc tiền chiến,2,0,0.0
+nueva canción española,2,0,0.0
+palm-wine,1,1,0.0
+parlour music,1,1,0.0
+polifonia occitana,0,2,0.0
+psichedelia occulta italiana,1,1,0.0
+qaraami,1,1,0.0
+sacred harp,1,1,0.0
+saeta,0,2,0.0
+seresta,2,0,0.0
+shōmyō,0,2,0.0
+son huasteco,1,1,0.0
+tallava,1,1,0.0
+trallalero,0,2,0.0
+trampská hudba,2,0,0.0
+tsapiky,2,0,0.0
+udigrudi,2,0,0.0
+unyago,2,0,0.0
+uzun hava,1,1,0.0
+verismo,1,1,0.0
+waila,0,2,0.0
+whistling,0,2,0.0
+zess,0,2,0.0
+3-step,1,0,0.0
+aak,1,0,0.0
+adhunik geet,0,1,0.0
+apala,0,1,0.0
+arrochadeira,0,1,0.0
+assiko,1,0,0.0
+bacardi,0,1,0.0
+bagatelle,0,1,0.0
+baguala,0,1,0.0
+baila,0,1,0.0
+bambuco,0,1,0.0
+bandinha,1,0,0.0
+biraha,0,1,0.0
+bogino duu,0,1,0.0
+cachaca,1,0,0.0
+cakewalk,1,0,0.0
+campursari,1,0,0.0
+cantu a chiterra,0,1,0.0
+canzone neomelodica,1,0,0.0
+caporal,0,1,0.0
+chöd,0,1,0.0
+colindă,0,1,0.0
+coon song,0,1,0.0
+csárdás,1,0,0.0
+cải lương,0,1,0.0
+dennery segment,1,0,0.0
+dubstyle,1,0,0.0
+duma,0,1,0.0
+english pastoral school,1,0,0.0
+fakaseasea,0,1,0.0
+funeral march,0,1,0.0
+gaana,1,0,0.0
+guayla,0,1,0.0
+guitarrada,1,0,0.0
+gumbe,1,0,0.0
+hapa haole,1,0,0.0
+heikyoku,0,1,0.0
+jawaiian,0,1,0.0
+jersey sound,1,0,0.0
+jongo,1,0,0.0
+kacapi suling,0,1,0.0
+kalindula,0,1,0.0
+kantan chamorrita,1,0,0.0
+kanto,1,0,0.0
+kundiman,1,0,0.0
+kunqu,1,0,0.0
+landó,1,0,0.0
+maddahi,1,0,0.0
+malhun,1,0,0.0
+mambo chileno,1,0,0.0
+manyao,1,0,0.0
+minstrelsy,0,1,0.0
+moda de viola,0,1,0.0
+mor lam sing,1,0,0.0
+movimiento alterado,0,1,0.0
+murga uruguaya,1,0,0.0
+narodnozabavna glasba,1,0,0.0
+neoromanticism,1,0,0.0
+nepali lok geet,1,0,0.0
+ondō,0,1,0.0
+partido alto,1,0,0.0
+psychploitation,1,0,0.0
+puirt à beul,1,0,0.0
+pìobaireachd,0,1,0.0
+romantische oper,1,0,0.0
+rōkyoku,1,0,0.0
+sacred steel,1,0,0.0
+semi-trot,1,0,0.0
+shanto,1,0,0.0
+shinkyoku,0,1,0.0
+sinawi,0,1,0.0
+sissy bounce,0,1,0.0
+sitarsploitation,0,1,0.0
+son istmeño,0,1,0.0
+staïfi,1,0,0.0
+tammurriata,1,0,0.0
+tappa,1,0,0.0
+tarantella,1,0,0.0
+tarawangsa,0,1,0.0
+tarraxinha,1,0,0.0
+tbm,0,1,0.0
+tecnofunk,0,1,0.0
+tecnomerengue,1,0,0.0
+toccata,0,1,0.0
+township jive,0,1,0.0
+upopo,0,1,0.0
+uyghur muqam,1,0,0.0
+valsa brasileira,1,0,0.0
+villancico,0,1,0.0
+yayue,0,1,0.0
+yu-mex,1,0,0.0
+zeitoper,0,1,0.0
+zeybek,0,1,0.0
+ziglibithy,0,1,0.0
+zoblazo,1,0,0.0
