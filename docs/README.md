@@ -20,7 +20,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | P1 Environment & ingestion | Oct 10–16 | Done | [P1-environment-ingestion.md](phases/P1-environment-ingestion.md) |
 | P2 Cleaning & genre normalization | Oct 15–21 | Done | [P2-cleaning-genres.md](phases/P2-cleaning-genres.md) |
 | P3 Graph build & Neo4j load | Oct 18–24 | Done | [P3-graph-build-neo4j.md](phases/P3-graph-build-neo4j.md) |
-| P4 Graph analytics | Oct 19–30 | Planned | — |
+| P4 Graph analytics | Oct 19–30 | In progress | — |
 | P5 Benchmarks | Oct 22–30 | Planned | — |
 | P6 Presentation & report | Oct 28–Nov 9 | Planned | — |
 
@@ -43,7 +43,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F3.3 | Graph-layer quality checks | P3 | A | Must | Done | [F3.3-graph-quality-checks.md](features/F3.3-graph-quality-checks.md) |
 | F3.4 | Neo4j CSV export and bulk import | P3 | A | Must | Done | [F3.4-neo4j-export-import.md](features/F3.4-neo4j-export-import.md) |
 | F3.5 | Constraints, indexes, GDS projections | P3 | B (built by A) | Must | Done | [F3.5-constraints-indexes-projections.md](features/F3.5-constraints-indexes-projections.md) |
-| F4.1 | Centrality and agreement (RQ4) | P4 | B | Must | Planned | — |
+| F4.1 | Centrality and agreement (RQ4) | P4 | B | Must | In progress (sample-verified; full run after G1) | [F4.1-centrality.md](features/F4.1-centrality.md) |
 | F4.2 | Communities vs genres (RQ2) | P4 | B | Must | Planned | — |
 | F4.3 | Genre bridges (RQ1) | P4 | B | Must | Planned | — |
 | F4.4 | Cross-genre trends by decade (RQ3) | P4 | B | Must | Planned | — |

@@ -305,3 +305,16 @@ Entry format:
      - Projection plus the largest §5.5 algorithm estimate must fit `NEO4J_HEAP_SIZE`.
      - Projections are dropped afterwards. P4 builds them with `musin.gds.setup.project()`.
 - **Consequences:** On the full graph, COLLAB builds in 15 s (193 MiB), and the worst case for P4 (betweenness) needs 0.64 GiB of the 8 GiB heap. RQ4 must compare COLLAB and credit-only rankings on their common artists (888,062).
+
+### D-033 — Centrality settings: fixed concurrency, PageRank to convergence, single-threaded betweenness
+- **Date / phase:** 2026-10-11 · P4 (F4.1)
+- **Status:** Accepted
+- **Context:** PRD §5.5 asks for fixed concurrency but names no value, and RQ4's "top-20" was a number in the text, not a config key (RULES §5: no hard-coded analysis parameters). The first F4.1 run on the sample graph (`sample-f0.05`, edges fingerprint `-728045217745244929017`) raised two more problems, measured with exploratory GDS runs on `collab_undirected` and `credit_only`:
+  - **PageRank did not converge** in the PRD's 20 iterations, on either projection, at GDS's default tolerance 1e-7. Compared with a run to convergence (112 iterations on COLLAB), 20 iterations gave Spearman ρ 0.9994, but 1 of the top 20 and 2 of the top 100 artists differed, and single scores were off by up to 13 %. At 50 iterations the top 100 matched; at 100 the largest relative deviation was 3 × 10⁻⁷.
+  - **Sampled betweenness was not reproducible at concurrency 4.** Two runs with the same `samplingSeed` on `credit_only` (209,560 artists) gave different scores for 44,035 artists (top-20 Jaccard 0.905, ρ 0.998); on COLLAB, 81,921 artists differed. Two runs at concurrency 1 were identical (0 differing scores). With several threads, which sources are sampled depends on thread scheduling. Concurrency 1 took 238 s instead of 80 s on `credit_only`.
+- **Decision:**
+  1. New key `analysis.concurrency: 4`, used by every GDS algorithm except betweenness (and by Louvain in F4.2, PRD §5.5).
+  2. New key `analysis.betweenness_concurrency: 1`. Betweenness runs single-threaded so the same seed always gives the same scores (RULES §5, deterministic output).
+  3. `analysis.pagerank.max_iterations` 20 → **1000**, now a cap rather than a target: GDS stops at tolerance 1e-7, and a run that does not converge fails the stage.
+  4. New key `analysis.top_k_centrality: 20` for RQ4's top lists.
+- **Consequences:** F4.1 results are reproducible run to run. Betweenness is about 2.7× slower (sample COLLAB: 553 s instead of 203 s; `credit_only`: 224 s). Scaling the sample time by graph size (nodes + relationships, ≈ 5.7×) suggests roughly 1–1.5 h for both projections on the full graph. That is an extrapolation, to be replaced by the measured runtime of the first full run; it runs once per graph build. PageRank cost is negligible (< 1 s on the sample). F5.2 (GDS vs GraphFrames) must use the same PageRank settings, or state that it doesn't. PRD §5.5 and §8.4 updated.

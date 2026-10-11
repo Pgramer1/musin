@@ -52,10 +52,13 @@ analysis:
   min_labelled_neighbours: 5
   top_k_bridges: 25
   top_k_overlap: 100
-  pagerank: {damping: 0.85, max_iterations: 20}
+  top_k_centrality: 20               # F4.1 (D-033): top-k list per centrality measure (RQ4)
+  pagerank: {damping: 0.85, max_iterations: 1000}   # D-033: a cap, not a target; runs stop at GDS tolerance 1e-7 and must converge
   betweenness_sampling_size: 10000
+  betweenness_concurrency: 1         # F4.1 (D-033): sampled betweenness is reproducible only single-threaded
   louvain_runs: 3
   random_seed: 42
+  concurrency: 4                     # F4.1 (D-033): GDS concurrency for every algorithm except betweenness (fixed, PRD §5.5)
   decades: {from: 1960, to: 2020}
 
 profiling:                           # F1.4 report parameters (D-015); never affect the graph

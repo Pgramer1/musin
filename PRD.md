@@ -90,16 +90,16 @@ All metrics run on the **COLLAB projection** (every edge type merged into one un
 - Weighted degree, PageRank, betweenness (settings in §5.5).
 - **Agreement:** Spearman ρ across all artists, and Jaccard overlap of the top-`analysis.top_k_overlap` (default 100) sets, for each pair of measures.
 - **Sensitivity:** repeat on a credit-only projection (CO_CREDITED + FEATURED), and report the top-20 lists from a graph built with `Character` artists included ([D-021](docs/decisions.md)).
-- **Outputs:** top-20 per measure; agreement table; discussion.
+- **Outputs:** top-`analysis.top_k_centrality` (default 20) per measure; agreement table; discussion.
 
 ### 5.5 Algorithm settings
 
 | Measure | Engine | Settings |
 |---|---|---|
 | Weighted degree | GDS `degree` | weight = `weight`, undirected |
-| PageRank | GDS `pageRank` | weighted, undirected; damping `analysis.pagerank.damping` (0.85), max iterations `analysis.pagerank.max_iterations` (20) |
-| Betweenness | GDS `betweenness` | **unweighted**: GDS treats weights as distances, so a strong tie would look "long". `samplingSize` = `analysis.betweenness_sampling_size` (10,000), `samplingSeed` = `analysis.random_seed` |
-| Communities | GDS `louvain` | weighted; fixed concurrency; run `analysis.louvain_runs` (3) times to check stability |
+| PageRank | GDS `pageRank` | weighted, undirected; damping `analysis.pagerank.damping` (0.85), max iterations `analysis.pagerank.max_iterations` (1000, a cap: the run must converge at GDS's default tolerance 1e-7, [D-033](docs/decisions.md)) |
+| Betweenness | GDS `betweenness` | **unweighted**: GDS treats weights as distances, so a strong tie would look "long". `samplingSize` = `analysis.betweenness_sampling_size` (10,000), `samplingSeed` = `analysis.random_seed`, concurrency `analysis.betweenness_concurrency` (1: with more threads the sampled sources depend on scheduling, [D-033](docs/decisions.md)) |
+| Communities | GDS `louvain` | weighted; fixed concurrency (`analysis.concurrency`, 4, used by every GDS algorithm except betweenness); run `analysis.louvain_runs` (3) times to check stability |
 | Shortest path | Cypher `shortestPath` | unweighted hops ("degrees of separation") |
 | NMI | scikit-learn | on the exported (artist, community, primary_genre) table, labelled artists only |
 
@@ -357,10 +357,13 @@ analysis:
   min_labelled_neighbours: 5
   top_k_bridges: 25
   top_k_overlap: 100
-  pagerank: {damping: 0.85, max_iterations: 20}
+  top_k_centrality: 20               # F4.1 (D-033): top-k list per centrality measure
+  pagerank: {damping: 0.85, max_iterations: 1000}   # D-033: cap; must converge at GDS tolerance 1e-7
   betweenness_sampling_size: 10000
+  betweenness_concurrency: 1         # F4.1 (D-033): single-threaded, the only reproducible setting
   louvain_runs: 3
   random_seed: 42
+  concurrency: 4                     # F4.1 (D-033): GDS concurrency, fixed, for every algorithm but betweenness
   decades: {from: 1960, to: 2020}
 
 profiling:                           # F1.4 report parameters (D-015); never affect the graph

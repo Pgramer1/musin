@@ -30,7 +30,8 @@ import sys
 import time
 from pathlib import Path
 
-from neo4j import Driver
+import pandas as pd
+from neo4j import Driver, Result
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
@@ -99,12 +100,20 @@ def native_projection(types: list[str]) -> dict:
 
 
 class Session:
-    """Named Cypher statements from neo4j/0*.cypher on one driver."""
+    """Named Cypher statements from neo4j/0*.cypher on one driver.
 
-    def __init__(self, driver: Driver) -> None:
+    A statement is addressed as `<file without its number>.<name>`, e.g.
+    `projections.drop`. P4 modules pass their own `files`.
+    """
+
+    def __init__(
+        self,
+        driver: Driver,
+        files: tuple[str, ...] = ("01_constraints", "02_projections", "03_estimates"),
+    ) -> None:
         self.driver = driver
         self.queries: dict[str, str] = {}
-        for f in ("01_constraints", "02_projections", "03_estimates"):
+        for f in files:
             for name, text in load_queries(CYPHER_DIR / f"{f}.cypher").items():
                 self.queries[f"{f[3:]}.{name}"] = text
 
@@ -113,6 +122,16 @@ class Session:
         query = self.queries[statement]
         records, _, _ = self.driver.execute_query(query, params, database_="neo4j")
         return [r.data() for r in records]
+
+    def frame(self, statement: str, /, **params) -> pd.DataFrame:
+        """Run `<file>.<name>` and return the whole result as a pandas frame.
+
+        For result sets with one row per artist (≈ 1.2 M on the full graph),
+        which come from Neo4j, not from Spark.
+        """
+        return self.driver.execute_query(
+            self.queries[statement], params, database_="neo4j", result_transformer_=Result.to_df
+        )
 
 
 def project(driver: Driver, name: str) -> dict:
