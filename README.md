@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1–P3 done: raw ingest, clean layer, graph build, checks, Neo4j load with constraints and GDS projections (**M2 reached: the sample graph is loaded in Neo4j**); **P4 Graph analytics in progress** (F4.1 centrality, F4.2 communities, F4.4 decade trends and F4.7 sensitivity variants verified on the sample graph); scope gate G1 on Oct 16 · *Last updated 2026-10-11*
+> **Status:** P1–P3 done: raw ingest, clean layer, graph build, checks, Neo4j load with constraints and GDS projections (**M2 reached: the sample graph is loaded in Neo4j**); **P4 Graph analytics in progress** (F4.1 centrality, F4.2 communities, F4.4 decade trends, F4.5 degrees of separation and F4.7 sensitivity variants verified on the sample graph); scope gate G1 on Oct 16 · *Last updated 2026-10-11*
 
 ## Research questions
 
@@ -151,6 +151,7 @@ docker compose exec spark python -m musin.graph.sample --config config/pipeline.
 docker compose exec spark python -m musin.analytics.centrality --config config/pipeline.yaml   # F4.1: degree, PageRank, betweenness + agreement (RQ4)
 docker compose exec spark python -m musin.analytics.communities --config config/pipeline.yaml  # F4.2: Louvain communities vs genres (RQ2)
 docker compose exec spark python -m musin.analytics.trends --config config/pipeline.yaml       # F4.4: cross-genre and featuring share by decade (RQ3; Spark on Parquet, add --sample 0.05)
+docker compose exec spark python -m musin.analytics.separation --config config/pipeline.yaml --pair "Frank Sinatra" "Snoop Dogg"   # F4.5: degrees of separation (MBID or exact name)
 ```
 
 **Sensitivity variants** ([F4.7](docs/features/F4.7-sensitivity-variants.md), D-035). A variant graph is the main graph with some F3.1 filters overridden under `variants.<name>` in `config/pipeline.yaml` (first variant: `characters`, which keeps `Character` artists, D-021). It is built next to the main graph in `$MUSIN_DATA/[sample/f0.05/]variants/<name>/` and loaded as `<full|sample-f0.05>-<name>`. Its P4 tables go to `reports/tables/variants/<name>/` (full) or the sample tree. Load the main graph again afterwards:
@@ -259,7 +260,7 @@ docker/            Spark/Jupyter and Neo4j/GDS images
 setup/             wslconfig.example, preflight.sh
 src/musin/         pipeline code (python -m musin.<stage>)
 neo4j/             numbered Cypher files (smoke/: F1.5 toy-graph test)
-reports/           generated tables and figures (profile_*: F1.4, genre_*: F2.5, graph_build_*: F3.1, graph_checks: F3.3, sample_*: F3.2, centrality_*: F4.1, communities_*: F4.2, trends_*: F4.4)
+reports/           generated tables and figures (profile_*: F1.4, genre_*: F2.5, graph_build_*: F3.1, graph_checks: F3.3, sample_*: F3.2, centrality_*: F4.1, communities_*: F4.2, trends_*: F4.4, separation_*: F4.5)
 tests/             pytest + fixtures (neo4j_toy/: F1.5 toy graph)
 docker-compose.yml two services: spark, neo4j
 .env.example       template for per-machine settings and secrets

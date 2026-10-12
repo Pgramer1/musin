@@ -60,6 +60,7 @@ analysis:
   louvain_concurrency: 1             # F4.2 (D-034): the run of record is single-threaded, hence reproducible
   top_k_communities: 10              # F4.2 (D-034): largest communities described by genre composition (RQ2)
   community_example_artists: 5       # F4.2 (D-034): highest weighted-degree artists listed per described community
+  separation_max_paths: 10000        # F4.5 (D-036): shortest paths enumerated per pair before the canonical pick
   random_seed: 42
   concurrency: 4                     # F4.1 (D-033): GDS concurrency for every algorithm except betweenness (fixed, PRD §5.5)
   decades: {from: 1960, to: 2020}

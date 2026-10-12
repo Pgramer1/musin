@@ -51,6 +51,7 @@ REQUIRED_KEYS: tuple[str, ...] = (
     "analysis.louvain_concurrency",
     "analysis.top_k_communities",
     "analysis.community_example_artists",
+    "analysis.separation_max_paths",
     "analysis.random_seed",
     "analysis.concurrency",
     "analysis.decades.from",

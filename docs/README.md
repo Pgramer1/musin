@@ -47,7 +47,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F4.2 | Communities vs genres (RQ2) | P4 | B | Must | In progress (sample-verified; full run after G1) | [F4.2-communities.md](features/F4.2-communities.md) |
 | F4.3 | Genre bridges (RQ1) | P4 | B | Must | Planned | — |
 | F4.4 | Cross-genre trends by decade (RQ3) | P4 | B | Must | In progress (sample-verified; full run after G1) | [F4.4-cross-genre-trends.md](features/F4.4-cross-genre-trends.md) |
-| F4.5 | Degrees of separation | P4 | B | Should | Planned | — |
+| F4.5 | Degrees of separation | P4 | B | Should | In progress (sample-verified; full run after G1) | [F4.5-degrees-of-separation.md](features/F4.5-degrees-of-separation.md) |
 | F4.6 | Validation | P4 | B | Must | Planned | — |
 | F4.7 | Sensitivity graph variants (D-021) | P4 | B | Must | In progress (sample-verified incl. Neo4j import and F4.1; full variant after G1; F4.3 on it pending) | [F4.7-sensitivity-variants.md](features/F4.7-sensitivity-variants.md) |
 | F5.1 | Spark scaling benchmark | P5 | A | Must | Planned | — |

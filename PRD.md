@@ -100,7 +100,7 @@ All metrics run on the **COLLAB projection** (every edge type merged into one un
 | PageRank | GDS `pageRank` | weighted, undirected; damping `analysis.pagerank.damping` (0.85), max iterations `analysis.pagerank.max_iterations` (1000, a cap: the run must converge at GDS's default tolerance 1e-7, [D-033](docs/decisions.md)) |
 | Betweenness | GDS `betweenness` | **unweighted**: GDS treats weights as distances, so a strong tie would look "long". `samplingSize` = `analysis.betweenness_sampling_size` (10,000), `samplingSeed` = `analysis.random_seed`, concurrency `analysis.betweenness_concurrency` (1: with more threads the sampled sources depend on scheduling, [D-033](docs/decisions.md)) |
 | Communities | GDS `louvain` | weighted; the result of record runs single-threaded (`analysis.louvain_concurrency`, 1), so it is reproducible; `analysis.louvain_runs` (3) more runs at `analysis.concurrency` (4) check its stability ([D-034](docs/decisions.md)) |
-| Shortest path | Cypher `shortestPath` | unweighted hops ("degrees of separation") |
+| Shortest path | Cypher `allShortestPaths` | unweighted hops ("degrees of separation") over the four collaboration types, never through `:Genre`; the canonical path among ties is the smallest artist-id sequence, enumerating at most `analysis.separation_max_paths` (10,000) paths ([D-036](docs/decisions.md)) |
 | NMI | scikit-learn | on the exported (artist, community, primary_genre) table, labelled artists only |
 
 Parameter values come from `config/pipeline.yaml` (§8.4). The values actually used are also recorded in each feature doc.
@@ -365,6 +365,7 @@ analysis:
   louvain_concurrency: 1             # F4.2 (D-034): the run of record is single-threaded, hence reproducible
   top_k_communities: 10              # F4.2 (D-034): largest communities described by genre composition (RQ2)
   community_example_artists: 5       # F4.2 (D-034): highest weighted-degree artists listed per described community
+  separation_max_paths: 10000        # F4.5 (D-036): shortest paths enumerated per pair before the canonical pick
   random_seed: 42
   concurrency: 4                     # F4.1 (D-033): GDS concurrency, fixed, for every algorithm but betweenness
   decades: {from: 1960, to: 2020}
