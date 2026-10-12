@@ -62,6 +62,7 @@ REQUIRED_KEYS: tuple[str, ...] = (
     "profiling.top_k_genres",
     "profiling.top_k_join_phrases",
     "checks.max_row_change",
+    "validation.artists_file",
     "variants",
 )
 

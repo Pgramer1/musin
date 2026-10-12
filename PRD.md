@@ -380,6 +380,9 @@ profiling:                           # F1.4 report parameters (D-015); never aff
 checks:                              # F3.3 (D-030); never affect the graph
   max_row_change: 0.05               # largest relative row-count change vs the last passing check
 
+validation:                          # F4.6 (§5.6, D-037): pre-registered artists, fixed before RQ1 results
+  artists_file: config/validation_artists.csv
+
 variants:                            # F4.7 (D-035): variant graphs for sensitivity runs, built with --variant <name>
   characters:                        # D-021: Character artists kept (RQ1 and RQ4 sensitivity runs)
     filters: {exclude_artist_types: []}
