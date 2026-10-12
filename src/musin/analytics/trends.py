@@ -7,7 +7,7 @@ Reads:  <graph>/edges_by_decade, <graph>/nodes_artist  (F3.1; sample/variant tre
 Writes: <results>/trends_by_decade.csv          one row per decade in analysis.decades
         <figures>/trends_by_decade.png           both shares as lines over the decades
         <results> = reports/tables (full graph), else the sample/variant tree
-        (musin.common.layers.results_dir); <figures> is its sibling `figures/`
+        (musin.common.layers.results_dir); <figures> from musin.common.layers.figures_dir
 
 A Spark stage on the Parquet graph layer, not on Neo4j: edges_by_decade
 (PRD §8.1) already splits every edge's weight by the decade of each shared
@@ -36,7 +36,7 @@ from pyspark.sql import functions as F
 
 from musin.analytics.common import write_table
 from musin.common.config import Config, ConfigError, load_config
-from musin.common.layers import graph_name, layer_path, results_dir
+from musin.common.layers import figures_dir, graph_name, layer_path, results_dir
 from musin.common.spark import get_spark
 from musin.graph.build import CO_CREDITED, EDGE_TYPES, FEATURED
 
@@ -183,7 +183,7 @@ def run(cfg: Config, sample: float | None) -> pd.DataFrame:
         len(frame),
         write_table(frame, out / "trends_by_decade.csv"),
     )
-    log.info("figure -> %s", plot(frame, out.parent / "figures" / "trends_by_decade.png", graph))
+    log.info("figure -> %s", plot(frame, figures_dir(cfg, graph) / "trends_by_decade.png", graph))
     for r in frame.itertuples():
         log.info(
             "  %ds  weight %9d  labelled %5.1f %%  cross-genre %5.1f %%  featuring %5.1f %%",

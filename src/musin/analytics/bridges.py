@@ -11,7 +11,7 @@ Writes: :Artist.genreDiversity, :Artist.bridgeScore (artists with a defined dive
         <results>/genre_matrix.csv      labelled collaboration weight per genre pair
         <figures>/genre_matrix.png      the matrix, row-normalised, as a heatmap
         <figures>/bridge_ego_<n>.png    ego networks of the top `analysis.ego_figures` bridges
-        <results> = reports/tables (full graph), else the sample/variant tree
+        <results>/<figures> = reports/{tables,figures} (full graph), else the sample/variant tree
 
 PRD §5 RQ1, on the COLLAB pairs (D-017: all edge types, weight = shared recordings):
     D_i = 1 - sum_g p_ig^2, p_ig = share of i's labelled collaboration weight
@@ -42,6 +42,7 @@ from musin.analytics.common import (
     write_table,
 )
 from musin.common.config import Config, load_config
+from musin.common.layers import figures_dir
 from musin.common.neo4j import get_driver
 from musin.common.spark import get_spark
 from musin.gds.setup import Session
@@ -253,7 +254,7 @@ def run(cfg: Config) -> dict[str, pd.DataFrame]:
     spark.stop()
 
     out = results_dir(cfg, graph)
-    figures = out.parent / "figures"
+    figures = figures_dir(cfg, graph)
     info = artists.set_index("artistId")[["name", "primaryGenre"]]
     for n, ego in enumerate(ego_ids, start=1):
         edges = ego_edges[(ego_edges["a"] == ego) | (ego_edges["b"] == ego)]

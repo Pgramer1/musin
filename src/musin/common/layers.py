@@ -76,3 +76,18 @@ def results_dir(cfg: Config, graph: str) -> Path:
     if variant is not None:
         base = base / VARIANT_ROOT / variant
     return base / "reports" / "tables"
+
+
+def figures_dir(cfg: Config, graph: str) -> Path:
+    """Where the figures of graph `graph` go, mirroring results_dir().
+
+    full                -> <repo>/<reports_dir>/figures
+    full-<v>            -> <repo>/<reports_dir>/figures/variants/<v>
+    sample-f<x>[-<v>]   -> the `figures` folder next to results_dir()'s `tables`
+    """
+    tag, variant = parse_graph_name(graph)
+    if tag is None:
+        repo_root = cfg.source.resolve().parent.parent
+        out = repo_root / cfg.get("reports_dir") / "figures"
+        return out if variant is None else out / VARIANT_ROOT / variant
+    return results_dir(cfg, graph).parent / "figures"

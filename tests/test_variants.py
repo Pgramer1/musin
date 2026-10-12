@@ -6,7 +6,7 @@ import pytest
 import yaml
 
 from musin.common.config import ConfigError, load_config
-from musin.common.layers import graph_name, layer_path, parse_graph_name, results_dir
+from musin.common.layers import figures_dir, graph_name, layer_path, parse_graph_name, results_dir
 
 REPO_CONFIG = Path(__file__).resolve().parents[1] / "config" / "pipeline.yaml"
 
@@ -111,4 +111,18 @@ def test_results_dir_keeps_variants_apart(tmp_path, data_root):
     assert results_dir(cfg, "sample-f0.05") == data_root / "sample" / "f0.05" / "reports" / "tables"
     assert results_dir(cfg, "sample-f0.05-characters") == (
         data_root / "sample" / "f0.05" / "variants" / "characters" / "reports" / "tables"
+    )
+
+
+def test_figures_dir_mirrors_results_dir(tmp_path, data_root):
+    path = config_with_variants(tmp_path, {"characters": {"filters": {"exclude_artist_types": []}}})
+    cfg = load_config(path)
+    figures = (tmp_path / "reports" / "figures").resolve()
+    assert figures_dir(cfg, "full") == figures
+    assert figures_dir(cfg, "full-characters") == figures / "variants" / "characters"
+    assert (
+        figures_dir(cfg, "sample-f0.05") == data_root / "sample" / "f0.05" / "reports" / "figures"
+    )
+    assert figures_dir(cfg, "sample-f0.05-characters") == (
+        data_root / "sample" / "f0.05" / "variants" / "characters" / "reports" / "figures"
     )
