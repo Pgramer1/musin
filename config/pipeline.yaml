@@ -51,6 +51,8 @@ years:                               # F2.4 (D-023)
 analysis:
   min_labelled_neighbours: 5
   top_k_bridges: 25
+  ego_figures: 3                     # F4.3 (D-038): ego-network figures for the top bridges (RQ1)
+  ego_max_neighbours: 150            # F4.3 (D-038): strongest neighbours drawn per ego network
   top_k_overlap: 100
   top_k_centrality: 20               # F4.1 (D-033): top-k list per centrality measure (RQ4)
   pagerank: {damping: 0.85, max_iterations: 1000}   # D-033: a cap, not a target; runs stop at GDS tolerance 1e-7 and must converge

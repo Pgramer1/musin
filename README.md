@@ -150,6 +150,8 @@ docker compose exec spark python -m musin.graph.sample --config config/pipeline.
 ```bash
 docker compose exec spark python -m musin.analytics.centrality --config config/pipeline.yaml   # F4.1: degree, PageRank, betweenness + agreement (RQ4)
 docker compose exec spark python -m musin.analytics.communities --config config/pipeline.yaml  # F4.2: Louvain communities vs genres (RQ2)
+docker compose exec spark python -m musin.analytics.bridges --config config/pipeline.yaml      # F4.3: genre diversity, bridge score, genre matrix (RQ1; needs F4.1 first)
+docker compose exec spark python -m musin.analytics.validation --config config/pipeline.yaml   # F4.6: ranks of the pre-registered artists + top-10 spot-check lists (needs F4.1-F4.3)
 docker compose exec spark python -m musin.analytics.trends --config config/pipeline.yaml       # F4.4: cross-genre and featuring share by decade (RQ3; Spark on Parquet, add --sample 0.05)
 docker compose exec spark python -m musin.analytics.separation --config config/pipeline.yaml --pair "Frank Sinatra" "Snoop Dogg"   # F4.5: degrees of separation (MBID or exact name)
 ```
@@ -260,7 +262,7 @@ docker/            Spark/Jupyter and Neo4j/GDS images
 setup/             wslconfig.example, preflight.sh
 src/musin/         pipeline code (python -m musin.<stage>)
 neo4j/             numbered Cypher files (smoke/: F1.5 toy-graph test)
-reports/           generated tables and figures (profile_*: F1.4, genre_*: F2.5, graph_build_*: F3.1, graph_checks: F3.3, sample_*: F3.2, centrality_*: F4.1, communities_*: F4.2, trends_*: F4.4, separation_*: F4.5)
+reports/           generated tables and figures (profile_*: F1.4, genre_*: F2.5, graph_build_*: F3.1, graph_checks: F3.3, sample_*: F3.2, centrality_*: F4.1, communities_*: F4.2, trends_*: F4.4, separation_*: F4.5, bridges_*/genre_matrix: F4.3, validation_*: F4.6)
 tests/             pytest + fixtures (neo4j_toy/: F1.5 toy graph)
 docker-compose.yml two services: spark, neo4j
 .env.example       template for per-machine settings and secrets

@@ -41,6 +41,8 @@ REQUIRED_KEYS: tuple[str, ...] = (
     "years.min_release_year",
     "analysis.min_labelled_neighbours",
     "analysis.top_k_bridges",
+    "analysis.ego_figures",
+    "analysis.ego_max_neighbours",
     "analysis.top_k_overlap",
     "analysis.top_k_centrality",
     "analysis.pagerank.damping",
