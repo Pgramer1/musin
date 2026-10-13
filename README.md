@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1–P3 done: raw ingest, clean layer, graph build, checks, Neo4j load with constraints and GDS projections (**M2 reached: the sample graph is loaded in Neo4j**); **P4 Graph analytics in progress** (F4.1 centrality, F4.2 communities, F4.4 decade trends, F4.5 degrees of separation and F4.7 sensitivity variants verified on the sample graph); scope gate G1 on Oct 16 · *Last updated 2026-10-11*
+> **Status:** P1–P4 done: raw ingest, clean layer, graph build, Neo4j load, and **all four research questions answered on the provisional (pre-G1) full graph**; P5 Benchmarks next; scope gate G1 on Oct 16, after which P3–P4 are re-run with the final filters · *Last updated 2026-10-13*
 
 ## Research questions
 
@@ -30,7 +30,7 @@ Exact metric definitions are in [PRD §5](PRD.md#5-research-questions).
 | P1 Environment & ingestion | Oct 10–16 | Done |
 | P2 Cleaning & genre normalization | Oct 15–21 | Done |
 | P3 Graph build & Neo4j load | Oct 18–24 | Done |
-| P4 Graph analytics | Oct 19–30 | In progress |
+| P4 Graph analytics | Oct 19–30 | Done (provisional graph) |
 | P5 Benchmarks | Oct 22–30 | Planned |
 | P6 Presentation & report | Oct 28–Nov 9 | Planned |
 
@@ -145,7 +145,7 @@ bash neo4j/import_graph.sh full --overwrite
 docker compose exec spark python -m musin.graph.sample --config config/pipeline.yaml --sample 0.05
 ```
 
-**9. Analyse** (P4; runs on whichever graph is loaded in Neo4j and names it in every output; tables go to `reports/tables/` for the full graph and to `$MUSIN_DATA/sample/f0.05/reports/tables/` for the sample):
+**9. Analyse** (P4; runs on whichever graph is loaded in Neo4j and names it in every output; tables go to `reports/tables/` for the full graph and to `$MUSIN_DATA/sample/f0.05/reports/tables/` for the sample). A full F4.1 run takes about 3 h (single-threaded betweenness), so keep the machine awake. The full command order is in [P4 §8](docs/phases/P4-graph-analytics.md#8-how-to-reproduce-this-phase):
 
 ```bash
 docker compose exec spark python -m musin.analytics.centrality --config config/pipeline.yaml   # F4.1: degree, PageRank, betweenness + agreement (RQ4)
@@ -279,6 +279,16 @@ More folders (`notebooks/`, `app/`) are added as the phases progress.
 **Genres (F2.5):** 15 parent genres cover 97.5% of genre votes; 26.6% of credited artists (69.9% of appearances) get a primary genre, led by electronic (26.7%) and rock (18.0%). Details: [F2.5 build log](docs/features/F2.5-genre-normalization.md), tables in `reports/tables/genre_*.csv`.
 
 **Graph (F3.1, provisional G1 thresholds):** 1.18 M artists and 3.54 M edges (1.73 M co-credited, 0.73 M featured, 0.29 M produced-for, 0.78 M performed-for), each recording counted once per artist pair; 23.4% of artists have a primary genre and 35.2% of edges are labelled at both ends. Classical artists are 2.2% of nodes but touch 13.1% of edges. Details: [F3.1 build log](docs/features/F3.1-edge-building.md), `reports/tables/graph_build_summary.csv`.
+
+*P4 results below are from the provisional pre-G1 full graph (classical and spoken word still included) and will be refreshed after G1. Tables are in `reports/tables/`, figures in `reports/figures/`.*
+
+**RQ1 — genre bridges (F4.3, F4.6):** 82.2 % of labelled collaboration weight stays within one genre. The most open genres are pop, folk & world, experimental and r&b & soul (see `genre_matrix.png`). The top bridges are world-music, session and roots collaborators (Baaba Maal, Amadou & Mariam, Youssou N'Dour, Ry Cooder, Gary Clark Jr.). Of 15 pre-registered cross-genre artists, all rank in the top 1,000 by betweenness (median rank 88), but only 3 are in the bridge top 100 (Ry Cooder #13, Mark Ronson #34, Santana #54): weight-based diversity under-rates artists with a large home genre (Quincy Jones, Herbie Hancock, Yo‐Yo Ma). Details: [F4.3](docs/features/F4.3-genre-bridges.md), [F4.6](docs/features/F4.6-validation.md).
+
+**RQ2 — communities vs genres (F4.2):** 69,671 Louvain communities (modularity 0.840). Communities match primary genres only partly: AMI 0.268 inside the largest component (NMI 0.275 overall). Some communities are near-pure genres (classical, EDM, swing jazz); others are scenes spanning genres (Japanese pop/game/anime music, European and experimental jazz, prog rock and metal). Details: [F4.2](docs/features/F4.2-communities.md).
+
+**RQ3 — trends (F4.4):** the cross-genre share of labelled weight fell from 21 % (1970s) to 12 % (1990s) and rose to 23 % in the 2020s. Featuring credits rose from 1–2 % of billed collaborations before 1990 to 18 % in the 2010s. Genre coverage halves over the same period (61 % → 32 %). Details: [F4.4](docs/features/F4.4-cross-genre-trends.md), `reports/figures/trends_by_decade.png`.
+
+**RQ4 — centrality (F4.1):** weighted degree, PageRank and betweenness agree moderately overall (Spearman ρ 0.52–0.65) but barely at the top (degree and betweenness share 5.8 % of their top 100). Weighted degree is dominated by content artefacts (Springsteen's live archive, orchestras, audiobooks); betweenness surfaces cross-scene connectors (Snoop Dogg, Paul McCartney, Sting, Eminem). With Character artists included, the Vocaloid 初音ミク (Hatsune Miku) becomes #1 by PageRank and betweenness, which supports excluding them (D-021). Details: [F4.1](docs/features/F4.1-centrality.md), [F4.7](docs/features/F4.7-sensitivity-variants.md).
 
 ## Documentation
 

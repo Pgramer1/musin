@@ -1,0 +1,2 @@
+artists,with_labelled_neighbour,with_diversity,min_labelled_neighbours,diversity_p25,diversity_p50,diversity_p75,diversity_p90,diversity_zero,betweenness_zero_share,labelled_pairs,labelled_weight,within_genre_weight_share,graph,edges_fingerprint
+1180939,845369,154578,5,0.0,0.2155190820791611,0.5,0.6560709589555747,47184,0.617458649430665,1094608,7334265,0.8221708651105462,full,-3716276720548320596788
