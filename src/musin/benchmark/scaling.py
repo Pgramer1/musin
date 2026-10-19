@@ -1,6 +1,6 @@
 """Spark scaling benchmark: data fraction x cores on the recording chain (F5.1, FR-21).
 
-    python -m musin.benchmark.scaling --config config/pipeline.yaml [--fresh]
+    python -m musin.benchmark.scaling --config config/pipeline.yaml [--fresh] [--through-repeat N]
     python -m musin.benchmark.scaling --config config/pipeline.yaml \
         --fractions 0.01,0.02 --cores 1,2 --repeats 1          # dev run, see below
 
@@ -419,19 +419,32 @@ def report(cfg: Config, cells: list[Cell], base: Path, dev: bool) -> bool:
     return True
 
 
-def run(cfg: Config, config_path: str, cells: list[Cell], dev: bool, fresh: bool) -> bool:
-    """Run every unfinished cell in its own process, then report. True if the grid is complete."""
+def run(
+    cfg: Config,
+    config_path: str,
+    cells: list[Cell],
+    dev: bool,
+    fresh: bool,
+    through_repeat: int | None = None,
+) -> bool:
+    """Run every unfinished cell in its own process, then report. True if the grid is complete.
+
+    through_repeat=N runs only repetitions 1..N, e.g. to look at one full pass
+    before committing machine time to the rest. The grid stays incomplete, so
+    no report is written; a later run without it resumes with repetition N+1.
+    """
     base = cfg.data_path("benchmark") / ("dev" if dev else "scaling")
     runs = base / "runs"
     if fresh and runs.is_dir():
         shutil.rmtree(runs)
         log.info("--fresh: removed %s", runs)
     prepare_root(cfg, base / "data")
-    for i, cell in enumerate(cells, 1):
+    todo = [c for c in cells if through_repeat is None or c.repeat <= through_repeat]
+    for i, cell in enumerate(todo, 1):
         if (runs / f"{cell.name}.json").is_file():
-            log.info("[%d/%d] %s already done, skipped", i, len(cells), cell.name)
+            log.info("[%d/%d] %s already done, skipped", i, len(todo), cell.name)
             continue
-        log.info("[%d/%d] %s", i, len(cells), cell.name)
+        log.info("[%d/%d] %s", i, len(todo), cell.name)
         cmd = [
             sys.executable, "-m", "musin.benchmark.scaling", "--config", config_path,
             "--cell", f"{cell.fraction:g}", str(cell.cores), str(cell.repeat),
@@ -452,6 +465,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--fractions", type=_csv(float), help="dev run: e.g. 0.01,0.02")
     parser.add_argument("--cores", type=_csv(int), help="dev run: e.g. 1,2")
     parser.add_argument("--repeats", type=int, help="dev run: repetitions per cell")
+    parser.add_argument(
+        "--through-repeat",
+        type=int,
+        help="run only repetitions 1..N (no report until the whole grid has run)",
+    )
     # Internal: one cell in this process, started by run().
     parser.add_argument(
         "--cell", nargs=3, metavar=("FRACTION", "CORES", "REPEAT"), help=argparse.SUPPRESS
@@ -474,9 +492,9 @@ def main(argv: list[str] | None = None) -> int:
     )
     log.info("%s grid: %d cells", "dev" if dev else "config", len(cells))
     start = time.monotonic()
-    complete = run(cfg, args.config, cells, dev, args.fresh)
+    complete = run(cfg, args.config, cells, dev, args.fresh, args.through_repeat)
     log.info("done in %.0fs", time.monotonic() - start)
-    return 0 if complete else 1
+    return 0 if complete or args.through_repeat is not None else 1
 
 
 if __name__ == "__main__":
