@@ -167,6 +167,16 @@ docker compose exec spark python -m musin.analytics.centrality --config config/p
 bash neo4j/import_graph.sh sample-f0.05 --overwrite                                           # back to the main dev graph
 ```
 
+The `classical` variant ([D-039](docs/decisions.md), G1/OD1) keeps classical artists, which the main graph leaves out. Use it the same way with `--variant classical`.
+
+**10. Benchmark** (P5). [F5.1](docs/features/F5.1-spark-scaling.md) times the recording chain (credits → contributions → years → graph build) for every data fraction × core count in `benchmark.scaling` (D-041). Each cell runs in its own process against a scratch copy under `$MUSIN_DATA/benchmark/`, so pipeline data and `reports/` are never touched. A re-run resumes from the last finished cell. Stop Neo4j and keep the machine idle and awake while it runs:
+
+```bash
+docker compose stop neo4j
+docker compose exec spark python -m musin.benchmark.scaling --config config/pipeline.yaml        # full grid, 48 runs; tables + figure in reports/
+docker compose exec spark python -m musin.benchmark.scaling --config config/pipeline.yaml     --fractions 0.01,0.02 --cores 2,4 --repeats 1                                                  # quick dev grid -> $MUSIN_DATA/benchmark/dev/
+```
+
 | Service | URL |
 |---|---|
 | Jupyter Lab (PySpark 3.5.9, Python 3.11) | http://localhost:8888 |

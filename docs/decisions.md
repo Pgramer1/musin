@@ -403,3 +403,21 @@ Entry format:
   - the spoken-word recording filter (g1-scope-gate.md §2.1 and §4, a proposed F3.6/FR-28 that isn't in the PRD)
   - the `log(1 + weight)` transform for the weighted P4 measures (§2.3, member B's decision)
   - the M1 sign-off of D-027/D-028 (§2.2)
+
+### D-041 — Spark scaling benchmark: recording chain, isolated scratch root, fresh process per cell, median of 3
+- **Date / phase:** 2026-10-19 · P5 (F5.1)
+- **Status:** Accepted. The workload and the repeat count were chosen by the user on 2026-10-19; contract change within v1 (PRD §8.4: `paths.benchmark` and `benchmark.scaling.*`), as for D-035.
+- **Context:** FR-21 asks for Spark runtime over data fraction (10/25/50/100 %) × cores (1/2/4/8). It doesn't say which work to time, how to keep a benchmark run from overwriting pipeline data, or how to handle run-to-run noise. `musin.common.spark.get_spark` always ran on `local[*]`, and the Spark event logs that NFR-04 asks for were off.
+- **Decision:**
+  1. **Workload:** the recording-level chain that F3.2 runs: `clean.credits` → `clean.contributions` → `clean.years` → `graph.build`. The stages run unchanged, including their own logging counts. Fraction 1.0 runs in full mode and smaller fractions in sample mode (hashed `recording_id`, FR-12). The F3.3 checks aren't timed, because they validate the build rather than produce it. The artist-level stages (F2.1, F2.5) aren't timed either, because they don't depend on the fraction.
+  2. **Grid:** `benchmark.scaling.fractions: [0.1, 0.25, 0.5, 1.0]`, `cores: [1, 2, 4, 8]` (Spark `local[n]`), `repeats: 3`, so 48 runs. The report uses the median per cell, with min and max as the spread. Runs go repetition-major (all 16 cells, then again), so slow drift spreads over every cell.
+  3. **Isolation:** each cell runs in a fresh Python + JVM process, so no cached data or JIT warm-up carries over between cells. It reads and writes the scratch root `$MUSIN_DATA/<paths.benchmark>/scaling/data`, whose `raw/` and four full artist tables are symlinks to the real ones. `reports_dir` is redirected into that root too. The pipeline's own `clean/`, `graph/`, `sample/` and `reports/` are never written.
+  4. **Spark settings:** only the core count changes. `spark.driver.memory` is `SPARK_DRIVER_MEMORY` (.env), and every other setting keeps the default the pipeline uses (shuffle partitions 200, AQE on). Tuning per core count would measure the tuning, not the scaling. Every cell records the settings it ran with.
+  5. **Event logs** go to `$MUSIN_DATA/<paths.benchmark>/scaling/spark-events/`, through `musin.common.spark.use_benchmark_settings`, which only the benchmark process calls (NFR-04).
+  6. **Resume:** a finished cell writes `runs/<cell>.json` atomically. A re-run skips finished cells and `--fresh` starts over. Report tables and the figure are written only once every cell has a result.
+  7. **Dev runs:** command-line `--fractions/--cores/--repeats` replace the grid, and everything then goes to `$MUSIN_DATA/<paths.benchmark>/dev/`. Report numbers come only from the config grid.
+- **Consequences:**
+  - **The fraction axis is not pure data volume.** Sample mode filters on hashed recording ids after reading the raw tables, so every fraction still scans the full raw Parquet. The report has to say this.
+  - **Wall-clock time includes overhead.** It counts starting each stage's SparkContext and writing Parquet, as a user running the pipeline would see them.
+  - **The machine must be otherwise idle** for the whole grid: no Neo4j job, which RULES §10 forbids anyway.
+  - **The full-fraction cells keep one extra copy** of the full `clean/` recording tables and `graph/` in the scratch root until it is deleted.

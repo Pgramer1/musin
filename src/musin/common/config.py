@@ -27,6 +27,7 @@ REQUIRED_KEYS: tuple[str, ...] = (
     "paths.clean",
     "paths.graph",
     "paths.import",
+    "paths.benchmark",
     "reports_dir",
     "filters.special_artists_file",
     "filters.min_recordings",
@@ -65,6 +66,9 @@ REQUIRED_KEYS: tuple[str, ...] = (
     "profiling.top_k_join_phrases",
     "checks.max_row_change",
     "validation.artists_file",
+    "benchmark.scaling.fractions",
+    "benchmark.scaling.cores",
+    "benchmark.scaling.repeats",
     "variants",
 )
 

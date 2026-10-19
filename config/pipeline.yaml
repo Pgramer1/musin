@@ -24,6 +24,7 @@ paths:                               # relative to $MUSIN_DATA (§8.5)
   clean: clean/
   graph: graph/
   import: import/
+  benchmark: benchmark/               # F5.1 (D-041): scratch data, run results and Spark event logs of P5
 reports_dir: reports/                # relative to the repo root
 
 filters:
@@ -75,6 +76,12 @@ profiling:                           # F1.4 report parameters (D-015); never aff
 
 checks:                              # F3.3 graph-layer quality checks (D-030); never affect the graph
   max_row_change: 0.05               # largest relative row-count change vs the last passing check of the same graph folder
+
+benchmark:                           # P5; never affects the graph or any analysis result
+  scaling:                           # F5.1 (FR-21, D-041): recording chain F2.2 -> F3.1, one fresh process per cell
+    fractions: [0.1, 0.25, 0.5, 1.0] # data fraction (1.0 = full mode, else sample mode by hashed recording id)
+    cores: [1, 2, 4, 8]              # Spark local[n]
+    repeats: 3                       # runs per cell; the report uses the median
 
 validation:                          # F4.6 (PRD §5.6, D-037): pre-registered cross-genre artists, fixed before RQ1 results
   artists_file: config/validation_artists.csv
