@@ -166,3 +166,23 @@ def test_benchmark_settings_pin_cores_and_event_log(tmp_path, monkeypatch):
     assert (tmp_path / "events").is_dir()
     with pytest.raises(ValueError):
         spark_module.use_benchmark_settings(0, tmp_path / "events")
+
+
+def test_end_labels_never_overlap():
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    from musin.benchmark.scaling import _end_labels
+
+    fig, ax = plt.subplots(figsize=(4, 3))
+    ax.plot([1, 8], [1, 3])
+    ax.set_ylim(0, 4)
+    points = [(8, 2.73, "10%"), (8, 2.81, "50%"), (8, 2.78, "25%"), (8, 3.6, "100%")]
+    _end_labels(ax, points, fig.dpi, "#000000", min_gap_px=11)
+    fig.canvas.draw()
+    ys = sorted(a.get_window_extent().y0 for a in ax.texts)
+    assert len(ys) == 4
+    assert all(b - a >= 11 - 0.5 for a, b in zip(ys, ys[1:], strict=False))
+    plt.close(fig)

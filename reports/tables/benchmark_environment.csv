@@ -1,0 +1,16 @@
+key,value
+cpu_model,13th Gen Intel(R) Core(TM) i5-13450HX
+logical_cpus_visible,16
+memory_total_gib,17.6
+os,Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.36
+python,3.11.16
+spark,3.5.9
+java,"openjdk version ""17.0.20.1"" 2026-08-18"
+spark_driver_memory,12g
+spark_sql_shuffle_partitions,200
+spark_sql_adaptive_enabled,true
+snapshot_date,20261007-002147
+repo_commit,5717fce68b0a982fb29a146bf77c3cb61ca7631f
+cells,48
+first_cell_started_utc,2026-10-19T08:15:14Z
+last_cell_started_utc,2026-10-19T15:00:01Z

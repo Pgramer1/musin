@@ -50,7 +50,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F4.5 | Degrees of separation | P4 | B | Should | Done (provisional graph) | [F4.5-degrees-of-separation.md](features/F4.5-degrees-of-separation.md) |
 | F4.6 | Validation | P4 | B | Must | Done (provisional graph) | [F4.6-validation.md](features/F4.6-validation.md) |
 | F4.7 | Sensitivity graph variants (D-021) | P4 | B | Must | Done (sample + provisional full graph) | [F4.7-sensitivity-variants.md](features/F4.7-sensitivity-variants.md) |
-| F5.1 | Spark scaling benchmark | P5 | A | Must | Planned | — |
+| F5.1 | Spark scaling benchmark | P5 | A | Must | Done | [F5.1-spark-scaling.md](features/F5.1-spark-scaling.md) |
 | F5.2 | PageRank: GDS vs GraphFrames | P5 | A | Should | Planned | — |
 | F5.3 | PageRank on GPU (cuGraph) | P5 | A | Could | Planned | — |
 | F6.1 | Report figures and tables | P6 | Both | Must | Planned | — |

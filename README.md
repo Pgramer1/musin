@@ -173,7 +173,7 @@ The `classical` variant ([D-039](docs/decisions.md), G1/OD1) keeps classical art
 
 ```bash
 docker compose stop neo4j
-docker compose exec spark python -m musin.benchmark.scaling --config config/pipeline.yaml        # full grid, 48 runs; tables + figure in reports/
+docker compose exec spark python -m musin.benchmark.scaling --config config/pipeline.yaml        # full grid, 48 runs (~5.5 h); tables + figure in reports/
 docker compose exec spark python -m musin.benchmark.scaling --config config/pipeline.yaml     --fractions 0.01,0.02 --cores 2,4 --repeats 1                                                  # quick dev grid -> $MUSIN_DATA/benchmark/dev/
 ```
 
@@ -289,6 +289,8 @@ More folders (`notebooks/`, `app/`) are added as the phases progress.
 **Genres (F2.5):** 15 parent genres cover 97.5% of genre votes; 26.6% of credited artists (69.9% of appearances) get a primary genre, led by electronic (26.7%) and rock (18.0%). Details: [F2.5 build log](docs/features/F2.5-genre-normalization.md), tables in `reports/tables/genre_*.csv`.
 
 **Graph (F3.1, final G1 settings, rebuilt 2026-10-19):** 1.14 M artists and 3.08 M edges (1.43 M co-credited, 0.73 M featured, 0.24 M produced-for, 0.68 M performed-for), each recording counted once per artist pair. 22.0% of artists have a primary genre, and 33.2% of edges are labelled at both ends. Classical artists (32,202) are left out of the main graph (D-039) and kept in the `classical` variant (1.18 M artists, 3.54 M edges, the old provisional graph). Details: [F3.1 build log](docs/features/F3.1-edge-building.md), `reports/tables/graph_build_summary.csv`.
+
+**Spark scaling (F5.1, FR-21):** the full recording chain (credits → contributions → years → graph build, 40.5 M recordings → 3.08 M edges) takes 20.4 min on 1 core and 6.4 min on 8 (median of 3). Speedup is 1.8× at 2 cores, 2.7× at 4 and 3.2× at 8 (efficiency 0.40). About a quarter of the runtime is fixed cost, because every sample still scans the full raw tables, so 10 % of the data takes 27–32 % of the full time. Details: [F5.1 build log](docs/features/F5.1-spark-scaling.md), `reports/tables/benchmark_scaling_summary.csv`, `reports/figures/benchmark_scaling.png`.
 
 *P4 results below are from the provisional pre-G1 full graph (classical and spoken word still included) and will be refreshed after G1. Tables are in `reports/tables/`, figures in `reports/figures/`.*
 

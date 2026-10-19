@@ -318,6 +318,7 @@ def plot(summary: list[dict], target: Path) -> Path:
     step = (len(FRACTION_RAMP) - 1) / max(len(fractions) - 1, 1)
     colors = {f: FRACTION_RAMP[round(i * step)] for i, f in enumerate(fractions)}
     fig, (left, right) = plt.subplots(1, 2, figsize=(9.6, 3.9))
+    ends: dict = {left: [], right: []}  # (x, y, label) of each line's last point
 
     for f in fractions:
         rows = [r for r in summary if r["fraction"] == f]
@@ -348,16 +349,8 @@ def plot(summary: list[dict], target: Path) -> Path:
             markersize=5,
             label=label,
         )
-        for ax, y in ((left, rows[-1]["median_s"] / 60), (right, rows[-1]["speedup"])):
-            ax.annotate(
-                label,
-                (xs[-1], y),
-                xytext=(6, 0),
-                textcoords="offset points",
-                va="center",
-                color=TEXT_2,
-                fontsize=8,
-            )
+        ends[left].append((xs[-1], rows[-1]["median_s"] / 60, label))
+        ends[right].append((xs[-1], rows[-1]["speedup"], label))
     right.plot(
         cores,
         [c / cores[0] for c in cores],
@@ -371,6 +364,7 @@ def plot(summary: list[dict], target: Path) -> Path:
         ax.set_xscale("log", base=2)
         ax.set_xticks(cores, [str(c) for c in cores])
         ax.minorticks_off()
+        ax.set_xlim(cores[0] / 1.15, cores[-1] * 1.45)  # room for the end labels
         ax.set_xlabel("cores (Spark local[n])")
     left.set_yscale("log")
     # A narrow range has no decade tick, so minor ticks carry the labels too.
@@ -383,9 +377,33 @@ def plot(summary: list[dict], target: Path) -> Path:
     right.legend(title="data fraction", loc="upper left", fontsize=8, title_fontsize=8)
     target.parent.mkdir(parents=True, exist_ok=True)
     fig.tight_layout()
+    for ax, points in ends.items():  # after layout, so display positions are final
+        _end_labels(ax, points, fig.dpi, TEXT_2)
     fig.savefig(target, dpi=DPI)
     plt.close(fig)
     return target
+
+
+def _end_labels(ax, points: list[tuple], dpi: float, color: str, min_gap_px: float = 11) -> None:
+    """Direct labels right of each line's last point, nudged apart so they never overlap.
+
+    Lines that end close together (speedup curves often do) would otherwise
+    print their labels on top of each other.
+    """
+    placed = sorted((ax.transData.transform((x, y))[1], x, y, text) for x, y, text in points)
+    last = None
+    for py, x, y, text in placed:
+        target = py if last is None else max(py, last + min_gap_px)
+        last = target
+        ax.annotate(
+            text,
+            (x, y),
+            xytext=(6, (target - py) * 72 / dpi),
+            textcoords="offset points",
+            va="center",
+            color=color,
+            fontsize=8,
+        )
 
 
 def report(cfg: Config, cells: list[Cell], base: Path, dev: bool) -> bool:
