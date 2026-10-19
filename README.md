@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1–P4 done: raw ingest, clean layer, graph build, Neo4j load, and **all four research questions answered on the provisional (pre-G1) full graph**; P5 Benchmarks next; scope gate G1 on Oct 16, after which P3–P4 are re-run with the final filters · *Last updated 2026-10-13*
+> **Status:** P1–P4 done: raw ingest, clean layer, graph build, Neo4j load, and **all four research questions answered on the provisional (pre-G1) full graph**; G1 decisions recorded ([D-039](docs/decisions.md): classical analysed separately; [D-040](docs/decisions.md): other values confirmed), so P3–P4 are re-run with the final filters; **P5 Benchmarks in progress** · *Last updated 2026-10-19*
 
 ## Research questions
 
@@ -31,7 +31,7 @@ Exact metric definitions are in [PRD §5](PRD.md#5-research-questions).
 | P2 Cleaning & genre normalization | Oct 15–21 | Done |
 | P3 Graph build & Neo4j load | Oct 18–24 | Done |
 | P4 Graph analytics | Oct 19–30 | Done (provisional graph) |
-| P5 Benchmarks | Oct 22–30 | Planned |
+| P5 Benchmarks | Oct 22–30 | In progress |
 | P6 Presentation & report | Oct 28–Nov 9 | Planned |
 
 Feature-level status, with a doc for everything built, is in the [build log](docs/README.md).

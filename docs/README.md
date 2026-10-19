@@ -8,7 +8,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | `features/` | One doc per feature, written when the feature is done ([template](features/_TEMPLATE.md)) |
 | [decisions.md](decisions.md) | Numbered decision log (`D-NNN`) |
 | [validation-list.md](validation-list.md) | Pre-registered cross-genre artists, committed before any RQ1 result (PRD §5.6, D-037) |
-| [g1-scope-gate.md](g1-scope-gate.md) | Evidence and proposals for scope gate G1 (Oct 16): OD1–OD7, spoken word, contract sign-off |
+| [g1-scope-gate.md](g1-scope-gate.md) | Evidence and proposals for scope gate G1 (Oct 16): OD1–OD7, spoken word, contract sign-off. Outcome: D-039, D-040 |
 
 **Status values:** Planned · In progress · Done · Cut
 
@@ -21,7 +21,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | P2 Cleaning & genre normalization | Oct 15–21 | Done | [P2-cleaning-genres.md](phases/P2-cleaning-genres.md) |
 | P3 Graph build & Neo4j load | Oct 18–24 | Done | [P3-graph-build-neo4j.md](phases/P3-graph-build-neo4j.md) |
 | P4 Graph analytics | Oct 19–30 | Done (provisional pre-G1 graph) | [P4-graph-analytics.md](phases/P4-graph-analytics.md) |
-| P5 Benchmarks | Oct 22–30 | Planned | — |
+| P5 Benchmarks | Oct 22–30 | In progress | — |
 | P6 Presentation & report | Oct 28–Nov 9 | Planned | — |
 
 ## Features

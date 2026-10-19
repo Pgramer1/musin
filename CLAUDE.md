@@ -11,7 +11,7 @@ Guidance for Claude Code in this repository.
 - **[README.md](README.md):** project overview with current status. Kept up to date as the project progresses.
 - **[docs/README.md](docs/README.md):** build-log index, showing what is done, in progress, and planned.
 
-**Current phase:** **P5 Benchmarks** next (owner A). P1 done 2026-10-10; P2, P3 done 2026-10-11; **P4 done 2026-10-13 on the provisional (pre-G1) full graph**. Neo4j holds `full` with all P4 properties written back. Scope gate G1 on Oct 16 resolves OD1–OD5/OD7; after it, rebuild F3.1→F3.5 and re-run P4 in the order of [P4 §8](docs/phases/P4-graph-analytics.md) (≈ 7 h, mostly betweenness; keep the machine awake). P4 Neo4j stages have no `--sample` flag (they use `loaded_graph.json`); Spark stages F4.4 and F4.7 take `--sample`/`--variant`. *(Update this line whenever a phase closes.)*
+**Current phase:** **P5 Benchmarks** in progress (owner A). P1 done 2026-10-10; P2, P3 done 2026-10-11; P4 done 2026-10-13 on the provisional (pre-G1) full graph. G1 recorded 2026-10-19 ([D-039](docs/decisions.md): `include_classical: false` + `classical` variant; [D-040](docs/decisions.md): other values confirmed). Still open: the spoken-word filter, log weights, and the D-027/D-028 sign-off. Next, rebuild F3.1→F3.5 (run checks once with `--accept-changes`) and re-run P4 in the order of [P4 §8](docs/phases/P4-graph-analytics.md), plus the `classical` variant (≈ 7 h + variant, mostly betweenness; keep the machine awake). P4 Neo4j stages have no `--sample` flag (they use `loaded_graph.json`); Spark stages F4.4 and F4.7 take `--sample`/`--variant`. *(Update this line whenever a phase closes.)*
 
 ## Mandatory: document every feature and phase
 

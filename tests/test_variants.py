@@ -66,10 +66,10 @@ def test_invalid_variants_fail_loudly(tmp_path, data_root, variants, message):
 def test_several_overrides_apply_together(tmp_path, data_root):
     path = config_with_variants(
         tmp_path,
-        {"strict": {"filters": {"include_classical": False, "min_recordings": 3}}},
+        {"strict": {"filters": {"include_classical": True, "min_recordings": 3}}},
     )
     cfg = load_config(path, "strict")
-    assert cfg.get("filters.include_classical") is False
+    assert cfg.get("filters.include_classical") is True
     assert cfg.get("filters.min_recordings") == 3
     assert cfg.get("filters.exclude_artist_types") == ["Character"]
 

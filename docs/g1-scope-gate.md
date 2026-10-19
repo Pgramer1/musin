@@ -1,6 +1,6 @@
 # Gate G1 — evidence and proposals (Oct 16)
 
-**Status:** draft for the G1 meeting, prepared 2026-10-11 by member A. Nothing in this note is decided. Each decision taken at G1 gets its own `D-NNN` entry, and provisional values in `config/pipeline.yaml` change only after that.
+**Status:** prepared 2026-10-11 by member A for the G1 meeting. **Outcome, recorded 2026-10-19:** the §1 recommendations were accepted ([D-039](decisions.md) OD1, [D-040](decisions.md) OD2–OD5, OD7). §2.1/§4 (spoken word), §2.2 (D-027/D-028 sign-off) and §2.3 (log weights) are still open. The rest of this note is the original draft, unchanged. Each decision taken at G1 gets its own `D-NNN` entry, and provisional values in `config/pipeline.yaml` change only after that.
 
 **Graph used:** full build of snapshot `20261007-002147` at commit `2ac5547` (F3.1 with D-028): 1,180,939 artists, 3,541,659 edges.
 

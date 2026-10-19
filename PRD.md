@@ -70,7 +70,7 @@ All metrics run on the **COLLAB projection** (every edge type merged into one un
   - The matrix is symmetric: A–B and B–A go into the same cell. The diagonal is within-genre collaboration.
   - Unlabelled edges are excluded.
 - **Outputs:** top-`analysis.top_k_bridges` (default 25) bridge table; genre × genre heatmap; ego-network figures for 3 bridges.
-- **Sensitivity:** the bridge table is also produced from a graph built with `Character` artists included (`filters.exclude_artist_types: []`, [D-021](docs/decisions.md)): the variant graph `characters` (F4.7, [D-035](docs/decisions.md)).
+- **Sensitivity:** the bridge table is also produced from a graph built with `Character` artists included (`filters.exclude_artist_types: []`, [D-021](docs/decisions.md)): the variant graph `characters` (F4.7, [D-035](docs/decisions.md)). It is also produced from the classical-included variant `classical` ([D-039](docs/decisions.md)).
 
 ### RQ2 — Do collaboration communities match genres?
 
@@ -89,7 +89,7 @@ All metrics run on the **COLLAB projection** (every edge type merged into one un
 
 - Weighted degree, PageRank, betweenness (settings in §5.5).
 - **Agreement:** Spearman ρ across all artists, and Jaccard overlap of the top-`analysis.top_k_overlap` (default 100) sets, for each pair of measures.
-- **Sensitivity:** repeat on a credit-only projection (CO_CREDITED + FEATURED), and report the top-20 lists from a graph built with `Character` artists included ([D-021](docs/decisions.md)): the variant graph `characters` (F4.7, [D-035](docs/decisions.md)).
+- **Sensitivity:** repeat on a credit-only projection (CO_CREDITED + FEATURED), and report the top-20 lists from a graph built with `Character` artists included ([D-021](docs/decisions.md)): the variant graph `characters` (F4.7, [D-035](docs/decisions.md)), and from the classical-included variant `classical` ([D-039](docs/decisions.md)).
 - **Outputs:** top-`analysis.top_k_centrality` (default 20) per measure; agreement table; discussion.
 
 ### 5.5 Algorithm settings
@@ -294,7 +294,7 @@ Algorithm outputs are written back as Artist properties: `degreeWeighted`, `page
 
 - An artist is kept if `recording_count ≥ filters.min_recordings` and it has at least one edge. Edges whose other endpoint was removed are dropped too.
 - This filter is applied when **building `graph/`** (F3.1), not at load time. `graph/` and Neo4j therefore hold the same artists and edges, so Spark-side analyses (RQ3) and Neo4j analyses see the same graph.
-- The final threshold is set at the scope gate (OD2). Until then, the provisional value in §8.4 applies.
+- The threshold was confirmed at the scope gate: `min_recordings: 1` (OD2, [D-040](docs/decisions.md)).
 
 **Import CSVs (`$MUSIN_DATA/import/`)**
 
@@ -334,10 +334,10 @@ reports_dir: reports/                # relative to the repo root
 
 filters:
   special_artists_file: config/special_artists.csv
-  min_recordings: 1                  # OD2, provisional until G1
-  max_credit_size: 10                # OD3, provisional until G1
-  include_classical: true            # OD1, provisional until G1
-  use_release_level_credits: false   # OD7, provisional until G1
+  min_recordings: 1                  # OD2 (D-040)
+  max_credit_size: 10                # OD3 (D-040)
+  include_classical: false           # OD1 (D-039): classical analysed separately, see variants.classical
+  use_release_level_credits: false   # OD7 (D-040)
   exclude_artist_types: [Character]  # D-021: artist types left out of the graph (applied in F3.1); [] keeps all
 
 credits:
@@ -388,12 +388,14 @@ validation:                          # F4.6 (§5.6, D-037): pre-registered artis
 variants:                            # F4.7 (D-035): variant graphs for sensitivity runs, built with --variant <name>
   characters:                        # D-021: Character artists kept (RQ1 and RQ4 sensitivity runs)
     filters: {exclude_artist_types: []}
+  classical:                         # D-039 (OD1): classical artists kept (RQ1 and RQ4 sensitivity runs)
+    filters: {include_classical: true}
 ```
 
 Rules:
 
 - **No hidden defaults:** code reads these keys and fails loudly if one is missing. It never falls back to a value buried in code.
-- **Provisional values:** values marked provisional apply until gate G1. G1 replaces them, and each final value gets a `D-NNN` decision entry.
+- **Provisional values:** G1 resolved every provisional value ([D-039](docs/decisions.md), [D-040](docs/decisions.md)).
 - **Changes after G1:** changing a value under `filters`, `credits`, `contributions`, `genres`, or `analysis` needs a decision entry and a re-run of every affected stage.
 - **New keys:** a key is added in the same PR as the feature that needs it, and this list is updated in that PR.
 - **Sample size:** sample mode is a command-line flag (`--sample <fraction>`), not a config key, so the same config serves both modes.
@@ -558,7 +560,7 @@ Nov 5–9 is buffer. Could-priority work starts only when every Must in its phas
 | Member B idle waiting for data | Medium | Lost parallelism | Contract by M1, toy graph (F1.5), sample graph by M2 |
 | Deadline slip | Medium | Rushed report | Feature freeze at M4; 4-day buffer |
 
-## 14. Open decisions (resolve at gate G1, Oct 16)
+## 14. Open decisions (resolved at gate G1: [D-039](docs/decisions.md), [D-040](docs/decisions.md))
 
 | ID | Question | Input needed | Provisional until G1 |
 |---|---|---|---|

@@ -3,9 +3,8 @@
 #
 # Rules (PRD §8.4):
 #   - No hidden defaults: code fails loudly if a key is missing.
-#   - Values marked "provisional" apply until gate G1 (Oct 16); each final
-#     value gets a D-NNN entry in docs/decisions.md.
-#   - After G1, changing a value under filters/credits/contributions/genres/
+#   - G1 resolved the provisional values (D-039, D-040).
+#   - Changing a value under filters/credits/contributions/genres/
 #     analysis needs a decision entry and a re-run of every affected stage.
 #   - New keys are added in the PR of the feature that needs them, together
 #     with the PRD §8.4 listing and src/musin/common/config.py REQUIRED_KEYS.
@@ -29,10 +28,10 @@ reports_dir: reports/                # relative to the repo root
 
 filters:
   special_artists_file: config/special_artists.csv
-  min_recordings: 1                  # OD2, provisional until G1
-  max_credit_size: 10                # OD3, provisional until G1
-  include_classical: true            # OD1, provisional until G1
-  use_release_level_credits: false   # OD7, provisional until G1
+  min_recordings: 1                  # OD2 (D-040)
+  max_credit_size: 10                # OD3 (D-040)
+  include_classical: false           # OD1 (D-039): classical analysed separately, see variants.classical
+  use_release_level_credits: false   # OD7 (D-040)
   exclude_artist_types: [Character]  # D-021: artist types left out of the graph (applied in F3.1); [] keeps all
 
 credits:
@@ -83,3 +82,5 @@ validation:                          # F4.6 (PRD §5.6, D-037): pre-registered c
 variants:                            # F4.7 (D-035): variant graphs for sensitivity runs, built with --variant <name>
   characters:                        # D-021: Character artists kept (RQ1 and RQ4 sensitivity runs)
     filters: {exclude_artist_types: []}
+  classical:                         # D-039 (OD1): classical artists kept (RQ1 and RQ4 sensitivity runs)
+    filters: {include_classical: true}

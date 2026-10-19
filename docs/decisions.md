@@ -379,3 +379,27 @@ Entry format:
   3. **Ego figures:** new keys `analysis.ego_figures: 3` (the top bridges drawn) and `analysis.ego_max_neighbours: 150` (strongest neighbours drawn per figure). The figure is radial: neighbours sit on a circle grouped by primary genre, with the ego's three largest neighbour genres in categorical slots 1–3 and the rest as "other genres"/"unlabelled". Slots 1–3 are the only ones the reference palette validates for scatter-like forms.
   4. **CJK names:** `fonts-noto-cjk` added to the Spark image. The sample's top bridge is 菅野よう子 (Yoko Kanno), which the default font cannot draw.
 - **Consequences:** Because every artist with ≥ 5 labelled neighbours is well connected, its betweenness percentile is close to 1 (0.97–1.00 for the sample's top 25), so the bridge ranking follows the diversity ranking closely. The betweenness factor mainly separates diversity ties and down-weights peripheral artists. The report must state this property of the PRD metric. PRD §8.4 updated.
+
+### D-039 — G1 / OD1: classical analysed separately; main graph without classical, `classical` variant for sensitivity
+- **Date / phase:** 2026-10-19 · G1 (recorded after the Oct 16 gate) · P5 start
+- **Status:** Accepted. Member A's recommendation in [g1-scope-gate.md §1.1](g1-scope-gate.md#11-od1--classical), accepted as proposed and recorded on 2026-10-19 by Claude Code at the team's instruction. Supersedes the provisional `include_classical: true` (PRD §14).
+- **Context:** On the provisional full graph (`20261007-002147`, commit `2ac5547`), artists with primary genre classical are 2.2 % of nodes but touch 13.1 % of edges and take 57 of the top 100 places by COLLAB weighted degree. Much of that weight comes from composers billed on recordings of their works (Handel: 757 collaborators), which isn't collaboration in the sense of RQ1–RQ4.
+- **Decision:**
+  1. `filters.include_classical: false` for the main graph. F3.1 removes artists whose primary genre is classical (D-026 §4), along with their edges.
+  2. A new variant `classical: {filters: {include_classical: true}}` (D-035) is the classical-included graph. It gets the same sensitivity runs as `characters` (D-021): RQ1's bridge table and RQ4's top-20 lists.
+- **Consequences:** The exploratory query in g1-scope-gate.md §1.1 predicts the main graph shrinks to about 1.14 M nodes and 3.08 M edges (−3.9 % / −13.1 %), with 19,761 non-classical artists left isolated. That's a query result, not a rebuild; F3.3 reports the real counts. Everything from F3.1 on has to be rebuilt and P4 re-run (P4 §8). The F3.3 run-to-run check will fail on the first rebuild (more than `checks.max_row_change`), so that one run needs `--accept-changes`. The P4 results on the provisional graph are superseded once the re-run finishes.
+
+### D-040 — G1 / OD2–OD5, OD7: provisional values confirmed
+- **Date / phase:** 2026-10-19 · G1 (recorded after the Oct 16 gate) · P5 start
+- **Status:** Accepted. Member A's recommendations in [g1-scope-gate.md §1](g1-scope-gate.md#1-open-decisions-od1od5-od7), accepted as proposed and recorded on 2026-10-19 by Claude Code at the team's instruction.
+- **Context:** PRD §14 left these open until G1, with provisional values in `config/pipeline.yaml`. The evidence is in g1-scope-gate.md §1.
+- **Decision:** These values are now final:
+  - **OD2:** `filters.min_recordings: 1`. Raising it to 2 removes 28 % of nodes but only 13 % of edges, and a GDS projection can still filter on `recordingCount`.
+  - **OD3:** `filters.max_credit_size: 10`. This keeps 99.97 % of recordings.
+  - **OD4:** the 15-parent mapping in `config/genre_mapping.csv` (D-024).
+  - **OD5:** `PRODUCED_FOR` stays its own edge type, together with RQ4's credit-only sensitivity run.
+  - **OD7:** `filters.use_release_level_credits: false`. Album credits repeat on every track and inflate producer weights, while recording coverage only rises from 9.91 % to 11.63 %.
+- **Consequences:** No stage changes because of these values. Three G1 agenda items are **not** decided here and stay open:
+  - the spoken-word recording filter (g1-scope-gate.md §2.1 and §4, a proposed F3.6/FR-28 that isn't in the PRD)
+  - the `log(1 + weight)` transform for the weighted P4 measures (§2.3, member B's decision)
+  - the M1 sign-off of D-027/D-028 (§2.2)
