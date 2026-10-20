@@ -54,8 +54,8 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F5.1 | Spark scaling benchmark | P5 | A | Must | Done | [F5.1-spark-scaling.md](features/F5.1-spark-scaling.md) |
 | F5.2 | PageRank: GDS vs GraphFrames | P5 | A | Should | Done | [F5.2-pagerank-gds-vs-graphframes.md](features/F5.2-pagerank-gds-vs-graphframes.md) |
 | F5.3 | PageRank on GPU (cuGraph) | P5 | A | Could | Done | [F5.3-pagerank-cugraph.md](features/F5.3-pagerank-cugraph.md) |
-| F6.1 | Report figures and tables | P6 | Both | Must | Done (code-generated part; ego-figure artists and F4.5 pairs still for the team) | [F6.1-report-figures-tables.md](features/F6.1-report-figures-tables.md) |
+| F6.1 | Report figures and tables | P6 | Both | Must | Done | [F6.1-report-figures-tables.md](features/F6.1-report-figures-tables.md) |
 | F6.2 | Demo | P6 | B | Must | Planned | — |
-| F6.3 | Final report | P6 | Both | Must | Planned | — |
+| F6.3 | Final report | P6 | Both | Must | In progress (skeleton: [report/report.md](../report/report.md)) | — |
 | F6.4 | Slides and rehearsal | P6 | Both | Must | Planned | — |
 | F6.5 | README and reproducibility check | P6 | A | Must | Done (sample mode from a clean clone, 2026-10-20; full mode not re-run) | [F6.5-readme-reproducibility.md](features/F6.5-readme-reproducibility.md) |
