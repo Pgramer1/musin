@@ -21,7 +21,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | P2 Cleaning & genre normalization | Oct 15–21 | Done | [P2-cleaning-genres.md](phases/P2-cleaning-genres.md) |
 | P3 Graph build & Neo4j load | Oct 18–24 | Done | [P3-graph-build-neo4j.md](phases/P3-graph-build-neo4j.md) |
 | P4 Graph analytics | Oct 19–30 | Done (final post-G1 graph, re-run 2026-10-20) | [P4-graph-analytics.md](phases/P4-graph-analytics.md) |
-| P5 Benchmarks | Oct 22–30 | In progress | — |
+| P5 Benchmarks | Oct 22–30 | Done (Oct 19–20) | [P5-benchmarks.md](phases/P5-benchmarks.md) |
 | P6 Presentation & report | Oct 28–Nov 9 | Planned | — |
 
 ## Features
@@ -52,7 +52,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F4.7 | Sensitivity graph variants (D-021) | P4 | B | Must | Done (`characters`, `classical`) | [F4.7-sensitivity-variants.md](features/F4.7-sensitivity-variants.md) |
 | F5.1 | Spark scaling benchmark | P5 | A | Must | Done | [F5.1-spark-scaling.md](features/F5.1-spark-scaling.md) |
 | F5.2 | PageRank: GDS vs GraphFrames | P5 | A | Should | Done | [F5.2-pagerank-gds-vs-graphframes.md](features/F5.2-pagerank-gds-vs-graphframes.md) |
-| F5.3 | PageRank on GPU (cuGraph) | P5 | A | Could | Planned | — |
+| F5.3 | PageRank on GPU (cuGraph) | P5 | A | Could | Done | [F5.3-pagerank-cugraph.md](features/F5.3-pagerank-cugraph.md) |
 | F6.1 | Report figures and tables | P6 | Both | Must | Planned | — |
 | F6.2 | Demo | P6 | B | Must | Planned | — |
 | F6.3 | Final report | P6 | Both | Must | Planned | — |

@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1–P4 done; G1 decisions recorded ([D-039](docs/decisions.md): classical analysed separately; [D-040](docs/decisions.md): other values confirmed), the graph rebuilt and **all four research questions re-answered on the final graph** (2026-10-20); **P5 Benchmarks in progress** (F5.1 Spark scaling and F5.2 GDS vs GraphFrames done) · *Last updated 2026-10-20*
+> **Status:** P1–P4 done; G1 decisions recorded ([D-039](docs/decisions.md): classical analysed separately; [D-040](docs/decisions.md): other values confirmed), the graph rebuilt and **all four research questions re-answered on the final graph** (2026-10-20); **P5 Benchmarks done** (Spark scaling, GDS vs GraphFrames vs cuGraph); P6 report next · *Last updated 2026-10-20*
 
 ## Research questions
 
@@ -31,7 +31,7 @@ Exact metric definitions are in [PRD §5](PRD.md#5-research-questions).
 | P2 Cleaning & genre normalization | Oct 15–21 | Done |
 | P3 Graph build & Neo4j load | Oct 18–24 | Done |
 | P4 Graph analytics | Oct 19–30 | Done (final graph) |
-| P5 Benchmarks | Oct 22–30 | In progress |
+| P5 Benchmarks | Oct 22–30 | Done |
 | P6 Presentation & report | Oct 28–Nov 9 | Planned |
 
 Feature-level status, with a doc for everything built, is in the [build log](docs/README.md).
@@ -186,6 +186,14 @@ docker compose exec spark python -m musin.benchmark.pagerank --config config/pip
 docker compose start neo4j
 ```
 
+[F5.3](docs/features/F5.3-pagerank-cugraph.md) adds RAPIDS cuGraph on the GPU as a third engine (D-043). This is optional: it needs Docker Desktop's NVIDIA GPU support, a 5.83 GiB image, and accepting the NVIDIA Deep Learning Container License. It runs in the `rapids` container (compose profile `gpu`); the report is then rewritten from the Spark container:
+
+```bash
+docker compose --profile gpu build rapids
+docker compose --profile gpu run --rm rapids python -m musin.benchmark.pagerank_gpu --config config/pipeline.yaml
+docker compose exec spark python -m musin.benchmark.pagerank --config config/pipeline.yaml --report
+```
+
 | Service | URL |
 |---|---|
 | Jupyter Lab (PySpark 3.5.9, Python 3.11) | http://localhost:8888 |
@@ -301,7 +309,7 @@ More folders (`notebooks/`, `app/`) are added as the phases progress.
 
 **Spark scaling (F5.1, FR-21):** the full recording chain (credits → contributions → years → graph build, 40.5 M recordings → 3.08 M edges) takes 20.4 min on 1 core and 6.4 min on 8 (median of 3). Speedup is 1.8× at 2 cores, 2.7× at 4 and 3.2× at 8 (efficiency 0.40). About a quarter of the runtime is fixed cost, because every sample still scans the full raw tables, so 10 % of the data takes 27–32 % of the full time. Details: [F5.1 build log](docs/features/F5.1-spark-scaling.md), `reports/tables/benchmark_scaling_summary.csv`, `reports/figures/benchmark_scaling.png`.
 
-**PageRank engines (F5.2, FR-22):** on the final graph (1.14 M artists, 2.86 M pairs, unweighted, 4 cores each), Neo4j GDS and Spark GraphFrames give the same ranking: identical top 100, Spearman ρ 0.99999, scores within 1.2 × 10⁻⁶. GDS computes it in 3.8 s, GraphFrames in 470 s (123×); end to end it's 30 s against 8 min. GraphFrames saves the one-time Neo4j import (about 2.5 min) but loses far more on every algorithm run, which supports the Spark-for-ETL, GDS-for-algorithms split. Details: [F5.2 build log](docs/features/F5.2-pagerank-gds-vs-graphframes.md), `reports/tables/benchmark_pagerank_*.csv`.
+**PageRank engines (F5.2, FR-22):** on the final graph (1.14 M artists, 2.86 M pairs, unweighted, 4 cores each), Neo4j GDS and Spark GraphFrames give the same ranking: identical top 100, Spearman ρ 0.99999, scores within 1.2 × 10⁻⁶. GDS computes it in 3.8 s, GraphFrames in 470 s (123×); end to end it's 30 s against 8 min. GraphFrames saves the one-time Neo4j import (about 2.5 min) but loses far more on every algorithm run, which supports the Spark-for-ETL, GDS-for-algorithms split. RAPIDS cuGraph on the laptop GPU (F5.3) gives the same top 100 in 0.2 s (1.1 s end to end), 19× faster than GDS, but the project needs Neo4j anyway for the demo, Cypher paths and write-back. Details: [F5.2](docs/features/F5.2-pagerank-gds-vs-graphframes.md), [F5.3](docs/features/F5.3-pagerank-cugraph.md), [P5](docs/phases/P5-benchmarks.md), `reports/tables/benchmark_pagerank_*.csv`.
 
 *P4 results below are from the final post-G1 full graph (classical excluded, D-039; spoken word still included, D-040), re-run 2026-10-19/20. The classical-included and Character-included sensitivity runs are in `reports/tables/variants/`.*
 

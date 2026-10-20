@@ -5,7 +5,16 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from musin.benchmark.pagerank import compare, settings, summary, undirected_edges
+from musin.benchmark.common import (
+    LOADED_MARKER,
+    collect,
+    finished,
+    read_loaded,
+    run_file,
+    settings,
+    write_json,
+)
+from musin.benchmark.pagerank import compare, summary, undirected_edges
 from musin.common.config import load_config
 
 REPO_CONFIG = Path(__file__).resolve().parents[1] / "config" / "pipeline.yaml"
@@ -109,3 +118,45 @@ def test_graphframes_matches_reference_pagerank(spark):
     for v in want:
         assert got[v] == pytest.approx(want[v], rel=1e-6)
     assert sum(got.values()) == pytest.approx(6.0, rel=1e-6)  # unnormalised: sums to N
+
+
+def test_summary_ratios_for_every_engine():
+    def run(engine, total):
+        return {"engine": engine, "repeat": 1, "load_s": 1.0, "compute_s": total - 2.0,
+                "output_s": 1.0, "total_s": total}  # fmt: skip
+
+    rows = {
+        r["engine"]: r
+        for r in summary([run("gds", 10.0), run("cugraph", 5.0), run("graphframes", 100.0)])
+    }
+    assert [r for r in rows] == ["gds", "graphframes", "cugraph"]  # fixed engine order
+    assert rows["cugraph"]["total_vs_gds"] == 0.5 and rows["graphframes"]["total_vs_gds"] == 10.0
+    assert "total_vs_gds" not in rows["gds"]
+
+
+def test_marker_name_matches_the_import_stage():
+    from musin.export.neo4j_check import LOADED_MARKER as EXPORT_MARKER
+
+    assert LOADED_MARKER == EXPORT_MARKER
+
+
+def test_read_loaded(data_root):
+    cfg = load_config(REPO_CONFIG)
+    write_json(data_root / "neo4j" / LOADED_MARKER, {"graph": "full", "source": "/data/graph"})
+    assert read_loaded(cfg)["graph"] == "full"
+    write_json(data_root / "neo4j" / LOADED_MARKER, {"graph": "toy"})
+    with pytest.raises(Exception, match="toy graph"):
+        read_loaded(cfg)
+
+
+def test_resume_skips_only_runs_of_the_same_graph(tmp_path):
+    write_json(run_file(tmp_path, "cugraph", 1), {"repeat": 1, "edges_fingerprint": "-1"})
+    write_json(run_file(tmp_path, "cugraph", 2), {"repeat": 2, "edges_fingerprint": "-2"})
+    assert finished(tmp_path, "cugraph", 1, "-1") == {"repeat": 1, "edges_fingerprint": "-1"}
+    assert finished(tmp_path, "cugraph", 2, "-1") is None  # another graph build: re-run
+    assert finished(tmp_path, "cugraph", 3, "-1") is None  # never ran
+    assert collect(tmp_path, "cugraph", 2, "-1") is None
+    write_json(run_file(tmp_path, "cugraph", 2), {"repeat": 2, "edges_fingerprint": "-1"})
+    runs = collect(tmp_path, "cugraph", 2, "-1")
+    assert [r["repeat"] for r in runs] == [1, 2]
+    assert (tmp_path / "runs_cugraph.json").is_file()

@@ -444,3 +444,33 @@ Entry format:
   - **What is compared:** the engines on the same mathematics, not F4.1's exact setting. The reference row shows how far unweighted PageRank is from F4.1's weighted ranking.
   - **GDS load excludes the import:** GDS's load phase starts from an already imported database. The one-time CSV export and bulk import (F3.4, about 25 s plus 2 min on the full graph) are not counted; GraphFrames reads Parquet directly. The report must say this.
   - **Convergence rules differ:** GDS stops when every score changes by less than the tolerance between iterations, while GraphX (under GraphFrames) stops updating each vertex once its own change falls below it. The scores are compared value by value to show the effect.
+
+### D-043 — cuGraph as the third PageRank engine: same input and settings as D-042, on the GPU, in its own container
+- **Date / phase:** 2026-10-20 · P5 (F5.3)
+- **Status:** Accepted. The image download (5.83 GiB) and the NVIDIA Deep Learning Container License were approved by the team on 2026-10-20.
+- **Context:** FR-23 asks for "the same comparison on GPU with RAPIDS cuGraph" (Could). RAPIDS needs CUDA libraries that the Spark image doesn't have, and the RAPIDS image has neither PySpark nor the Neo4j driver. The reference machine's RTX 4060 Laptop GPU (8 GB) is visible to Docker through Docker Desktop's NVIDIA runtime under WSL2.
+- **Decision:**
+  1. **Image:** a separate container, `rapids`, built from `rapidsai/base:26.08-cuda12-py3.11`, plus PyYAML (`docker/rapids/Dockerfile`).
+     - The 26.10 release was under two weeks old.
+     - It sits behind the compose profile `gpu`, so `docker compose up` never starts it.
+     - It runs as the host user with the image's `conda` group (gid 1001) added, so it can use `/opt/conda` and its results in `$MUSIN_DATA` belong to the user.
+  2. **Input and settings as in D-042:**
+     - the COLLAB pairs of the graph named in `loaded_graph.json`, read with cuDF from that graph's Parquet;
+     - one undirected `cugraph.Graph` edge per pair;
+     - damping 0.85, tolerance `benchmark.pagerank.tolerance` (1e-7), cap `analysis.pagerank.max_iterations`;
+     - `fail_on_nonconvergence` on (cuGraph's default).
+  3. **Same scale as the other engines:**
+     - each edge carries weight 1.0 as float64, so PageRank stays unweighted but cuGraph computes in double precision like GDS and GraphX;
+     - cuGraph's sum-to-1 scores are multiplied by the number of artists, which puts them on the other engines' scale (sum N, no isolated artists).
+  4. **Phases** as D-042:
+     - load: cuDF reads Parquet, the pairs are formed, the graph is built;
+     - compute: `cugraph.pagerank` plus a device synchronise;
+     - output: the scores are copied to the host and written as Parquet with PyArrow.
+
+     cuDF's own GPU-side Parquet writer, through KvikIO, fails under WSL with `CUDA_ERROR_ILLEGAL_ADDRESS`, even for a trivial frame written to `/tmp`. `LIBCUDF_CUFILE_POLICY=OFF` didn't help. Each repetition is a fresh process, with a cold CUDA context.
+  5. **Resume and report:** `musin.benchmark.pagerank_gpu` (no PySpark or Neo4j imports) writes `run_cugraph_r<n>.json`. The F5.2 report, `musin.benchmark.pagerank --report` in the Spark container, adds cuGraph when its repetitions are complete. Every engine now saves each repetition at once and skips saved ones on a re-run for the same graph fingerprint, so an interrupted benchmark resumes.
+- **Consequences:**
+  - **The cuGraph number is GPU against CPU:** a laptop GPU against GDS on 4 CPU cores. It says what this hardware does, not that GPUs win in general.
+  - **cuGraph's load phase starts from Parquet,** like GraphFrames'. GDS's starts from an already imported database.
+  - **cuGraph reports no iteration count,** and its tolerance follows cuGraph's own definition. The value-by-value comparison shows the effect.
+  - **The image costs 17.6 GB on disk.**

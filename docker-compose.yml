@@ -33,6 +33,36 @@ services:
       - "127.0.0.1:8888:8888"   # Jupyter Lab
       - "127.0.0.1:4040:4040"   # Spark UI (while a SparkSession is running)
 
+  rapids:
+    # F5.3 (D-043): RAPIDS cuGraph on the GPU, for musin.benchmark.pagerank_gpu only.
+    # Behind the "gpu" profile, so `docker compose up` never starts it; run with
+    #   docker compose --profile gpu run --rm rapids python -m musin.benchmark.pagerank_gpu ...
+    # Needs the NVIDIA driver on Windows and Docker Desktop's GPU support (WSL2).
+    build: docker/rapids
+    image: musin-rapids:f5.3
+    profiles: [gpu]
+    env_file: .env
+    environment:
+      MUSIN_DATA: /data
+      PYTHONPATH: /workspace/src
+      HOME: /tmp                  # the image's home belongs to its own user
+      CUPY_CACHE_DIR: /tmp/cupy
+    # Same UID as the Spark container's user, so results in $MUSIN_DATA stay yours.
+    # The image's conda install (/opt/conda) is open to its `conda` group (gid 1001).
+    user: "${HOST_UID:-1000}:${HOST_UID:-1000}"
+    group_add: ["1001"]
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+      - ${MUSIN_DATA:?MUSIN_DATA must be set in .env}:/data
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
   neo4j:
     # neo4j:5.26.30-community with GDS 2.13.12 baked in (see docker/neo4j/Dockerfile).
     build: docker/neo4j
