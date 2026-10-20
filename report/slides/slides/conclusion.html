@@ -1,0 +1,31 @@
+<section id="conclusion" data-transition="fade" style="background:#F6F4EF;color:#14213D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:64px;font-weight:700;line-height:1.1;color:#14213D">Conclusion</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFFFF;border:1px solid #DED9CE;border-radius:20px;padding:28px 36px">
+<p style="font-size:24px;font-weight:600;color:#1C5CAB">RQ1 Bridges</p>
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.1;color:#14213D">75.8 % within genre</p>
+<p style="font-size:26px;line-height:1.4;color:#3D4A5C">Bridges are producers, session players and world musicians.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFFFF;border:1px solid #DED9CE;border-radius:20px;padding:28px 36px">
+<p style="font-size:24px;font-weight:600;color:#1C5CAB">RQ2 Communities</p>
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.1;color:#14213D">AMI 0.186</p>
+<p style="font-size:26px;line-height:1.4;color:#3D4A5C">Strong communities (modularity 0.868) that are scenes, not genres.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFFFF;border:1px solid #DED9CE;border-radius:20px;padding:28px 36px">
+<p style="font-size:24px;font-weight:600;color:#1C5CAB">RQ3 Trends</p>
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.1;color:#14213D">16.0 % → 28.4 %</p>
+<p style="font-size:26px;line-height:1.4;color:#3D4A5C">Cross-genre share, 1960s → 2020s; featuring rose to 23.1 % in the 2010s.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFFFF;border:1px solid #DED9CE;border-radius:20px;padding:28px 36px">
+<p style="font-size:24px;font-weight:600;color:#1C5CAB">RQ4 Centrality</p>
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.1;color:#14213D">Jaccard 0.047</p>
+<p style="font-size:26px;line-height:1.4;color:#3D4A5C">Degree and betweenness share almost none of their top 100.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;gap:32px;background:#14213D;border-radius:20px;padding:28px 40px;align-items:center">
+<p style="font-size:24px;font-weight:600;color:#F2A27E;width:220px">Architecture</p>
+<p style="flex:1;font-size:26px;line-height:1.4;color:#F6F4EF">Spark builds the full graph from credits in 385 s on 8 cores · GDS computes PageRank 123× faster than GraphFrames, same top 100</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5A6576">Limits: genre tags cover 22 % of artists · spoken word still in the graph · one machine · full report and code in the repository</p>
+<aside>About 45 seconds. Our answers. Bridges: three quarters of labelled collaboration stays within one genre, and the artists who bridge genres are mostly producers, session players and world musicians. Communities: they are strong and stable, but they are scenes defined by place and era as much as by genre; agreement with genre is low, AMI 0.186. Trends: the cross-genre share rose from 16 to 28 percent between the 1960s and the 2020s, and featuring credits took off in the 1990s. Centrality: the measures agree overall but almost not at the top. On architecture: Spark builds the full graph from the parsed credits in about six and a half minutes on eight cores, and a graph engine runs PageRank 123 times faster than Spark's graph library with the same result. Limits: only 22 percent of artists have a genre, audiobooks are still in the graph, and everything ran on one laptop. Thank you.</aside>
+</section>

@@ -23,7 +23,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | P3 Graph build & Neo4j load | Oct 18–24 | Done | [P3-graph-build-neo4j.md](phases/P3-graph-build-neo4j.md) |
 | P4 Graph analytics | Oct 19–30 | Done (final post-G1 graph, re-run 2026-10-20) | [P4-graph-analytics.md](phases/P4-graph-analytics.md) |
 | P5 Benchmarks | Oct 22–30 | Done (Oct 19–20) | [P5-benchmarks.md](phases/P5-benchmarks.md) |
-| P6 Presentation & report | Oct 28–Nov 9 | In progress (F6.1, F6.5 done 2026-10-20) | — |
+| P6 Presentation & report | Oct 28–Nov 9 | Built 2026-10-20; team review, demo video and rehearsal pending | [P6-presentation-report.md](phases/P6-presentation-report.md) |
 
 ## Features
 
@@ -55,7 +55,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F5.2 | PageRank: GDS vs GraphFrames | P5 | A | Should | Done | [F5.2-pagerank-gds-vs-graphframes.md](features/F5.2-pagerank-gds-vs-graphframes.md) |
 | F5.3 | PageRank on GPU (cuGraph) | P5 | A | Could | Done | [F5.3-pagerank-cugraph.md](features/F5.3-pagerank-cugraph.md) |
 | F6.1 | Report figures and tables | P6 | Both | Must | Done | [F6.1-report-figures-tables.md](features/F6.1-report-figures-tables.md) |
-| F6.2 | Demo | P6 | B | Must | Planned | — |
-| F6.3 | Final report | P6 | Both | Must | In progress (skeleton: [report/report.md](../report/report.md)) | — |
-| F6.4 | Slides and rehearsal | P6 | Both | Must | Planned | — |
+| F6.2 | Demo | P6 | B | Must | Done (video to record; Streamlit not built) | [F6.2-demo.md](features/F6.2-demo.md) |
+| F6.3 | Final report | P6 | Both | Must | Draft complete, team review pending ([report/report.md](../report/report.md)) | [F6.3-final-report.md](features/F6.3-final-report.md) |
+| F6.4 | Slides and rehearsal | P6 | Both | Must | Deck done; video and rehearsal pending | [F6.4-slides.md](features/F6.4-slides.md) |
 | F6.5 | README and reproducibility check | P6 | A | Must | Done (sample mode from a clean clone, 2026-10-20; full mode not re-run) | [F6.5-readme-reproducibility.md](features/F6.5-readme-reproducibility.md) |
