@@ -9,6 +9,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | [decisions.md](decisions.md) | Numbered decision log (`D-NNN`) |
 | [validation-list.md](validation-list.md) | Pre-registered cross-genre artists, committed before any RQ1 result (PRD §5.6, D-037) |
 | [g1-scope-gate.md](g1-scope-gate.md) | Evidence and proposals for scope gate G1 (Oct 16): OD1–OD7, spoken word, contract sign-off. Outcome: D-039, D-040 |
+| [g1-open-items.md](g1-open-items.md) | Decision brief (2026-10-20) for the G1 items still open after P5: spoken-word filter and betweenness reproducibility, with options, costs and combinations |
 
 **Status values:** Planned · In progress · Done · Cut
 
