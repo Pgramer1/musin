@@ -41,7 +41,9 @@ fi
 data="${MUSIN_DATA:-}"
 if [[ -z "$data" ]]; then
   bad "MUSIN_DATA not set"
-elif [[ "$data" != /* || "$data" == *YOUR_WSL_USER* ]]; then
+elif [[ "$data" == *YOUR_WSL_USER* ]]; then
+  bad "MUSIN_DATA still has the .env.example placeholder; set it to e.g. $HOME/musin-data"
+elif [[ "$data" != /* ]]; then
   bad "MUSIN_DATA must be an absolute path (got '$data')"
 elif [[ "$data" == /mnt/* ]]; then
   bad "MUSIN_DATA is on the Windows filesystem ($data); use e.g. $HOME/musin-data"

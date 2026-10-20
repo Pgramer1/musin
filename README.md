@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1–P4 done; G1 decisions recorded ([D-039](docs/decisions.md): classical analysed separately; [D-040](docs/decisions.md): other values confirmed), the graph rebuilt and **all four research questions re-answered on the final graph** (2026-10-20); **P5 Benchmarks done** (Spark scaling, GDS vs GraphFrames vs cuGraph); **P6 in progress**: report figures and tables generated (F6.1, [`reports/README.md`](reports/README.md)) · *Last updated 2026-10-20*
+> **Status:** P1–P4 done; G1 decisions recorded ([D-039](docs/decisions.md): classical analysed separately; [D-040](docs/decisions.md): other values confirmed), the graph rebuilt and **all four research questions re-answered on the final graph** (2026-10-20); **P5 Benchmarks done** (Spark scaling, GDS vs GraphFrames vs cuGraph); **P6 in progress**: report figures and tables generated (F6.1, [`reports/README.md`](reports/README.md)); sample mode reproduced from a clean clone, README corrected (F6.5) · *Last updated 2026-10-20*
 
 ## Research questions
 
@@ -32,7 +32,7 @@ Exact metric definitions are in [PRD §5](PRD.md#5-research-questions).
 | P3 Graph build & Neo4j load | Oct 18–24 | Done |
 | P4 Graph analytics | Oct 19–30 | Done (final graph) |
 | P5 Benchmarks | Oct 22–30 | Done |
-| P6 Presentation & report | Oct 28–Nov 9 | In progress (F6.1 done) |
+| P6 Presentation & report | Oct 28–Nov 9 | In progress (F6.1, F6.5 done) |
 
 Feature-level status, with a doc for everything built, is in the [build log](docs/README.md).
 
@@ -58,7 +58,7 @@ reports/ ── figures, tables, final report, demo
 | Storage | Parquet |
 | Graph database | Neo4j 5 Community + GDS |
 | Analysis | Jupyter, pandas, scikit-learn, matplotlib |
-| Benchmarks | Spark GraphFrames, RAPIDS cuGraph (stretch) |
+| Benchmarks | Spark GraphFrames, RAPIDS cuGraph (optional GPU container) |
 
 ## Getting started
 
@@ -69,49 +69,59 @@ Prerequisites:
 - 24 GB RAM for full-data runs (8 GB is enough for sample mode)
 - 100 GB+ free SSD space for the dumps and intermediate data
 
-**1. One-time Windows setup** (PowerShell, from the repo root):
+**1. One-time Windows setup** (PowerShell):
 
 ```powershell
-wsl --install -d Ubuntu-24.04                                    # creates your Linux user
-Copy-Item setup\wslconfig.example $env:USERPROFILE\.wslconfig    # caps WSL at 18 GB; merge if you have one
-wsl --shutdown                                                   # then restart Docker Desktop
+wsl --install -d Ubuntu-24.04     # creates your Linux user
 ```
 
-In Docker Desktop, go to **Settings → Resources → WSL integration** and enable your Ubuntu distro.
+In Docker Desktop, go to **Settings → Resources → WSL integration** and enable your Ubuntu distro. Every command from here on runs in that Ubuntu shell (`wsl -d Ubuntu-24.04` from PowerShell; the default distro may be `docker-desktop`).
 
-**2. Configure and start** (Ubuntu shell, repo root):
+**2. Clone and cap WSL's memory** (Ubuntu shell). The GitHub repo is private and WSL's `git` has no GitHub login of its own, so `git clone` stops at a username prompt: sign in first with `gh auth login` (`sudo apt install gh`) or give a personal access token as the password. Clone into the WSL filesystem (e.g. `~/musin`); a checkout under `/mnt/c/` also works but its bind mount is slower.
+
+```bash
+git clone https://github.com/Pgramer1/musin.git ~/musin && cd ~/musin
+cp setup/wslconfig.example /mnt/c/Users/<windows-user>/.wslconfig   # caps WSL at 18 GB; merge if you have one
+```
+
+Then run `wsl --shutdown` in PowerShell, restart Docker Desktop, and open the Ubuntu shell in `~/musin` again.
+
+**3. Configure and start** (Ubuntu shell, repo root):
 
 ```bash
 cp .env.example .env              # set MUSIN_DATA=/home/<you>/musin-data and NEO4J_PASSWORD (8+ chars)
 bash setup/preflight.sh           # checks the machine and creates the $MUSIN_DATA folders
-docker compose build
+docker compose build              # ~7 min on a cold cache (PySpark is a 318 MB download)
 docker compose up -d
 docker compose exec spark python -m musin.envcheck --config config/pipeline.yaml
 ```
 
-**3. Get the data** (8.1 GB download of the pinned snapshot `20261007-002147`, GPG- and SHA-256-verified; [F1.2](docs/features/F1.2-dump-download.md)):
+If `docker compose build` stops with `ReadTimeoutError` from `files.pythonhosted.org`, run it again: the finished layers are cached, so it resumes at the pip step. On a machine with less than 24 GB RAM, lower the three memory values in `.env` as its comment says (sample mode only). Jupyter (8888) and the Spark UI (4040) use fixed host ports, so stop any other `musin` checkout's containers first.
+
+**4. Get the data** (8.1 GB download of the pinned snapshot `20261007-002147`, GPG- and SHA-256-verified; [F1.2](docs/features/F1.2-dump-download.md)):
 
 ```bash
 docker compose exec spark python -m musin.ingest.download --config config/pipeline.yaml
 ```
 
-The official server keeps only the two latest weekly exports, so after about 2026-10-21 copy `$MUSIN_DATA/dumps/20261007-002147/` from a teammate and run the same command with `--verify-only`.
+The official server keeps only the two latest weekly exports, so from about 2026-10-21 on the download fails: copy the folder `$MUSIN_DATA/dumps/20261007-002147/` from a teammate and run the same command with `--verify-only` (re-checks the GPG signature and both SHA-256 sums, under a minute). `--show-latest` lists what the server has now.
 
-**4. Unpack and convert to Parquet** (the 22 tables we use, ≈17.5 GB of text → typed Parquet in `$MUSIN_DATA/raw/`; [F1.3](docs/features/F1.3-raw-ingest.md)):
+**5. Unpack and convert to Parquet** (the 22 tables we use, ≈17.5 GB of text → typed Parquet in `$MUSIN_DATA/raw/`; [F1.3](docs/features/F1.3-raw-ingest.md)). From here on, stop Neo4j while a heavy Spark stage runs (18 GB budget) and start it again for steps 6, 9 and 10:
 
 ```bash
+docker compose stop neo4j
 docker compose exec spark python -m musin.ingest.extract --config config/pipeline.yaml
 docker compose exec spark python -m musin.ingest.raw --config config/pipeline.yaml
 ```
 
-**5. Profile the data and check Neo4j** (profiling report for gate G1, [F1.4](docs/features/F1.4-profiling.md); Neo4j + GDS smoke test on a 12-artist toy graph, [F1.5](docs/features/F1.5-neo4j-smoke-test.md)):
+**6. Profile the data and check Neo4j** (profiling report for gate G1, [F1.4](docs/features/F1.4-profiling.md); Neo4j + GDS smoke test on a 12-artist toy graph, [F1.5](docs/features/F1.5-neo4j-smoke-test.md)):
 
 ```bash
 docker compose exec spark python -m musin.profiling --config config/pipeline.yaml   # add --sample 0.05 while developing
 bash neo4j/smoke/run_smoke.sh --overwrite    # replaces the graph in Neo4j with the toy graph
 ```
 
-**6. Clean** (P2; writes `$MUSIN_DATA/clean/`; add `--sample 0.05` to recording-level stages to write `$MUSIN_DATA/sample/f0.05/` instead):
+**7. Clean** (P2; writes `$MUSIN_DATA/clean/`; add `--sample 0.05` to recording-level stages to write `$MUSIN_DATA/sample/f0.05/` instead):
 
 ```bash
 docker compose exec spark python -m musin.clean.artists --config config/pipeline.yaml   # F2.1: artists minus 15 special-purpose placeholders
@@ -121,7 +131,7 @@ docker compose exec spark python -m musin.clean.years --config config/pipeline.y
 docker compose exec spark python -m musin.clean.genres --config config/pipeline.yaml   # F2.5: 15 parent genres per artist
 ```
 
-**7. Build the graph** (P3; writes `$MUSIN_DATA/graph/` with nodes, genres, typed edges, and per-decade edges; `--sample 0.05` writes `$MUSIN_DATA/sample/f0.05/graph/`):
+**8. Build the graph** (P3; writes `$MUSIN_DATA/graph/` with nodes, genres, typed edges, and per-decade edges; `--sample 0.05` writes `$MUSIN_DATA/sample/f0.05/graph/`):
 
 ```bash
 docker compose exec spark python -m musin.graph.build --config config/pipeline.yaml   # F3.1: edges + FR-10/FR-11/D-021/min_recordings filters
@@ -130,7 +140,7 @@ docker compose exec spark python -m musin.graph.checks --config config/pipeline.
 
 The checks compare row counts with the last passing check and fail on a change above 5%. After a deliberate change (e.g. a G1 decision), run them once with `--accept-changes` and record why in `docs/decisions.md`.
 
-**8. Load into Neo4j** ([F3.4](docs/features/F3.4-neo4j-export-import.md); ~1.5 min for the full graph). Neo4j Community holds one graph at a time, so the import **replaces** the loaded graph. `$MUSIN_DATA/neo4j/loaded_graph.json` says which graph is loaded.
+**9. Load into Neo4j** ([F3.4](docs/features/F3.4-neo4j-export-import.md); ~1.5 min for the full graph). Neo4j Community holds one graph at a time, so the import **replaces** the loaded graph. `$MUSIN_DATA/neo4j/loaded_graph.json` says which graph is loaded.
 
 ```bash
 docker compose exec spark python -m musin.export.neo4j_csv --config config/pipeline.yaml --sample 0.05   # -> $MUSIN_DATA/import/sample-f0.05
@@ -139,13 +149,30 @@ docker compose exec spark python -m musin.export.neo4j_csv --config config/pipel
 bash neo4j/import_graph.sh full --overwrite
 ```
 
-**Dev sample graph** (F3.2; ~1.5 min, works with `SPARK_DRIVER_MEMORY=4g`). It rebuilds the whole recording-level chain for 5% of recordings into `$MUSIN_DATA/sample/f0.05/` and writes `graph/_manifest.json` with content fingerprints. Two members hold the same graph when the fingerprints match. Needs the full `clean/artists` and genre tables from step 6.
+**Dev sample graph** (F3.2; ~1.5 min, works with `SPARK_DRIVER_MEMORY=4g`). It rebuilds the whole recording-level chain for 5% of recordings into `$MUSIN_DATA/sample/f0.05/` and writes `graph/_manifest.json` with content fingerprints. Two members hold the same graph when the fingerprints match. Needs the full `clean/artists` and genre tables from step 7.
 
 ```bash
 docker compose exec spark python -m musin.graph.sample --config config/pipeline.yaml --sample 0.05
 ```
 
-**9. Analyse** (P4; runs on whichever graph is loaded in Neo4j and names it in every output; tables go to `reports/tables/` for the full graph and to `$MUSIN_DATA/sample/f0.05/reports/tables/` for the sample). A full F4.1 run takes about 3 h (single-threaded betweenness), so keep the machine awake. The full command order is in [P4 §8](docs/phases/P4-graph-analytics.md#8-how-to-reproduce-this-phase):
+**Sample mode only** (member B, or a machine under 24 GB). `--sample 0.05` samples recordings, not the input, so a sample run still needs the **full** `raw/` layer (steps 4–5) and the full artist-level tables: `clean/artists` and `clean/special_artists` (F2.1, ~20 s) and the genre tables (F2.5, ~45 s), and F2.5 reads the full `clean/credits` (F2.2, ~1 min). Run those once in full mode (or copy `raw/` and `clean/` from a teammate), then everything else with `--sample 0.05`:
+
+```bash
+docker compose stop neo4j
+docker compose exec spark python -m musin.clean.artists --config config/pipeline.yaml
+docker compose exec spark python -m musin.clean.credits --config config/pipeline.yaml        # full: F2.5 needs it
+docker compose exec spark python -m musin.clean.genres --config config/pipeline.yaml
+docker compose exec spark python -m musin.clean.credits --config config/pipeline.yaml --sample 0.05
+docker compose exec spark python -m musin.clean.contributions --config config/pipeline.yaml --sample 0.05
+docker compose exec spark python -m musin.clean.years --config config/pipeline.yaml --sample 0.05
+docker compose exec spark python -m musin.graph.build --config config/pipeline.yaml --sample 0.05
+docker compose exec spark python -m musin.graph.checks --config config/pipeline.yaml --sample 0.05
+docker compose exec spark python -m musin.export.neo4j_csv --config config/pipeline.yaml --sample 0.05
+docker compose start neo4j
+bash neo4j/import_graph.sh sample-f0.05 --overwrite   # replaces the loaded graph
+```
+
+**10. Analyse** (P4; runs on whichever graph is loaded in Neo4j and names it in every output; tables go to `reports/tables/` for the full graph and to `$MUSIN_DATA/sample/f0.05/reports/tables/` for the sample). A full F4.1 run takes about 3 h (single-threaded betweenness), so keep the machine awake. The full command order is in [P4 §8](docs/phases/P4-graph-analytics.md#8-how-to-reproduce-this-phase):
 
 ```bash
 docker compose exec spark python -m musin.analytics.centrality --config config/pipeline.yaml   # F4.1: degree, PageRank, betweenness + agreement (RQ4)
@@ -169,7 +196,7 @@ bash neo4j/import_graph.sh sample-f0.05 --overwrite                             
 
 The `classical` variant ([D-039](docs/decisions.md), G1/OD1) keeps classical artists, which the main graph leaves out. Use it the same way with `--variant classical`.
 
-**10. Benchmark** (P5). [F5.1](docs/features/F5.1-spark-scaling.md) times the recording chain (credits → contributions → years → graph build) for every data fraction × core count in `benchmark.scaling` (D-041). Each cell runs in its own process against a scratch copy under `$MUSIN_DATA/benchmark/`, so pipeline data and `reports/` are never touched. A re-run resumes from the last finished cell. Stop Neo4j and keep the machine idle and awake while it runs:
+**11. Benchmark** (P5). [F5.1](docs/features/F5.1-spark-scaling.md) times the recording chain (credits → contributions → years → graph build) for every data fraction × core count in `benchmark.scaling` (D-041). Each cell runs in its own process against a scratch copy under `$MUSIN_DATA/benchmark/`, so pipeline data and `reports/` are never touched. A re-run resumes from the last finished cell. Stop Neo4j and keep the machine idle and awake while it runs:
 
 ```bash
 docker compose stop neo4j
@@ -210,7 +237,7 @@ Ports listen on `127.0.0.1` only. Spark and Neo4j heavy jobs must not run at the
 
 ## Verify the build
 
-How to check, look at, and reproduce what has been built. Run everything from WSL Ubuntu in the repo root (`wsl -d Ubuntu-24.04 --cd <repo>` from PowerShell, since the default WSL distro may be `docker-desktop`), with `docker compose up -d spark neo4j`. The expected numbers below are from the 2026-10-11 build with the provisional G1 values; the post-G1 graph (2026-10-19) is smaller (see Results).
+How to check, look at, and reproduce what has been built. Run everything from WSL Ubuntu in the repo root (`wsl -d Ubuntu-24.04 --cd <repo>` from PowerShell, since the default WSL distro may be `docker-desktop`), with `docker compose up -d spark neo4j`. Expected numbers are for the final post-G1 settings: the full graph is in Results, and the 5 % dev sample has 283,056 artists and 408,056 edges (F6.5 clean-clone run, 2026-10-20).
 
 **1. Health check** (about 2 min, changes no data):
 
@@ -263,7 +290,7 @@ Generated tables are in `reports/tables/`:
 
 The whole graph phase is summarised in [docs/phases/P3-graph-build-neo4j.md](docs/phases/P3-graph-build-neo4j.md).
 
-**4. Prove a rebuild is identical.** Every build records order-independent content fingerprints; equal fingerprints mean identical tables.
+**4. Prove a rebuild is identical.** Every build records order-independent content fingerprints; equal fingerprints mean identical tables. The post-G1 dev sample's `edges` fingerprint is `598257284874031480146`. A sample graph built before G1 (2026-10-11, 535,372 edges) fails the first rebuild's run-to-run check (−24 % edges); run `graph.sample` once with `--accept-changes` to replace it.
 
 ```bash
 docker compose exec spark python -m musin.graph.sample --config config/pipeline.yaml --sample 0.05   # ~95 s, safe while Neo4j runs
@@ -283,6 +310,24 @@ docker compose exec spark python -m musin.gds.setup --config config/pipeline.yam
 
 After a deliberate config change (e.g. a G1 decision), `graph.checks` fails on purpose, because row counts move by more than 5 %. Re-run it once with `--accept-changes` and record the reason in [docs/decisions.md](docs/decisions.md).
 
+**6. Re-run the clean-clone check** ([F6.5](docs/features/F6.5-readme-reproducibility.md), NFR-01). A second checkout on the same machine must not share the running `musin` project's containers, images, ports or data. Clone into a scratch folder, give it its own data root (hard links to `dumps/`, `raw/` and the four full artist-level `clean/` tables cost no disk), and add a compose project name and an override file:
+
+```bash
+git clone https://github.com/Pgramer1/musin.git ~/f65-check/musin && cd ~/f65-check/musin
+mkdir -p ~/f65-check/data/clean && cp -al ~/musin-data/{dumps,raw} ~/f65-check/data/
+for t in artists special_artists artist_genres artist_primary_genre; do cp -al ~/musin-data/clean/$t ~/f65-check/data/clean/; done
+cp .env.example .env    # MUSIN_DATA=$HOME/f65-check/data, a password, NEO4J ports 17474/17687, sample-mode memory
+echo COMPOSE_PROJECT_NAME=musin-f65 >> .env
+cat > docker-compose.override.yml <<'YAML'
+services:
+  spark: {image: "musin-spark:f65check", ports: !override ["127.0.0.1:18888:8888", "127.0.0.1:14040:4040"]}
+  neo4j: {image: "musin-neo4j:f65check"}
+  rapids: {image: "musin-rapids:f65check"}
+YAML
+```
+
+Then follow Getting started steps 3 and 4 (`--verify-only`) and the sample-mode-only block from `clean.credits --sample 0.05` on. Remove it afterwards with `docker compose down`, `docker image rm musin-spark:f65check musin-neo4j:f65check` and by deleting `~/f65-check`.
+
 ## Repository layout
 
 ```
@@ -295,13 +340,13 @@ docker/            Spark/Jupyter and Neo4j/GDS images
 setup/             wslconfig.example, preflight.sh
 src/musin/         pipeline code (python -m musin.<stage>)
 neo4j/             numbered Cypher files (smoke/: F1.5 toy-graph test)
-reports/           generated tables and figures (profile_*: F1.4, genre_*: F2.5, graph_build_*: F3.1, graph_checks: F3.3, sample_*: F3.2, centrality_*: F4.1, communities_*: F4.2, trends_*: F4.4, separation_*: F4.5, bridges_*/genre_matrix: F4.3, validation_*: F4.6)
+reports/           generated tables and figures (profile_*: F1.4, genre_*: F2.5, graph_build_*: F3.1, graph_checks: F3.3, sample_*: F3.2, centrality_*: F4.1, communities_*: F4.2, trends_*: F4.4, separation_*: F4.5, bridges_*/genre_matrix: F4.3, validation_*: F4.6, variants/: F4.7, benchmark_*: P5, sensitivity_*/pipeline_funnel/report/: F6.1; manifest in reports/README.md)
 tests/             pytest + fixtures (neo4j_toy/: F1.5 toy graph)
-docker-compose.yml two services: spark, neo4j
+docker-compose.yml services spark and neo4j, plus rapids (profile gpu, F5.3 only)
 .env.example       template for per-machine settings and secrets
 ```
 
-More folders (`notebooks/`, `app/`) are added as the phases progress.
+`notebooks/` and `app/` (PRD layout) are added if P6 needs them; nothing in the pipeline depends on them.
 
 ## Results
 

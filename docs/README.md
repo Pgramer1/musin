@@ -23,7 +23,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | P3 Graph build & Neo4j load | Oct 18–24 | Done | [P3-graph-build-neo4j.md](phases/P3-graph-build-neo4j.md) |
 | P4 Graph analytics | Oct 19–30 | Done (final post-G1 graph, re-run 2026-10-20) | [P4-graph-analytics.md](phases/P4-graph-analytics.md) |
 | P5 Benchmarks | Oct 22–30 | Done (Oct 19–20) | [P5-benchmarks.md](phases/P5-benchmarks.md) |
-| P6 Presentation & report | Oct 28–Nov 9 | In progress (F6.1 done 2026-10-20) | — |
+| P6 Presentation & report | Oct 28–Nov 9 | In progress (F6.1, F6.5 done 2026-10-20) | — |
 
 ## Features
 
@@ -58,4 +58,4 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F6.2 | Demo | P6 | B | Must | Planned | — |
 | F6.3 | Final report | P6 | Both | Must | Planned | — |
 | F6.4 | Slides and rehearsal | P6 | Both | Must | Planned | — |
-| F6.5 | README and reproducibility check | P6 | A | Must | Planned | — |
+| F6.5 | README and reproducibility check | P6 | A | Must | Done (sample mode from a clean clone, 2026-10-20; full mode not re-run) | [F6.5-readme-reproducibility.md](features/F6.5-readme-reproducibility.md) |
