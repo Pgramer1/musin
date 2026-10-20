@@ -1,0 +1,7 @@
+projection,measure,nodes,relationships,estimate_bytes_max,compute_millis,wall_seconds,ran_iterations,did_converge,concurrency,betweenness_concurrency,damping,max_iterations,sampling_size,sampling_seed,graph,edges_fingerprint
+collab_undirected,degreeWeighted,1180939,6602784,9447640,73,0.1,,,4,1,0.85,1000,10000,42,full-classical,-3716276720548320596788
+collab_undirected,pagerank,1180939,6602784,28490984,5065,5.1,121.0,True,4,1,0.85,1000,10000,42,full-classical,-3716276720548320596788
+collab_undirected,betweenness,1180939,6602784,127541944,6555145,6555.2,,,4,1,0.85,1000,10000,42,full-classical,-3716276720548320596788
+credit_only,degreeWeighted,888062,4641526,7104624,52,0.1,,,4,1,0.85,1000,10000,42,full-classical,-3716276720548320596788
+credit_only,pagerank,888062,4641526,21425320,3476,3.5,126.0,True,4,1,0.85,1000,10000,42,full-classical,-3716276720548320596788
+credit_only,betweenness,888062,4641526,95911224,4466333,4466.4,,,4,1,0.85,1000,10000,42,full-classical,-3716276720548320596788

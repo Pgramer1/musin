@@ -1,0 +1,10 @@
+comparison,measure_a,measure_b,n_artists,spearman_rho,top_k,jaccard_top_k,graph,edges_fingerprint
+collab_undirected,degreeWeighted,pagerank,1180939,0.6442380522879592,100,0.15606936416184972,full-classical,-3716276720548320596788
+collab_undirected,degreeWeighted,betweenness,1180939,0.6500915579770147,100,0.0582010582010582,full-classical,-3716276720548320596788
+collab_undirected,pagerank,betweenness,1180939,0.5553767178225939,100,0.25,full-classical,-3716276720548320596788
+credit_only,degreeWeighted,pagerank,888062,0.6081355453154773,100,0.12994350282485875,full-classical,-3716276720548320596788
+credit_only,degreeWeighted,betweenness,888062,0.6350257353867611,100,0.0582010582010582,full-classical,-3716276720548320596788
+credit_only,pagerank,betweenness,888062,0.5229982650561714,100,0.2987012987012987,full-classical,-3716276720548320596788
+collab_undirected vs credit_only,degreeWeighted,degreeWeighted,888062,0.9439452461161655,100,0.6,full-classical,-3716276720548320596788
+collab_undirected vs credit_only,pagerank,pagerank,888062,0.9235174841296234,100,0.4492753623188406,full-classical,-3716276720548320596788
+collab_undirected vs credit_only,betweenness,betweenness,888062,0.8900026266950285,100,0.5151515151515151,full-classical,-3716276720548320596788

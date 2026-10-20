@@ -40,11 +40,11 @@ artist_genre,duplicate_key,0,pass,
 artist_genre,artist_not_a_node,0,pass,
 artist_genre,shares_not_summing_to_1,0,pass,
 nodes_artist,primary_genre_not_top_share,0,pass,
-run_to_run,nodes_artist,0,pass,no previous count; now 1198392
-run_to_run,artist_genre,0,pass,no previous count; now 443701
-run_to_run,edges,0,pass,no previous count; now 3620967
-run_to_run,edges_by_decade,0,pass,no previous count; now 3915025
-run_to_run,edges_CO_CREDITED,0,pass,no previous count; now 1782150
-run_to_run,edges_FEATURED,0,pass,no previous count; now 745504
-run_to_run,edges_PRODUCED_FOR,0,pass,no previous count; now 292581
-run_to_run,edges_PERFORMED_FOR,0,pass,no previous count; now 800732
+run_to_run,nodes_artist,0,pass,1198392 -> 1152893 (-3.80%)
+run_to_run,artist_genre,1,accepted,443701 -> 411261 (-7.31%)
+run_to_run,edges,1,accepted,3620967 -> 3157377 (-12.80%)
+run_to_run,edges_by_decade,1,accepted,3915025 -> 3359908 (-14.18%)
+run_to_run,edges_CO_CREDITED,1,accepted,1782150 -> 1478906 (-17.02%)
+run_to_run,edges_FEATURED,0,pass,745504 -> 739979 (-0.74%)
+run_to_run,edges_PRODUCED_FOR,1,accepted,292581 -> 238562 (-18.46%)
+run_to_run,edges_PERFORMED_FOR,1,accepted,800732 -> 699930 (-12.59%)

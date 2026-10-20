@@ -20,7 +20,7 @@ This folder records what was built, in which phase, and why. The rules for writi
 | P1 Environment & ingestion | Oct 10–16 | Done | [P1-environment-ingestion.md](phases/P1-environment-ingestion.md) |
 | P2 Cleaning & genre normalization | Oct 15–21 | Done | [P2-cleaning-genres.md](phases/P2-cleaning-genres.md) |
 | P3 Graph build & Neo4j load | Oct 18–24 | Done | [P3-graph-build-neo4j.md](phases/P3-graph-build-neo4j.md) |
-| P4 Graph analytics | Oct 19–30 | Done (provisional pre-G1 graph) | [P4-graph-analytics.md](phases/P4-graph-analytics.md) |
+| P4 Graph analytics | Oct 19–30 | Done (final post-G1 graph, re-run 2026-10-20) | [P4-graph-analytics.md](phases/P4-graph-analytics.md) |
 | P5 Benchmarks | Oct 22–30 | In progress | — |
 | P6 Presentation & report | Oct 28–Nov 9 | Planned | — |
 
@@ -43,13 +43,13 @@ This folder records what was built, in which phase, and why. The rules for writi
 | F3.3 | Graph-layer quality checks | P3 | A | Must | Done | [F3.3-graph-quality-checks.md](features/F3.3-graph-quality-checks.md) |
 | F3.4 | Neo4j CSV export and bulk import | P3 | A | Must | Done | [F3.4-neo4j-export-import.md](features/F3.4-neo4j-export-import.md) |
 | F3.5 | Constraints, indexes, GDS projections | P3 | B (built by A) | Must | Done | [F3.5-constraints-indexes-projections.md](features/F3.5-constraints-indexes-projections.md) |
-| F4.1 | Centrality and agreement (RQ4) | P4 | B | Must | Done (provisional graph) | [F4.1-centrality.md](features/F4.1-centrality.md) |
-| F4.2 | Communities vs genres (RQ2) | P4 | B | Must | Done (provisional graph) | [F4.2-communities.md](features/F4.2-communities.md) |
-| F4.3 | Genre bridges (RQ1) | P4 | B | Must | Done (provisional graph) | [F4.3-genre-bridges.md](features/F4.3-genre-bridges.md) |
-| F4.4 | Cross-genre trends by decade (RQ3) | P4 | B | Must | Done (provisional graph) | [F4.4-cross-genre-trends.md](features/F4.4-cross-genre-trends.md) |
-| F4.5 | Degrees of separation | P4 | B | Should | Done (provisional graph) | [F4.5-degrees-of-separation.md](features/F4.5-degrees-of-separation.md) |
-| F4.6 | Validation | P4 | B | Must | Done (provisional graph) | [F4.6-validation.md](features/F4.6-validation.md) |
-| F4.7 | Sensitivity graph variants (D-021) | P4 | B | Must | Done (sample + provisional full graph) | [F4.7-sensitivity-variants.md](features/F4.7-sensitivity-variants.md) |
+| F4.1 | Centrality and agreement (RQ4) | P4 | B | Must | Done | [F4.1-centrality.md](features/F4.1-centrality.md) |
+| F4.2 | Communities vs genres (RQ2) | P4 | B | Must | Done | [F4.2-communities.md](features/F4.2-communities.md) |
+| F4.3 | Genre bridges (RQ1) | P4 | B | Must | Done | [F4.3-genre-bridges.md](features/F4.3-genre-bridges.md) |
+| F4.4 | Cross-genre trends by decade (RQ3) | P4 | B | Must | Done | [F4.4-cross-genre-trends.md](features/F4.4-cross-genre-trends.md) |
+| F4.5 | Degrees of separation | P4 | B | Should | Done | [F4.5-degrees-of-separation.md](features/F4.5-degrees-of-separation.md) |
+| F4.6 | Validation | P4 | B | Must | Done | [F4.6-validation.md](features/F4.6-validation.md) |
+| F4.7 | Sensitivity graph variants (D-021) | P4 | B | Must | Done (`characters`, `classical`) | [F4.7-sensitivity-variants.md](features/F4.7-sensitivity-variants.md) |
 | F5.1 | Spark scaling benchmark | P5 | A | Must | Done | [F5.1-spark-scaling.md](features/F5.1-spark-scaling.md) |
 | F5.2 | PageRank: GDS vs GraphFrames | P5 | A | Should | Planned | — |
 | F5.3 | PageRank on GPU (cuGraph) | P5 | A | Could | Planned | — |
