@@ -1,0 +1,18 @@
+step,layer,quantity,value,source_table,source_metric,graph,edges_fingerprint
+1,dump,recordings,40475049,profile_row_counts.csv,recording,full,-2227712706449027820962
+2,dump,tracks,58292678,profile_row_counts.csv,track,full,-2227712706449027820962
+3,dump,artists,3005875,profile_row_counts.csv,artist,full,-2227712706449027820962
+4,dump,artist credit names (billing rows),7268126,profile_row_counts.csv,artist_credit_name,full,-2227712706449027820962
+5,dump,artist–recording relationships,19009084,profile_row_counts.csv,l_artist_recording,full,-2227712706449027820962
+6,profile,credited artists (on at least one recording),2020979,profile_summary.csv,base / credited artists (on >= 1 recording),full,-2227712706449027820962
+7,graph build,recordings entering the edge build,40104545,graph_build_summary.csv,recordings_in,full,-2227712706449027820962
+8,graph build,recordings over the credit-size cap (no edges),12769,graph_build_summary.csv,recordings_over_10_artists,full,-2227712706449027820962
+9,graph build,pair instances skipped by the credit-size cap,1464888,graph_build_summary.csv,pair_instances_skipped_over_10,full,-2227712706449027820962
+10,graph build,artists excluded by type (Character),18052,graph_build_summary.csv,excluded_artists_by_type,full,-2227712706449027820962
+11,graph build,artists excluded as classical,32202,graph_build_summary.csv,excluded_artists_classical,full,-2227712706449027820962
+12,graph build,edge instances dropped (all reasons),15570109,graph_build_summary.csv,"instances_<type>_<reason>, summed",full,-2227712706449027820962
+13,graph build,edge instances kept,12329531,graph_build_summary.csv,"instances_<type>_kept, summed",full,-2227712706449027820962
+14,graph,edges (artist pair × type),3078519,graph_build_summary.csv,edges_before_node_rule − edges_removed_by_min_recordings,full,-2227712706449027820962
+15,graph,artists (nodes),1135461,graph_build_summary.csv,nodes,full,-2227712706449027820962
+16,Neo4j,COLLAB artist pairs,2863538,gds_projections.csv,collab_undirected / pairs,full,-2227712706449027820962
+17,Neo4j,COLLAB weight (shared recordings),12329531,gds_projections.csv,collab_undirected / total_weight,full,-2227712706449027820962
