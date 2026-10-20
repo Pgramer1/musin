@@ -38,7 +38,7 @@ reports/tables/*.csv (P3–P5) ──F6.1 musin.report──▶ figures, sensiti
 Neo4j `full` + P4 write-backs ──F6.2 neo4j/10_demo.cypher──▶ demo (Browser) ──▶ video on slide 4
                                   musin.demo_check (dry run)                         │
                                                               ▼                      ▼
-                                              F6.3 report/report.md     F6.4 Slides artifact (report/slides/)
+                                              F6.3 report/report.md     F6.4 report/musin-slides.pptx
 README + fresh clone ──F6.5──▶ corrected Getting started / Verify the build
 ```
 
@@ -110,7 +110,7 @@ docker compose exec spark pytest
 Then:
 - **Demo:** open http://localhost:7474, drag `neo4j/10_demo.cypher` into Favorites, set its `:param` lines, and run the queries in order (F6.2 §6).
 - **Report:** `report/report.md`.
-- **Slides:** the Slides artifact (source in `report/slides/`).
+- **Slides:** `report/musin-slides.pptx`.
 
 ## 9. Handoff
 
