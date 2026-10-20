@@ -17,6 +17,9 @@ matplotlib==3.9.4
 scikit-learn==1.5.2
 neo4j==5.28.2
 
+# Benchmarks (P5): Python side of the GraphFrames jars in jars.txt (same version)
+graphframes-py==0.12.3
+
 # Dev
 pytest==8.4.2
 ruff==0.14.0

@@ -1,0 +1,3 @@
+engine,repeats,load_median_s,load_min_s,load_max_s,compute_median_s,compute_min_s,compute_max_s,output_median_s,output_min_s,output_max_s,total_median_s,total_min_s,total_max_s,load_vs_gds,compute_vs_gds,output_vs_gds,total_vs_gds,graph,edges_fingerprint
+gds,3,11.76,11.72,27.66,3.83,3.8,4.06,14.71,14.56,14.77,30.3,30.14,46.44,,,,,full,-2227712706449027820962
+graphframes,3,9.48,8.11,9.9,469.74,459.15,550.89,2.44,2.25,2.62,482.08,469.51,562.99,0.81,122.65,0.17,15.91,full,-2227712706449027820962

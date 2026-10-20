@@ -421,3 +421,26 @@ Entry format:
   - **Wall-clock time includes overhead.** It counts starting each stage's SparkContext and writing Parquet, as a user running the pipeline would see them.
   - **The machine must be otherwise idle** for the whole grid: no Neo4j job, which RULES §10 forbids anyway.
   - **The full-fraction cells keep one extra copy** of the full `clean/` recording tables and `graph/` in the scratch root until it is deleted.
+
+### D-042 — PageRank engine comparison: unweighted on identical pairs, same settings and cores, three timed phases
+- **Date / phase:** 2026-10-20 · P5 (F5.2)
+- **Status:** Accepted; contract change within v1 (PRD §8.4: `benchmark.pagerank.*`), as D-041.
+- **Context:** FR-22 asks for PageRank "on identical input" in Neo4j GDS and Spark GraphFrames, comparing runtime and top-100 overlap. Three things stand in the way of a literal comparison with F4.1:
+  - **No weights in GraphFrames.** Its `pageRank` (GraphFrames 0.12.3) takes only a reset probability and either a tolerance or a fixed iteration count, so it cannot reproduce F4.1's weighted PageRank (PRD §5.5).
+  - **Different core limits.** GDS Community Edition runs on at most 4 cores, while Spark would take every core.
+  - **Memory.** RULES §10 forbids heavy Spark and Neo4j jobs at the same time.
+- **Decision:**
+  1. **Input:** the COLLAB artist pairs of the graph Neo4j holds (`loaded_graph.json`), unweighted. GDS uses the `collab_undirected` projection (F3.5); GraphFrames uses the same graph's Parquet (`source` in the marker), with every distinct unordered pair in both directions. The run refuses to report if the two node and directed-edge counts differ. F4.1's weighted PageRank (the `pagerank` property written back) is a reference row in the agreement table, not part of the engine comparison.
+  2. **Settings:** damping `analysis.pagerank.damping` (0.85; GraphFrames reset probability 0.15). Both run to convergence at the new key `benchmark.pagerank.tolerance` (1e-7, GDS's default), with GDS capped at `analysis.pagerank.max_iterations`. Both use `analysis.concurrency` cores: GDS concurrency 4, Spark `local[4]`.
+  3. **Timing:** three phases per run.
+     - **load:** GDS projects from the store; GraphFrames reads Parquet and forms the pairs.
+     - **compute:** the PageRank call, until every score exists.
+     - **output:** GDS streams the scores to the client; GraphFrames writes Parquet.
+
+     Each engine runs `benchmark.pagerank.repeats` (3) times and the report uses the median. Each GraphFrames run is a fresh process with the event log on (as D-041).
+  4. **Two commands:** `--engine gds` with Neo4j running and Spark idle, then `--engine graphframes` with Neo4j stopped and the normal 12 GB driver. Each command writes the report once both engines have results with the same edges fingerprint.
+  5. **GraphFrames** 0.12.3 (Spark 3.5, Scala 2.12, released 2026-10-05) is built into the Spark image. Its four jars are pinned by SHA-1 in `docker/spark/jars.txt`, and `graphframes-py` is pinned to the same version.
+- **Consequences:**
+  - **What is compared:** the engines on the same mathematics, not F4.1's exact setting. The reference row shows how far unweighted PageRank is from F4.1's weighted ranking.
+  - **GDS load excludes the import:** GDS's load phase starts from an already imported database. The one-time CSV export and bulk import (F3.4, about 25 s plus 2 min on the full graph) are not counted; GraphFrames reads Parquet directly. The report must say this.
+  - **Convergence rules differ:** GDS stops when every score changes by less than the tolerance between iterations, while GraphX (under GraphFrames) stops updating each vertex once its own change falls below it. The scores are compared value by value to show the effect.

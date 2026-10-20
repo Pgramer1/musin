@@ -1,0 +1,10 @@
+# Extra JVM jars for the Spark image, copied into pyspark/jars so every
+# SparkSession has them on the classpath (F5.2, D-042). One jar per line:
+#   <Maven Central path>  <SHA-1>
+# The build fails if a download's SHA-1 differs. GraphFrames 0.12.3 for
+# Spark 3.5 / Scala 2.12 plus its compile-scope dependencies; Spark and Scala
+# themselves are provided by pyspark.
+io/graphframes/graphframes-spark3_2.12/0.12.3/graphframes-spark3_2.12-0.12.3.jar  2930e6040cbad51076d0a1c258ad420d378882d3
+io/graphframes/graphframes-graphx-spark3_2.12/0.12.3/graphframes-graphx-spark3_2.12-0.12.3.jar  befd8dd8711a8a84952228b5ef02dfd95516cb76
+org/apache/datasketches/datasketches-java/6.2.0/datasketches-java-6.2.0.jar  18dae2764002081c26c5a1ec9e691162cd0853a8
+org/apache/datasketches/datasketches-memory/3.0.2/datasketches-memory-3.0.2.jar  af230826edc1f83e2fd058a94342e49dcc13941f

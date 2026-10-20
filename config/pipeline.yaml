@@ -82,6 +82,9 @@ benchmark:                           # P5; never affects the graph or any analys
     fractions: [0.1, 0.25, 0.5, 1.0] # data fraction (1.0 = full mode, else sample mode by hashed recording id)
     cores: [1, 2, 4, 8]              # Spark local[n]
     repeats: 3                       # runs per cell; the report uses the median
+  pagerank:                          # F5.2 (FR-22, D-042): unweighted PageRank, GDS vs GraphFrames on the COLLAB pairs
+    tolerance: 1.0e-7                # both engines run to this tolerance (GDS's default); damping, cap and cores from analysis.*
+    repeats: 3                       # runs per engine; the report uses the median
 
 validation:                          # F4.6 (PRD §5.6, D-037): pre-registered cross-genre artists, fixed before RQ1 results
   artists_file: config/validation_artists.csv

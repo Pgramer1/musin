@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1–P4 done; G1 decisions recorded ([D-039](docs/decisions.md): classical analysed separately; [D-040](docs/decisions.md): other values confirmed), the graph rebuilt and **all four research questions re-answered on the final graph** (2026-10-20); **P5 Benchmarks in progress** (F5.1 Spark scaling done) · *Last updated 2026-10-20*
+> **Status:** P1–P4 done; G1 decisions recorded ([D-039](docs/decisions.md): classical analysed separately; [D-040](docs/decisions.md): other values confirmed), the graph rebuilt and **all four research questions re-answered on the final graph** (2026-10-20); **P5 Benchmarks in progress** (F5.1 Spark scaling and F5.2 GDS vs GraphFrames done) · *Last updated 2026-10-20*
 
 ## Research questions
 
@@ -177,6 +177,15 @@ docker compose exec spark python -m musin.benchmark.scaling --config config/pipe
 docker compose exec spark python -m musin.benchmark.scaling --config config/pipeline.yaml     --fractions 0.01,0.02 --cores 2,4 --repeats 1                                                  # quick dev grid -> $MUSIN_DATA/benchmark/dev/
 ```
 
+[F5.2](docs/features/F5.2-pagerank-gds-vs-graphframes.md) compares unweighted PageRank in Neo4j GDS and Spark GraphFrames on the loaded graph (D-042). After `docker compose build spark`, which adds the pinned GraphFrames jars, run the GDS half with Neo4j up and the GraphFrames half with it stopped:
+
+```bash
+docker compose exec spark python -m musin.benchmark.pagerank --config config/pipeline.yaml --engine gds           # ~2 min
+docker compose stop neo4j
+docker compose exec spark python -m musin.benchmark.pagerank --config config/pipeline.yaml --engine graphframes   # ~25 min; writes benchmark_pagerank_*.csv
+docker compose start neo4j
+```
+
 | Service | URL |
 |---|---|
 | Jupyter Lab (PySpark 3.5.9, Python 3.11) | http://localhost:8888 |
@@ -291,6 +300,8 @@ More folders (`notebooks/`, `app/`) are added as the phases progress.
 **Graph (F3.1, final G1 settings, rebuilt 2026-10-19):** 1.14 M artists and 3.08 M edges (1.43 M co-credited, 0.73 M featured, 0.24 M produced-for, 0.68 M performed-for), each recording counted once per artist pair. 22.0% of artists have a primary genre, and 33.2% of edges are labelled at both ends. Classical artists (32,202) are left out of the main graph (D-039) and kept in the `classical` variant (1.18 M artists, 3.54 M edges, the old provisional graph). Details: [F3.1 build log](docs/features/F3.1-edge-building.md), `reports/tables/graph_build_summary.csv`.
 
 **Spark scaling (F5.1, FR-21):** the full recording chain (credits → contributions → years → graph build, 40.5 M recordings → 3.08 M edges) takes 20.4 min on 1 core and 6.4 min on 8 (median of 3). Speedup is 1.8× at 2 cores, 2.7× at 4 and 3.2× at 8 (efficiency 0.40). About a quarter of the runtime is fixed cost, because every sample still scans the full raw tables, so 10 % of the data takes 27–32 % of the full time. Details: [F5.1 build log](docs/features/F5.1-spark-scaling.md), `reports/tables/benchmark_scaling_summary.csv`, `reports/figures/benchmark_scaling.png`.
+
+**PageRank engines (F5.2, FR-22):** on the final graph (1.14 M artists, 2.86 M pairs, unweighted, 4 cores each), Neo4j GDS and Spark GraphFrames give the same ranking: identical top 100, Spearman ρ 0.99999, scores within 1.2 × 10⁻⁶. GDS computes it in 3.8 s, GraphFrames in 470 s (123×); end to end it's 30 s against 8 min. GraphFrames saves the one-time Neo4j import (about 2.5 min) but loses far more on every algorithm run, which supports the Spark-for-ETL, GDS-for-algorithms split. Details: [F5.2 build log](docs/features/F5.2-pagerank-gds-vs-graphframes.md), `reports/tables/benchmark_pagerank_*.csv`.
 
 *P4 results below are from the final post-G1 full graph (classical excluded, D-039; spoken word still included, D-040), re-run 2026-10-19/20. The classical-included and Character-included sensitivity runs are in `reports/tables/variants/`.*
 

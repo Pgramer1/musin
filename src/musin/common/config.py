@@ -69,6 +69,8 @@ REQUIRED_KEYS: tuple[str, ...] = (
     "benchmark.scaling.fractions",
     "benchmark.scaling.cores",
     "benchmark.scaling.repeats",
+    "benchmark.pagerank.tolerance",
+    "benchmark.pagerank.repeats",
     "variants",
 )
 

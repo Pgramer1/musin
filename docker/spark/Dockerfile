@@ -20,6 +20,10 @@ ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
+# GraphFrames jars for the F5.2 PageRank comparison (D-042), pinned by SHA-1.
+COPY jars.txt fetch_jars.py /tmp/
+RUN python /tmp/fetch_jars.py /tmp/jars.txt
+
 # Run as a non-root user whose UID matches the WSL user, so files written to
 # $MUSIN_DATA and the repo are owned by you on the host. The first WSL user
 # is UID 1000; if `id -u` says otherwise, rebuild with
