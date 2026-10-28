@@ -53,7 +53,7 @@ README + fresh clone ──F6.5──▶ corrected Getting started / Verify the 
 | F6.1 | 7 new figures, 4 derived CSVs, 20 report tables (Markdown + LaTeX), a manifest of 85 files + 20 tables; about 2 s |
 | F6.2 | 8 read-only demo queries; dry run 5.8 s, 0 failures |
 | F6.3 | Report of about 5,800 words; Figures 1–14 and Tables 1–19; 12 references |
-| F6.4 | 5 slides, about 4.5 min of speaker notes |
+| F6.4 | 6 slides (Future scope added 2026-10-28), about 5 min of speaker notes |
 | F6.5 | Fresh clone: sample-mode chain, checks, export, import and 266 tests pass; 9 README findings fixed |
 | Tests | 269 `pytest` tests (266 + 3 for the demo), `ruff` clean |
 
