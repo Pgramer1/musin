@@ -27,8 +27,6 @@ All numbers come from the generated tables in [`reports/tables/`](reports/tables
 - **"Most central" depends on the measure.** Weighted degree, PageRank and betweenness agree moderately overall (Spearman ρ 0.51–0.67) but share only 9 artists in their top 100s. Betweenness surfaces cross-scene connectors such as Snoop Dogg, Busta Rhymes, Pitbull, Sting and Elton John.
 - **Right tool for each job.** On the same graph, PageRank takes 470 s in Spark GraphFrames, 3.8 s in Neo4j GDS and 0.2 s on a laptop GPU with RAPIDS cuGraph, all with the same top 100. The full Spark pipeline (40.5 M recordings → 3.08 M edges) takes 20.4 min on 1 core and 6.4 min on 8.
 
-The full write-up, with methods and limitations, is in [`report/report.md`](report/report.md).
-
 ## How it works
 
 ```
@@ -238,7 +236,6 @@ docker/            Spark/Jupyter and Neo4j/GDS images
 setup/             WSL memory template and machine check
 tests/             pytest suite and small fixtures
 reports/           generated tables and figures (manifest: reports/README.md)
-report/            written report and slides
 docs/              build log: a document per feature and phase, and the decision log
 PRD.md             requirements: scope, metric definitions, schema
 ```
@@ -247,7 +244,6 @@ PRD.md             requirements: scope, metric definitions, schema
 
 | Document | What it covers |
 |---|---|
-| [report/report.md](report/report.md) | The full write-up: methods, results, limitations |
 | [reports/README.md](reports/README.md) | Every figure and table, and the command that makes it |
 | [PRD.md](PRD.md) | Scope, research questions, metric definitions, data model |
 | [docs/README.md](docs/README.md) | Build log: what was built at each step, and why |
