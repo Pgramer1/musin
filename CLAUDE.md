@@ -8,8 +8,8 @@ Guidance for Claude Code in this repository.
 
 - **[PRD.md](PRD.md):** scope, research questions, metric definitions, schema contract (§8), feature list with IDs (§11). Read the relevant section before starting any feature.
 - **[RULES.md](RULES.md):** binding project conventions (imported at the bottom of this file).
-- **[README.md](README.md):** project overview with current status. Kept up to date as the project progresses.
-- **[docs/README.md](docs/README.md):** build-log index, showing what is done, in progress, and planned.
+- **[README.md](README.md):** project overview for a new reader: what it is, key findings, setup and usage. No status or progress here.
+- **[docs/README.md](docs/README.md):** build-log index, showing what is done, in progress, and planned. This is where project status lives.
 
 **Current phase:** **P6 Presentation & report** built 2026-10-20 ([P6 doc](docs/phases/P6-presentation-report.md)): F6.1 figures/tables ([D-044](docs/decisions.md)), F6.2 demo queries (`neo4j/10_demo.cypher`), F6.3 report draft (`report/report.md`), F6.4 6-slide deck (`report/musin-slides.pptx`), F6.5 clean-clone check. **Still to do:** review and edit the report, review the F4.6 spot-check verdicts, rehearse the live demo (slide 4), check the AI-assistance policy. Parked G1 items (spoken word, betweenness across imports, log weights, D-027/D-028 sign-off) are stated as limitations. Neo4j holds `full` (post-G1) with all P4 properties written back; report numbers come from `reports/tables/` only. *(Update this line whenever a phase closes.)*
 
@@ -21,9 +21,9 @@ The project requires a written record of everything built. This is part of the w
 2. **After implementing a feature**, before calling it done:
    - Create `docs/features/F<x.y>-<slug>.md` from `docs/features/_TEMPLATE.md`. Fill every section with real outputs from the run (row counts, runtimes, parameters), the exact command, and *why* the design was chosen.
    - Update the feature's row in `docs/README.md`.
-   - Update the root `README.md` if the feature adds or changes setup, run commands, or results (e.g. add its command to **Getting started**).
+   - Update the root `README.md` if the feature adds or changes setup, run commands, or results (e.g. add its command to **Running the pipeline**).
    - Add a `D-NNN` entry to `docs/decisions.md` for any decision about scope, schema, metrics, or thresholds.
-3. **When a phase's last feature is done** (or the user closes the phase), write `docs/phases/P<n>-<slug>.md` from `docs/phases/_TEMPLATE.md`, update `docs/README.md`, update the **Status** line and **Progress** table in the root `README.md`, and update the **Current phase** line above.
+3. **When a phase's last feature is done** (or the user closes the phase), write `docs/phases/P<n>-<slug>.md` from `docs/phases/_TEMPLATE.md`, update the status in `docs/README.md`, and update the **Current phase** line above.
 4. Never tell the user a feature is complete while its doc is missing.
 5. If a finished feature is reworked, update its existing doc and add a **Revisions** line.
 

@@ -33,11 +33,10 @@ Every feature and every phase gets a written record of what was built, how, and 
 
 ### 1.3 Index, README, and decisions
 
-- Update [docs/README.md](docs/README.md) (status + link) **in the same commit** as the doc.
-- Keep the root [README.md](README.md) current, in the same commit:
-  - a phase changes status → the **Status** line and **Progress** table
-  - a feature adds or changes setup or run commands → **Getting started**
-  - results become available → **Results**
+- Update [docs/README.md](docs/README.md) (status + link) **in the same commit** as the doc. Project status and progress live there, not in the root README.
+- Keep the root [README.md](README.md) current for a new reader, in the same commit:
+  - a feature adds or changes setup or run commands → **Getting started** or **Running the pipeline**
+  - headline results change → **Key findings**
 - Any decision that changes scope, the schema, a metric, or a threshold goes in [docs/decisions.md](docs/decisions.md) as a new `D-NNN` entry. Never edit an old decision; supersede it with a new one.
 
 ### 1.4 Writing standard
