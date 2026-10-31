@@ -5,7 +5,6 @@
 | | |
 |---|---|
 | **Course** | Big Data Analytics — semester project |
-| **Team** | Member A: `<name>` (data engineering) · Member B: `<name>` (graph analytics) |
 | **Version** | 1.1 (2026-10-10): contract v1 clarifications ([D-011](docs/decisions.md)) |
 | **Submission** | ~2026-11-09 — **confirm the exact deadline** |
 | **Current phase** | P2 Cleaning & genre normalization ✅ → P3 Graph build & Neo4j load |
@@ -107,7 +106,7 @@ Parameter values come from `config/pipeline.yaml` (§8.4). The values actually u
 
 ### 5.6 Validation
 
-Before RQ1 results are looked at, both members independently list ~15 artists widely known for cross-genre collaboration and commit the combined list to `docs/validation-list.md`. This pre-registration stops us from picking examples after seeing the results. The report states where those artists rank. The top 10 of every ranking is also spot-checked for data artefacts.
+Before RQ1 results are looked at, ~15 artists widely known for cross-genre collaboration are listed and committed to `docs/validation-list.md`. This pre-registration stops us from picking examples after seeing the results. The report states where those artists rank. The top 10 of every ranking is also spot-checked for data artefacts.
 
 ---
 
@@ -182,7 +181,7 @@ Benchmarks (P5): Spark scaling · PageRank in GDS vs GraphFrames (vs cuGraph)
 
 | Layer | Choice | Why |
 |---|---|---|
-| Environment | WSL2 (Ubuntu) + Docker Compose | Identical setup for both members; avoids Spark-on-Windows problems |
+| Environment | WSL2 (Ubuntu) + Docker Compose | Identical setup on every machine; avoids Spark-on-Windows problems |
 | Processing | PySpark 3.5, local mode | Handles the full dump on one machine; 3.5 is compatible with GraphFrames |
 | Storage | Parquet, layered (raw → clean → graph) | Columnar, compressed, Spark-native; layers make stages independent |
 | Graph DB | Neo4j 5 Community + GDS | Free; GDS covers every algorithm we need (the 4-core limit is acceptable) |
@@ -210,9 +209,9 @@ These values are per machine, so they live in `.env` (§8.5), not in `config/pip
 
 ## 8. Data model — schema contract v1
 
-This contract (§8.1–8.5) is the interface between Member A (producer) and Member B (consumer).
+This contract (§8.1–8.5) is the interface between the producing stages (ETL, graph build) and the consuming stages (Neo4j, analysis).
 
-**Status:** draft v1 until M1 (Oct 13), when both members sign it off. After that, changing it requires both members' approval, a version bump here, and a decision-log entry.
+**Status:** draft v1 until M1 (Oct 13), when it is signed off. After that, changing it requires explicit approval, a version bump here, and a decision-log entry.
 
 ### 8.1 Parquet graph layer (`$MUSIN_DATA/graph/`)
 
@@ -313,7 +312,7 @@ The CSVs carry the flat columns of the model above, in `neo4j-admin database imp
 
 ### 8.4 Configuration contract: `config/pipeline.yaml`
 
-This file holds every setting that **changes results**. It is committed, shared by both members, and read by every stage and notebook. Draft v1:
+This file holds every setting that **changes results**. It is committed, shared by every machine, and read by every stage and notebook. Draft v1:
 
 ```yaml
 snapshot_date: "20261007-002147"     # OD6, set in F1.2 (D-013): full-export directory name
@@ -478,7 +477,7 @@ Priority: **Must** (the project fails without it) · **Should** (expected) · **
 | NFR-02 | **Fits the reference machine** (§7.2) without swapping; heavy engines run one at a time. |
 | NFR-03 | **Idempotent stages:** re-running a stage overwrites its whole output; a stage reads only the previous layer. |
 | NFR-04 | **Observable:** every stage logs input/output row counts and runtime; Spark event logs are kept for benchmarks. |
-| NFR-05 | **Portable:** sample mode runs on an 8 GB RAM machine, so both members can develop. |
+| NFR-05 | **Portable:** sample mode runs on an 8 GB RAM machine, so development doesn't need the reference machine. |
 | NFR-06 | **Documented:** every feature and phase has a build-log doc ([RULES.md §1](RULES.md#1-documentation--the-build-log)). |
 | NFR-07 | **Attributed and clean:** MusicBrainz is cited; data is never committed to the repo. |
 
@@ -488,50 +487,50 @@ Priority: **Must** (the project fails without it) · **Should** (expected) · **
 
 Feature IDs are `F<phase>.<n>`. Each feature gets a doc in `docs/features/` when it is done; each phase gets a doc in `docs/phases/` when it closes.
 
-| Phase | Dates | Lead |
-|---|---|---|
-| P0 Planning | Oct 10 | Both |
-| P1 Environment & ingestion | Oct 10–16 | A |
-| P2 Cleaning & genre normalization | Oct 15–21 | A |
-| P3 Graph build & Neo4j load | Oct 18–24 | A (load: B) |
-| P4 Graph analytics | Oct 19–30 | B |
-| P5 Benchmarks | Oct 22–30 | A |
-| P6 Presentation & report | Oct 28–Nov 9 | Both |
+| Phase | Dates |
+|---|---|
+| P0 Planning | Oct 10 |
+| P1 Environment & ingestion | Oct 10–16 |
+| P2 Cleaning & genre normalization | Oct 15–21 |
+| P3 Graph build & Neo4j load | Oct 18–24 |
+| P4 Graph analytics | Oct 19–30 |
+| P5 Benchmarks | Oct 22–30 |
+| P6 Presentation & report | Oct 28–Nov 9 |
 
 ### Features
 
-| ID | Feature | Covers | Owner | Priority |
-|---|---|---|---|---|
-| F1.1 | Dev environment: `.wslconfig`, Docker Compose (Spark + Jupyter, Neo4j + GDS), `.env.example` (§8.5), initial `config/pipeline.yaml` (§8.4) | NFR-01, NFR-02 | A | Must |
-| F1.2 | Dump download, checksum verification, snapshot pinning | FR-01 | A | Must |
-| F1.3 | Table schemas and raw ingest to Parquet | FR-02 | A | Must |
-| F1.4 | Data profiling report | FR-03 | A + B | Must |
-| F1.5 | Neo4j + GDS smoke test on a toy graph | FR-14 (prep) | B | Must |
-| F2.1 | Artist cleaning and special-purpose filter | FR-04 | A | Must |
-| F2.2 | Credit parsing (main / featured) | FR-05 | A | Must |
-| F2.3 | Contribution relationship extraction | FR-06 | A | Must |
-| F2.4 | Recording first release year | FR-07 | A | Must |
-| F2.5 | Genre normalization (1-day timebox) | FR-08 | A + B | Must |
-| F3.1 | Edge building, aggregation, hub / band-member / `min_recordings` filters | FR-09, FR-10, FR-11 | A | Must |
-| F3.2 | Sample mode and dev sample graph | FR-12 | A | Must |
-| F3.3 | Graph-layer quality checks | FR-13 | A | Must |
-| F3.4 | Neo4j CSV export (§8.3 format) and bulk import | FR-14 | A | Must |
-| F3.5 | Constraints, indexes, GDS projections | FR-14 | B | Must |
-| F4.1 | Centrality measures and agreement (RQ4) | FR-15 | B | Must |
-| F4.2 | Communities vs genres (RQ2) | FR-16 | B | Must |
-| F4.3 | Genre bridges (RQ1) | FR-17 | B | Must |
-| F4.4 | Cross-genre trends by decade (RQ3) | FR-18 | B | Must |
-| F4.5 | Degrees of separation | FR-19 | B | Should |
-| F4.6 | Validation | FR-20 | B | Must |
-| F4.7 | Sensitivity graph variants (D-021) | FR-15, FR-17 | B | Must |
-| F5.1 | Spark scaling benchmark | FR-21 | A | Must |
-| F5.2 | PageRank: GDS vs GraphFrames | FR-22 | A | Should |
-| F5.3 | PageRank on GPU (cuGraph) | FR-23 | A | Could |
-| F6.1 | Report figures and tables | FR-24 | Both | Must |
-| F6.2 | Demo: saved Browser queries (+ optional Streamlit) | FR-25, FR-26 | B | Must |
-| F6.3 | Final report | FR-27 | Both | Must |
-| F6.4 | Slides and rehearsal | FR-27 | Both | Must |
-| F6.5 | README and clean-clone reproducibility check | NFR-01 | A | Must |
+| ID | Feature | Covers | Priority |
+|---|---|---|---|
+| F1.1 | Dev environment: `.wslconfig`, Docker Compose (Spark + Jupyter, Neo4j + GDS), `.env.example` (§8.5), initial `config/pipeline.yaml` (§8.4) | NFR-01, NFR-02 | Must |
+| F1.2 | Dump download, checksum verification, snapshot pinning | FR-01 | Must |
+| F1.3 | Table schemas and raw ingest to Parquet | FR-02 | Must |
+| F1.4 | Data profiling report | FR-03 | Must |
+| F1.5 | Neo4j + GDS smoke test on a toy graph | FR-14 (prep) | Must |
+| F2.1 | Artist cleaning and special-purpose filter | FR-04 | Must |
+| F2.2 | Credit parsing (main / featured) | FR-05 | Must |
+| F2.3 | Contribution relationship extraction | FR-06 | Must |
+| F2.4 | Recording first release year | FR-07 | Must |
+| F2.5 | Genre normalization (1-day timebox) | FR-08 | Must |
+| F3.1 | Edge building, aggregation, hub / band-member / `min_recordings` filters | FR-09, FR-10, FR-11 | Must |
+| F3.2 | Sample mode and dev sample graph | FR-12 | Must |
+| F3.3 | Graph-layer quality checks | FR-13 | Must |
+| F3.4 | Neo4j CSV export (§8.3 format) and bulk import | FR-14 | Must |
+| F3.5 | Constraints, indexes, GDS projections | FR-14 | Must |
+| F4.1 | Centrality measures and agreement (RQ4) | FR-15 | Must |
+| F4.2 | Communities vs genres (RQ2) | FR-16 | Must |
+| F4.3 | Genre bridges (RQ1) | FR-17 | Must |
+| F4.4 | Cross-genre trends by decade (RQ3) | FR-18 | Must |
+| F4.5 | Degrees of separation | FR-19 | Should |
+| F4.6 | Validation | FR-20 | Must |
+| F4.7 | Sensitivity graph variants (D-021) | FR-15, FR-17 | Must |
+| F5.1 | Spark scaling benchmark | FR-21 | Must |
+| F5.2 | PageRank: GDS vs GraphFrames | FR-22 | Should |
+| F5.3 | PageRank on GPU (cuGraph) | FR-23 | Could |
+| F6.1 | Report figures and tables | FR-24 | Must |
+| F6.2 | Demo: saved Browser queries (+ optional Streamlit) | FR-25, FR-26 | Must |
+| F6.3 | Final report | FR-27 | Must |
+| F6.4 | Slides and rehearsal | FR-27 | Must |
+| F6.5 | README and clean-clone reproducibility check | NFR-01 | Must |
 
 ### Milestones
 
@@ -540,7 +539,7 @@ Feature IDs are `F<phase>.<n>`. Each feature gets a doc in `docs/features/` when
 | M0 | Oct 10 | Planning docs complete |
 | M1 | Oct 13 | Schema contract v1 frozen (§8) |
 | G1 | Oct 16 | **Scope gate:** profiling done, open decisions (§14) resolved |
-| M2 | Oct 19 | Sample graph loaded in Neo4j; B develops against it |
+| M2 | Oct 19 | Sample graph loaded in Neo4j; P4 develops against it |
 | M3 | Oct 24 | Full graph loaded in Neo4j |
 | M4 | Oct 30 | **Feature freeze:** analyses and benchmarks done |
 | M5 | Nov 5 | Report and slides drafted |
@@ -548,13 +547,13 @@ Feature IDs are `F<phase>.<n>`. Each feature gets a doc in `docs/features/` when
 
 Nov 5–9 is buffer. Could-priority work starts only when every Must in its phase is done.
 
-## 12. Team
+## 12. Work areas
 
-| Member | Owns | Report sections |
+| Area | Phases and features | Report sections |
 |---|---|---|
-| A — `<name>` | P1, P2, P3 build, P5, F6.5 | Architecture, ETL, benchmarks |
-| B — `<name>` | F1.5, F3.5, P4, F6.2 | Analysis, results |
-| Both | Genre mapping, validation list, report, slides | Each reviews the other's PRs |
+| Data engineering | P1, P2, P3 build, P5, F6.5 | Architecture, ETL, benchmarks |
+| Graph analytics | F1.5, F3.5, P4, F6.2 | Analysis, results |
+| Shared | Genre mapping, validation list, report, slides | All |
 
 ## 13. Risks
 
@@ -567,7 +566,7 @@ Nov 5–9 is buffer. Could-priority work starts only when every Must in its phas
 | Out of memory | Medium | Stalled runs | Sample mode; one engine at a time; GDS `.estimate` first |
 | Betweenness too slow | Medium | P4 delayed | Sampling |
 | Environment setup on Windows | Medium | Days lost in week 1 | WSL2 + Docker from day 1 |
-| Member B idle waiting for data | Medium | Lost parallelism | Contract by M1, toy graph (F1.5), sample graph by M2 |
+| Analysis idle waiting for data | Medium | Lost parallelism | Contract by M1, toy graph (F1.5), sample graph by M2 |
 | Deadline slip | Medium | Rushed report | Feature freeze at M4; 4-day buffer |
 
 ## 14. Open decisions (resolved at gate G1: [D-039](docs/decisions.md), [D-040](docs/decisions.md))
@@ -597,7 +596,7 @@ The provisional values sit in `config/pipeline.yaml` (§8.4), so development isn
 
 The project is done when:
 
-1. The full pipeline runs from a clean clone on the pinned snapshot (sample mode on any member's machine, full mode on the reference machine).
+1. The full pipeline runs from a clean clone on the pinned snapshot (sample mode on any machine, full mode on the reference machine).
 2. RQ1–RQ4 each have defined metrics, figures, a written answer, and a validation note.
 3. The FR-21 benchmark (and FR-22 if reached) is reported with environment details.
 4. Every Must feature and every phase has a build-log doc.

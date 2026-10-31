@@ -11,7 +11,7 @@ Keep this README current (RULES.md §1.3). Update it whenever:
 
 A Big Data Analytics semester project. We process the full MusicBrainz database export with PySpark, build an artist collaboration graph, and analyse it in Neo4j to find which artists connect music genres.
 
-> **Status:** P1–P4 done; G1 decisions recorded ([D-039](docs/decisions.md): classical analysed separately; [D-040](docs/decisions.md): other values confirmed), the graph rebuilt and **all four research questions re-answered on the final graph** (2026-10-20); **P5 Benchmarks done** (Spark scaling, GDS vs GraphFrames vs cuGraph); **P6 built**: report figures and tables (F6.1), demo queries (F6.2), report draft ([`report/report.md`](report/report.md), F6.3), 5-slide deck (F6.4), clean-clone check (F6.5). Team review, demo video and rehearsal pending · *Last updated 2026-10-20*
+> **Status:** P1–P4 done; G1 decisions recorded ([D-039](docs/decisions.md): classical analysed separately; [D-040](docs/decisions.md): other values confirmed), the graph rebuilt and **all four research questions re-answered on the final graph** (2026-10-20); **P5 Benchmarks done** (Spark scaling, GDS vs GraphFrames vs cuGraph); **P6 built**: report figures and tables (F6.1), demo queries (F6.2), report draft ([`report/report.md`](report/report.md), F6.3), 5-slide deck (F6.4), clean-clone check (F6.5). Review, demo video and rehearsal pending · *Last updated 2026-10-20*
 
 ## Research questions
 
@@ -32,7 +32,7 @@ Exact metric definitions are in [PRD §5](PRD.md#5-research-questions).
 | P3 Graph build & Neo4j load | Oct 18–24 | Done |
 | P4 Graph analytics | Oct 19–30 | Done (final graph) |
 | P5 Benchmarks | Oct 22–30 | Done |
-| P6 Presentation & report | Oct 28–Nov 9 | Built; team review, video and rehearsal pending |
+| P6 Presentation & report | Oct 28–Nov 9 | Built; review, video and rehearsal pending |
 
 Feature-level status, with a doc for everything built, is in the [build log](docs/README.md).
 
@@ -77,7 +77,7 @@ wsl --install -d Ubuntu-24.04     # creates your Linux user
 
 In Docker Desktop, go to **Settings → Resources → WSL integration** and enable your Ubuntu distro. Every command from here on runs in that Ubuntu shell (`wsl -d Ubuntu-24.04` from PowerShell; the default distro may be `docker-desktop`).
 
-**2. Clone and cap WSL's memory** (Ubuntu shell). The GitHub repo is private and WSL's `git` has no GitHub login of its own, so `git clone` stops at a username prompt: sign in first with `gh auth login` (`sudo apt install gh`) or give a personal access token as the password. Clone into the WSL filesystem (e.g. `~/musin`); a checkout under `/mnt/c/` also works but its bind mount is slower.
+**2. Clone and cap WSL's memory** (Ubuntu shell). Clone into the WSL filesystem (e.g. `~/musin`); a checkout under `/mnt/c/` also works but its bind mount is slower.
 
 ```bash
 git clone https://github.com/Pgramer1/musin.git ~/musin && cd ~/musin
@@ -104,7 +104,7 @@ If `docker compose build` stops with `ReadTimeoutError` from `files.pythonhosted
 docker compose exec spark python -m musin.ingest.download --config config/pipeline.yaml
 ```
 
-The official server keeps only the two latest weekly exports, so from about 2026-10-21 on the download fails: copy the folder `$MUSIN_DATA/dumps/20261007-002147/` from a teammate and run the same command with `--verify-only` (re-checks the GPG signature and both SHA-256 sums, under a minute). `--show-latest` lists what the server has now.
+The official server keeps only the two latest weekly exports, so from about 2026-10-21 on the download fails: copy the folder `$MUSIN_DATA/dumps/20261007-002147/` from a machine that already has it and run the same command with `--verify-only` (re-checks the GPG signature and both SHA-256 sums, under a minute). `--show-latest` lists what the server has now.
 
 **5. Unpack and convert to Parquet** (the 22 tables we use, ≈17.5 GB of text → typed Parquet in `$MUSIN_DATA/raw/`; [F1.3](docs/features/F1.3-raw-ingest.md)). From here on, stop Neo4j while a heavy Spark stage runs (18 GB budget) and start it again for steps 6, 9 and 10:
 
@@ -149,13 +149,13 @@ docker compose exec spark python -m musin.export.neo4j_csv --config config/pipel
 bash neo4j/import_graph.sh full --overwrite
 ```
 
-**Dev sample graph** (F3.2; ~1.5 min, works with `SPARK_DRIVER_MEMORY=4g`). It rebuilds the whole recording-level chain for 5% of recordings into `$MUSIN_DATA/sample/f0.05/` and writes `graph/_manifest.json` with content fingerprints. Two members hold the same graph when the fingerprints match. Needs the full `clean/artists` and genre tables from step 7.
+**Dev sample graph** (F3.2; ~1.5 min, works with `SPARK_DRIVER_MEMORY=4g`). It rebuilds the whole recording-level chain for 5% of recordings into `$MUSIN_DATA/sample/f0.05/` and writes `graph/_manifest.json` with content fingerprints. Two machines hold the same graph when the fingerprints match. Needs the full `clean/artists` and genre tables from step 7.
 
 ```bash
 docker compose exec spark python -m musin.graph.sample --config config/pipeline.yaml --sample 0.05
 ```
 
-**Sample mode only** (member B, or a machine under 24 GB). `--sample 0.05` samples recordings, not the input, so a sample run still needs the **full** `raw/` layer (steps 4–5) and the full artist-level tables: `clean/artists` and `clean/special_artists` (F2.1, ~20 s) and the genre tables (F2.5, ~45 s), and F2.5 reads the full `clean/credits` (F2.2, ~1 min). Run those once in full mode (or copy `raw/` and `clean/` from a teammate), then everything else with `--sample 0.05`:
+**Sample mode only** (a machine under 24 GB). `--sample 0.05` samples recordings, not the input, so a sample run still needs the **full** `raw/` layer (steps 4–5) and the full artist-level tables: `clean/artists` and `clean/special_artists` (F2.1, ~20 s) and the genre tables (F2.5, ~45 s), and F2.5 reads the full `clean/credits` (F2.2, ~1 min). Run those once in full mode (or copy `raw/` and `clean/` from a teammate), then everything else with `--sample 0.05`:
 
 ```bash
 docker compose stop neo4j
@@ -309,7 +309,7 @@ docker compose exec spark python -m musin.graph.checks --config config/pipeline.
 **5. Re-verify Neo4j.** Each import runs 39 checks against the export and the Parquet source, then F3.5's constraint and projection checks; every line should say `PASS`. An import **replaces** the loaded graph.
 
 ```bash
-bash neo4j/import_graph.sh sample-f0.05 --overwrite                                    # member B's dev graph (~1.5 min)
+bash neo4j/import_graph.sh sample-f0.05 --overwrite                                    # dev sample graph (~1.5 min)
 bash neo4j/import_graph.sh full --overwrite                                            # full graph (~2 min)
 docker compose exec spark python -m musin.gds.setup --config config/pipeline.yaml      # re-check schema + projections only
 ```
@@ -338,7 +338,7 @@ Then follow Getting started steps 3 and 4 (`--verify-only`) and the sample-mode-
 
 ```
 PRD.md             project requirements: scope, metrics, schema, schedule
-RULES.md           team conventions
+RULES.md           project conventions
 CLAUDE.md          guidance for Claude Code
 docs/              build log: phase docs, feature docs, decision log
 config/            pipeline.yaml (settings that change results)
@@ -350,6 +350,7 @@ reports/           generated tables and figures (profile_*: F1.4, genre_*: F2.5,
 tests/             pytest + fixtures (neo4j_toy/: F1.5 toy graph)
 docker-compose.yml services spark and neo4j, plus rapids (profile gpu, F5.3 only)
 .env.example       template for per-machine settings and secrets
+LICENSE            MIT license for the code
 ```
 
 `notebooks/` and `app/` (PRD layout) are added if P6 needs them; nothing in the pipeline depends on them.
@@ -390,13 +391,10 @@ docker-compose.yml services spark and neo4j, plus rapids (profile gpu, F5.3 only
 | [reports/README.md](reports/README.md) | Every report figure and table, the stage that makes it, and the command (generated by F6.1) |
 | [CLAUDE.md](CLAUDE.md) | Instructions for Claude Code in this repo |
 
-## Team
-
-| Member | Name | Role |
-|---|---|---|
-| A | `<name>` | Data engineering: environment, Spark ETL, Neo4j import, benchmarks |
-| B | `<name>` | Graph analytics: Neo4j/GDS, research questions, validation, demo |
-
 ## Data and attribution
 
-Data comes from [MusicBrainz](https://musicbrainz.org/), run by the MetaBrainz Foundation. Core data is CC0; tags come from the derived dump under CC BY-NC-SA 3.0. No MusicBrainz data is stored in this repository.
+Data comes from [MusicBrainz](https://musicbrainz.org/), run by the MetaBrainz Foundation. Core data is CC0; tags come from the derived dump under CC BY-NC-SA 3.0. No MusicBrainz data is stored in this repository. Figures and tables in `reports/` are derived from that data, so the genre-based ones carry the same CC BY-NC-SA 3.0 terms.
+
+## License
+
+The code is released under the [MIT License](LICENSE). The MusicBrainz data it processes is not covered by this license; see above.

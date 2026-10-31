@@ -1,6 +1,6 @@
-# Musin — Team Rules
+# Musin — Project Rules
 
-These rules bind both team members **and** Claude Code. If a rule gets in the way, change it through a PR that both members approve. Don't quietly ignore it.
+These rules bind everyone working on the repo, **including** Claude Code. If a rule gets in the way, change it explicitly in this file. Don't quietly ignore it.
 
 Scope, schema, and metric definitions live in [PRD.md](PRD.md). This file is about **how** we work.
 
@@ -8,7 +8,7 @@ Scope, schema, and metric definitions live in [PRD.md](PRD.md). This file is abo
 
 ## 1. Documentation — the build log
 
-Every feature and every phase gets a written record of what was built, how, and why. The build log lets an examiner (or your teammate) understand the project without reading the code, and it is most of the final report, already written.
+Every feature and every phase gets a written record of what was built, how, and why. The build log lets an examiner (or any new contributor) understand the project without reading the code, and it is most of the final report, already written.
 
 ### 1.1 Feature docs
 
@@ -53,7 +53,7 @@ Every feature and every phase gets a written record of what was built, how, and 
 
 A feature is done only when all of these are true:
 
-- [ ] Code merged to `main` through a PR reviewed by the other member
+- [ ] Code merged to `main`
 - [ ] Runs end-to-end with one documented command, in sample mode and (for pipeline stages) full mode
 - [ ] Tests for pure logic pass; stage quality checks pass
 - [ ] Feature doc written and `docs/README.md` updated
@@ -73,8 +73,7 @@ A feature is done only when all of these are true:
 - One repo; `main` always runs.
 - Branch names: `feat/F2.5-genre-normalization`, `fix/F3.1-duplicate-edges`, `docs/P2`.
 - Commit messages start with the ID: `F2.5: map tags to parent genres`.
-- **No AI attribution:** commits and PRs carry no `Co-Authored-By: Claude …` trailer and no "Generated with Claude Code" line. Only team members are authors.
-- The other member reviews each PR within 24 hours. Small PRs (under ~400 lines) get reviewed faster.
+- **No AI attribution:** commits and PRs carry no `Co-Authored-By: Claude …` trailer and no "Generated with Claude Code" line. Only the project's human authors are named.
 - **Never commit data:** dumps, Parquet, CSV exports, Neo4j stores, or large notebook outputs. Small hand-made config files (`config/*.csv`, `config/*.yaml`) are committed.
 - No secrets in the repo. Secrets and per-machine settings go in `.env` (gitignored; keys listed in [PRD §8.5](PRD.md#85-environment-contract-env)); keep `.env.example` current. Settings that change results go in `config/pipeline.yaml` ([PRD §8.4](PRD.md#84-configuration-contract-configpipelineyaml)).
 
@@ -132,15 +131,13 @@ A feature is done only when all of these are true:
 - Work inside WSL2 + Docker Compose. Don't run Spark natively on Windows.
 - Data lives in the WSL filesystem (`MUSIN_DATA=~/musin-data`), never under `/mnt/c/`.
 - **Memory budget:** WSL 18 GB · Spark driver 12 GB · Neo4j heap 8 GB + page cache 5 GB. **Never run Spark and Neo4j heavy jobs at the same time.**
-- Full-data runs happen on the reference machine (24 GB RAM). The other member uses sample mode if their machine is smaller.
+- Full-data runs happen on the reference machine (24 GB RAM). Smaller machines use sample mode.
 - Check free disk space before downloading or extracting dumps (keep ≥ 100 GB free).
 
-## 11. Working together
+## 11. Changes and reviews
 
-- **Schema contract** ([PRD §8](PRD.md#8-data-model--schema-contract-v1)) changes need both members' agreement, a version bump, and a decision entry.
-- Post a daily async update in the team chat: done / next / blocked.
-- Hold one sync per week, plus a review at each phase gate.
-- Owners are listed in [PRD §11](PRD.md#11-phases-features-schedule), but anyone may fix a blocker. Tell the owner when you do.
+- **Schema contract** ([PRD §8](PRD.md#8-data-model--schema-contract-v1)) changes need explicit approval, a version bump, and a decision entry.
+- Hold a review at each phase gate.
 
 ## 12. Claude Code
 

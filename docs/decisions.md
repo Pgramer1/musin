@@ -60,7 +60,7 @@ Entry format:
 ### D-007 — WSL2 + Docker Compose environment
 - **Date / phase:** 2026-10-10 · P0
 - **Status:** Accepted
-- **Context:** The host is Windows 11. Spark on native Windows needs Hadoop binary workarounds and is unreliable, and two members need identical setups.
+- **Context:** The host is Windows 11. Spark on native Windows needs Hadoop binary workarounds and is unreliable, and every machine needs an identical setup.
 - **Decision:** All pipeline work runs in WSL2 (Ubuntu) + Docker Compose.
 - **Consequences:** Data must live in the WSL filesystem for acceptable I/O speed.
 
@@ -87,8 +87,8 @@ Entry format:
 
 ### D-011 — Contract v1 clarifications
 - **Date / phase:** 2026-10-10 · P0
-- **Status:** Accepted, pending both members' sign-off at M1 (Oct 13)
-- **Context:** A review of the PRD found places where the contract was implied but not defined, so Member A and Member B could implement the same thing differently.
+- **Status:** Accepted, pending sign-off at M1 (Oct 13)
+- **Context:** A review of the PRD found places where the contract was implied but not defined, so the producer and consumer stages could implement the same thing differently.
 - **Decision:**
   1. **Config contract** (PRD §8.4): `config/pipeline.yaml` key list v1. **Environment contract** (§8.5): `.env` keys. Rule: settings that change results go in `pipeline.yaml`; secrets and per-machine settings go in `.env`.
   2. **`edges_by_decade.weight`** = distinct shared recordings whose first release year falls in that decade. One edge can span several decades; recordings with no known year are excluded; summed weights must not exceed `edges.weight` (checked in F3.3). `first_year` / `last_year` = earliest / latest first-release year of the shared recordings.
@@ -106,7 +106,7 @@ Entry format:
 - **Status:** Accepted
 - **Context:** The Spark + Jupyter container needs a Jupyter port, a Spark UI port, and a way to authenticate to Jupyter. None of these is in the PRD §8.5 `.env` contract. Adding them would extend the contract; leaving them out means hard-coding per-machine settings.
 - **Decision:** Keep §8.5 unchanged. Fix Jupyter at port 8888 and the Spark UI at 4040 in `docker-compose.yml`, and run Jupyter without a token. Every published port (Neo4j's included) is bound to `127.0.0.1` only.
-- **Consequences:** Nothing is reachable from the network, but any local process can use Jupyter, and through it the repo and `$MUSIN_DATA`. If 8888 or 4040 is taken on a member's machine, they edit the port mapping locally. Revisit (add `JUPYTER_PORT`, `JUPYTER_TOKEN`, `SPARK_UI_PORT` to §8.5) if either becomes a problem.
+- **Consequences:** Nothing is reachable from the network, but any local process can use Jupyter, and through it the repo and `$MUSIN_DATA`. If 8888 or 4040 is taken on a machine, the port mapping is edited locally. Revisit (add `JUPYTER_PORT`, `JUPYTER_TOKEN`, `SPARK_UI_PORT` to §8.5) if either becomes a problem.
 
 ### D-013 — Snapshot 20261007-002147, verified by signed checksums (OD6)
 - **Date / phase:** 2026-10-10 · P1 (F1.2)
@@ -117,7 +117,7 @@ Entry format:
   2. Download only `mbdump.tar.bz2` (core, CC0) and `mbdump-derived.tar.bz2` (tags, CC BY-NC-SA 3.0). The other archives (edit history 16 GB, editors, stats, cover art, CD stubs) are not needed by any RQ.
   3. Trust chain: `SHA256SUMS` must carry a valid GPG signature from the MusicBrainz data-dump signing key (fingerprint `D5E63B4BDCCE195642948684B8FC2375C777580F`, public key committed as `config/musicbrainz-signing-key.asc`), and every file must match its SHA-256.
   4. New `source.*` keys in `config/pipeline.yaml` and PRD §8.4: `base_url`, `files`, `signing_key_file`, `signing_key_fingerprint`.
-- **Consequences:** This snapshot leaves the official server about two weeks after 2026-10-10. After that, our verified copy in `$MUSIN_DATA/dumps/20261007-002147/` is the only source; a member who needs the files copies them from the reference machine and runs `--verify-only`. All report numbers refer to this snapshot.
+- **Consequences:** This snapshot leaves the official server about two weeks after 2026-10-10. After that, our verified copy in `$MUSIN_DATA/dumps/20261007-002147/` is the only source; another machine that needs the files copies them from the reference machine and runs `--verify-only`. All report numbers refer to this snapshot.
 
 ### D-014 — Raw layer: 22 tables, schema 31, generated explicit schemas
 - **Date / phase:** 2026-10-10 · P1 (F1.3)
@@ -250,7 +250,7 @@ Entry format:
 
 ### D-028 — Each recording counts once per artist pair (no double counting in COLLAB)
 - **Date / phase:** 2026-10-11 · P3 (F3.1 rework)
-- **Status:** Accepted by member A; contract change within draft v1 (no version bump, as D-011), to be confirmed by both members at M1 (Oct 13)
+- **Status:** Accepted; contract change within draft v1 (no version bump, as D-011), to be confirmed at M1 (Oct 13)
 - **Context:** PRD §8.2 created a contribution edge to every main artist even when the contributor was also billed on the same recording, and D-017 sums all four types per pair for COLLAB. The first F3.1 build showed that 4,026,709 of 10,339,747 non-self `PERFORMED_FOR` instances (38.9 %) and 138,726 of 2,762,816 `PRODUCED_FOR` (5.0 %) came from a billed contributor (e.g. Springsteen's vocal credit on "Bruce Springsteen & The E Street Band" recordings). Such recordings counted twice for the pair in COLLAB, inflating weighted degree, PageRank, and Louvain weights for well-documented acts.
 - **Decision:** For each recording, an unordered artist pair gets **at most one edge instance**, chosen by precedence: billed type (`CO_CREDITED` / `FEATURED`, at most one per pair) → `PRODUCED_FOR` → `PERFORMED_FOR`. Lower-precedence instances are dropped in F3.1 (`drop_reason = same_recording_pair`) and the stage fails if any (recording, pair) remains twice. PRD §8.2 gains this rule.
 - **Consequences:** Summing type weights per pair (D-017) now equals the distinct shared recordings of the pair. Full build: edges 4,204,209 → 3,541,659; 4,054,365 `PERFORMED_FOR` and 134,833 `PRODUCED_FOR` instances dropped; nodes unchanged (1,180,939). Type-specific edges now mean "the strongest documented relationship on those recordings": `PERFORMED_FOR` no longer records a billed artist's own instrument credits, and a producer who also played counts as `PRODUCED_FOR` only. Billing outranks production because it is the explicit, public statement of collaboration and exists for every recording; production outranks performance because producer credits are rarer and are the subject of OD5.
@@ -258,13 +258,13 @@ Entry format:
 ### D-029 — Dev sample graph: fraction 0.05, identified by content fingerprints
 - **Date / phase:** 2026-10-11 · P3 (F3.2)
 - **Status:** Accepted; point 4 superseded by D-035
-- **Context:** Member B develops P4 against a sample graph before the full graph is loaded (M2/M3). FR-12 fixes the sampling unit (hashed recording id), but not the fraction member B uses, how two members can tell they hold the same graph, or what the sample may be used for. D-021 also left the storage of its Characters-included sensitivity build to "F3.2/F4.1".
+- **Context:** P4 is developed against a sample graph before the full graph is loaded (M2/M3). FR-12 fixes the sampling unit (hashed recording id), but not the fraction P4 development uses, how two machines can tell they hold the same graph, or what the sample may be used for. D-021 also left the storage of its Characters-included sensitivity build to "F3.2/F4.1".
 - **Decision:**
   1. The shared dev graph is **fraction 0.05**, built with `python -m musin.graph.sample --sample 0.05` into `$MUSIN_DATA/sample/f0.05/` (D-019). It has 310,253 artists and 535,372 edges and builds in about 95 s with a 4 GB driver (NFR-05).
   2. Every sample build writes `graph/_manifest.json` with row counts and order-independent content fingerprints (Σ xxhash64 per row) of the four graph tables, plus the result-changing config. Two graphs are the same when their fingerprints match; results quote the `edges` fingerprint to say which graph they came from (RULES §7).
   3. The sample is for **developing and debugging** code. Weight-based shares (edge-type and decade weight shares) are within a few percent of the full graph, but counts, degrees, and label coverage are biased (labelled nodes 1.7×, classical nodes 2.6×). No report number comes from the sample.
   4. The D-021 sensitivity build stays with F4.1, which is its only consumer.
-- **Consequences:** Both members can confirm they hold an identical dev graph by comparing four numbers. Other fractions can be built side by side if needed, e.g. for the F5.1 scaling benchmark. Results computed on the sample must not be compared numerically with full-graph results.
+- **Consequences:** Any two machines can confirm they hold an identical dev graph by comparing four numbers. Other fractions can be built side by side if needed, e.g. for the F5.1 scaling benchmark. Results computed on the sample must not be compared numerically with full-graph results.
 
 ### D-030 — Graph quality checks: run-to-run tolerance and baseline
 - **Date / phase:** 2026-10-11 · P3 (F3.3)
@@ -289,12 +289,12 @@ Entry format:
   2. **CSV dialect.** RFC 4180 quoting with `""` inside quotes (Spark's default escape is a backslash). Whitespace is not trimmed (Spark's writer trims by default). Null is an empty unquoted field, so Neo4j omits the property. Empty strings are exported as null. A value containing a line break stops the export instead of switching on `--multiline-fields`.
   3. **Gates.** The export refuses a graph whose content fingerprints differ from its last passing F3.3 check, and it reads every file back with the header's types: the content must match the source exactly. The import runs with `--bad-tolerance=0`, no skipping of bad relationships or duplicate nodes, and must leave an empty report.
   4. **Marker.** `$MUSIN_DATA/neo4j/loaded_graph.json` names the loaded graph and its fingerprints. Every import (F3.4 script and the F1.5 smoke test) deletes it first and rewrites it only after its checks pass. P4 results quote it.
-  5. **Default loaded graph until M3:** `sample-f0.05`, for member B (M2). The full graph is imported for verification and again at M3.
+  5. **Default loaded graph until M3:** `sample-f0.05`, for P4 development (M2). The full graph is imported for verification and again at M3.
 - **Consequences:** Export plus import of the full graph takes about 1.5 min (30 s export, 7 s `neo4j-admin`, 41 s verification), so switching graphs is cheap. A missing marker means "unknown database content".
 
 ### D-032 — Neo4j schema and the two production projections
 - **Date / phase:** 2026-10-11 · P3 (F3.5)
-- **Status:** Accepted. F3.5 is assigned to member B, who should confirm this at the P3 review.
+- **Status:** Accepted, to be confirmed at the P3 review.
 - **Context:** FR-14 asks for constraints and indexes without naming them. PRD §5 needs COLLAB for every RQ and a credit-only projection for RQ4's sensitivity run. RULES §7 asks for named projections, `.estimate` before full runs, and dropping projections after use. Every import replaces the database, so a hand-made schema would be lost.
 - **Decision:**
   1. **Schema:** unique `Artist.artistId`, unique `Artist.mbid`, unique `Genre.name`, and a range index on `Artist.name` (`neo4j/01_constraints.cypher`). It is applied by `python -m musin.gds.setup`, which `neo4j/import_graph.sh` runs after every verified import.
@@ -339,8 +339,8 @@ Entry format:
 
 ### D-035 — Variant graphs for sensitivity runs, built side by side with `--variant`
 - **Date / phase:** 2026-10-11 · P4 (F4.7)
-- **Status:** Accepted; contract change within draft v1 (PRD §8.4, plus F4.7 in §11), no version bump, as D-011 and D-028; to be confirmed by both members at M1 (Oct 13). Supersedes D-029 point 4.
-- **Context:** PRD §5 asks for RQ1's bridge table and RQ4's top-20 lists also "from a graph built with `Character` artists included" (D-021), and G1 may add a classical-included run the same way. D-029 §4 left that build to F4.1, but F4.3 needs it too, and the pipeline could hold only one graph per mode: one `graph/` folder, one export name per mode (`full`, `sample-f<x>`, D-031), and P4 tables written by graph name. Flipping `filters.exclude_artist_types` in `pipeline.yaml` and rebuilding would overwrite the main graph, its run-to-run baseline (D-030), its export, and, for the full graph, `reports/tables/graph_build_summary.csv`, `graph_checks.csv` and every P4 table. An edit-rebuild-revert cycle is also easy to get wrong in a two-person project.
+- **Status:** Accepted; contract change within draft v1 (PRD §8.4, plus F4.7 in §11), no version bump, as D-011 and D-028; to be confirmed at M1 (Oct 13). Supersedes D-029 point 4.
+- **Context:** PRD §5 asks for RQ1's bridge table and RQ4's top-20 lists also "from a graph built with `Character` artists included" (D-021), and G1 may add a classical-included run the same way. D-029 §4 left that build to F4.1, but F4.3 needs it too, and the pipeline could hold only one graph per mode: one `graph/` folder, one export name per mode (`full`, `sample-f<x>`, D-031), and P4 tables written by graph name. Flipping `filters.exclude_artist_types` in `pipeline.yaml` and rebuilding would overwrite the main graph, its run-to-run baseline (D-030), its export, and, for the full graph, `reports/tables/graph_build_summary.csv`, `graph_checks.csv` and every P4 table. An edit-rebuild-revert cycle is also easy to get wrong.
 - **Decision:**
   1. **Definition:** a variant is the main config plus overrides under a new top-level key `variants.<name>` in `config/pipeline.yaml`, which keeps every result-changing setting in one file (PRD §8.4). First variant: `characters: {filters: {exclude_artist_types: []}}`. Separate overlay files were rejected for that reason, and command-line overrides because a result-changing setting would then live in nobody's file.
   2. **Scope of an override:** only `filters.exclude_artist_types`, `filters.include_classical`, `filters.min_recordings` and `filters.max_credit_size`, i.e. the filters F3.1 applies (D-026). A variant therefore reuses the main `clean/` layer unchanged (D-021 §2; credit size counts Character artists, D-026 §1), and differs from the main graph only from F3.1 on. Anything else, a changed type, or an override that changes nothing fails loudly.
@@ -362,10 +362,10 @@ Entry format:
   3. **Artists are given by MBID or exact name.** An ambiguous name is refused, and the stage lists every candidate's MBID, type, recording count and genre instead of picking one silently.
 - **Consequences:** The same pair gives the same answer on every run (checked on the sample). Every sample query took ≤ 0.07 s. Neo4j can't enumerate shortest paths in a pre-defined order, so with more than 10,000 shortest paths the canonical path could differ between runs; the `capped` flag shows when that can happen. PRD §5.5 and §8.4 updated.
 
-### D-037 — Validation list chosen by Claude Code at member B's request, before any RQ1 result
+### D-037 — Validation list chosen by Claude Code, before any RQ1 result
 - **Date / phase:** 2026-10-12 · P4 (F4.6)
 - **Status:** Accepted
-- **Context:** PRD §5.6 asks both members to list ~15 cross-genre artists independently and commit the combined list before anyone looks at RQ1 results. To close P4 on 2026-10-12, member B asked Claude Code to pick the artists instead.
+- **Context:** PRD §5.6 asks for ~15 cross-genre artists from two independent lists, combined and committed before anyone looks at RQ1 results. To close P4 on 2026-10-12, Claude Code was asked to pick the artists instead.
 - **Decision:** The list is 15 artists chosen from general knowledge of their careers. It is committed in `docs/validation-list.md` and `config/validation_artists.csv` (new key `validation.artists_file`) before any F4.3 code or bridge result exists. The deviations are recorded in the list itself: one chooser instead of two independent ones, and the dev-sample F4.1/F4.2 top lists had already been seen (Herbie Hancock appeared in them).
 - **Consequences:** The pre-registration still does its main job, fixing the artists before bridge scores exist. It loses the protection of two independent lists against one person's taste. The report must state this. The list may not be edited after F4.3 results exist except through a new decision, reported as post-hoc.
 
@@ -382,7 +382,7 @@ Entry format:
 
 ### D-039 — G1 / OD1: classical analysed separately; main graph without classical, `classical` variant for sensitivity
 - **Date / phase:** 2026-10-19 · G1 (recorded after the Oct 16 gate) · P5 start
-- **Status:** Accepted. Member A's recommendation in [g1-scope-gate.md §1.1](g1-scope-gate.md#11-od1--classical), accepted as proposed and recorded on 2026-10-19 by Claude Code at the team's instruction. Supersedes the provisional `include_classical: true` (PRD §14).
+- **Status:** Accepted. The recommendation in [g1-scope-gate.md §1.1](g1-scope-gate.md#11-od1--classical), accepted as proposed and recorded on 2026-10-19 by Claude Code on instruction. Supersedes the provisional `include_classical: true` (PRD §14).
 - **Context:** On the provisional full graph (`20261007-002147`, commit `2ac5547`), artists with primary genre classical are 2.2 % of nodes but touch 13.1 % of edges and take 57 of the top 100 places by COLLAB weighted degree. Much of that weight comes from composers billed on recordings of their works (Handel: 757 collaborators), which isn't collaboration in the sense of RQ1–RQ4.
 - **Decision:**
   1. `filters.include_classical: false` for the main graph. F3.1 removes artists whose primary genre is classical (D-026 §4), along with their edges.
@@ -391,7 +391,7 @@ Entry format:
 
 ### D-040 — G1 / OD2–OD5, OD7: provisional values confirmed
 - **Date / phase:** 2026-10-19 · G1 (recorded after the Oct 16 gate) · P5 start
-- **Status:** Accepted. Member A's recommendations in [g1-scope-gate.md §1](g1-scope-gate.md#1-open-decisions-od1od5-od7), accepted as proposed and recorded on 2026-10-19 by Claude Code at the team's instruction.
+- **Status:** Accepted. The recommendations in [g1-scope-gate.md §1](g1-scope-gate.md#1-open-decisions-od1od5-od7), accepted as proposed and recorded on 2026-10-19 by Claude Code on instruction.
 - **Context:** PRD §14 left these open until G1, with provisional values in `config/pipeline.yaml`. The evidence is in g1-scope-gate.md §1.
 - **Decision:** These values are now final:
   - **OD2:** `filters.min_recordings: 1`. Raising it to 2 removes 28 % of nodes but only 13 % of edges, and a GDS projection can still filter on `recordingCount`.
@@ -401,7 +401,7 @@ Entry format:
   - **OD7:** `filters.use_release_level_credits: false`. Album credits repeat on every track and inflate producer weights, while recording coverage only rises from 9.91 % to 11.63 %.
 - **Consequences:** No stage changes because of these values. Three G1 agenda items are **not** decided here and stay open:
   - the spoken-word recording filter (g1-scope-gate.md §2.1 and §4, a proposed F3.6/FR-28 that isn't in the PRD)
-  - the `log(1 + weight)` transform for the weighted P4 measures (§2.3, member B's decision)
+  - the `log(1 + weight)` transform for the weighted P4 measures (§2.3)
   - the M1 sign-off of D-027/D-028 (§2.2)
 
 ### D-041 — Spark scaling benchmark: recording chain, isolated scratch root, fresh process per cell, median of 3
@@ -447,7 +447,7 @@ Entry format:
 
 ### D-043 — cuGraph as the third PageRank engine: same input and settings as D-042, on the GPU, in its own container
 - **Date / phase:** 2026-10-20 · P5 (F5.3)
-- **Status:** Accepted. The image download (5.83 GiB) and the NVIDIA Deep Learning Container License were approved by the team on 2026-10-20.
+- **Status:** Accepted. The image download (5.83 GiB) and the NVIDIA Deep Learning Container License were approved on 2026-10-20.
 - **Context:** FR-23 asks for "the same comparison on GPU with RAPIDS cuGraph" (Could). RAPIDS needs CUDA libraries that the Spark image doesn't have, and the RAPIDS image has neither PySpark nor the Neo4j driver. The reference machine's RTX 4060 Laptop GPU (8 GB) is visible to Docker through Docker Desktop's NVIDIA runtime under WSL2.
 - **Decision:**
   1. **Image:** a separate container, `rapids`, built from `rapidsai/base:26.08-cuda12-py3.11`, plus PyYAML (`docker/rapids/Dockerfile`).
@@ -477,7 +477,7 @@ Entry format:
 
 ### D-044 — Report figures and tables: one stage over reports/tables, a one-build guard, generated sensitivity comparison, Markdown and LaTeX tables
 - **Date / phase:** 2026-10-20 · P6 (F6.1)
-- **Status:** Accepted (member A, 2026-10-20: items 1–9 of the F6.1 proposal; tables in both Markdown and LaTeX; no degree distribution).
+- **Status:** Accepted (2026-10-20: items 1–9 of the F6.1 proposal; tables in both Markdown and LaTeX; no degree distribution).
 - **Context:** FR-24 asks for every report figure and table to be generated by code into `reports/`, and RULES §9 says report numbers come from `reports/tables/`, never from memory. After P5 the PageRank engine comparison, RQ2, RQ4 and the validation had tables but no figure. The F4.7 comparison of the main graph with its variants (top-20 Jaccards, entrants) existed only as numbers typed into the F4.7 doc. The raw CSVs carry full float precision and provenance columns, which a report table shouldn't show.
 - **Decision:**
   1. **One stage, `python -m musin.report`,** reads only aggregated CSVs already in `reports/tables/` (and `variants/<name>/`). It uses no Spark and no Neo4j, runs in seconds, and can run next to any heavy job. It never recomputes a metric; it selects, combines, rounds and draws.

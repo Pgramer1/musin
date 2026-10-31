@@ -27,7 +27,7 @@ PRD §5.6 asks for a list of artists widely known for cross-genre collaboration,
 
 ## How the list was made, and deviations from PRD §5.6
 
-- **Chosen by Claude Code at member B's request** (2026-10-12), not by both members independently as §5.6 asks, so that P4 could close on schedule. The choice came from general knowledge of these artists' careers, not from project outputs ([D-037](decisions.md)).
+- **Chosen by Claude Code on request** (2026-10-12), not from two independent lists as §5.6 asks, so that P4 could close on schedule. The choice came from general knowledge of these artists' careers, not from project outputs ([D-037](decisions.md)).
 - **What had been seen before choosing.**
   - Seen: the dev-sample top-20 lists of F4.1 (degree, PageRank, betweenness) and the F4.2 community examples. Herbie Hancock appeared there: #9 by betweenness in the first F4.1 sample run, and on an F4.5 example path.
   - Not seen: no genre-diversity value, bridge score or bridge ranking existed yet.

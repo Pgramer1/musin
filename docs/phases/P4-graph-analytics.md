@@ -5,7 +5,7 @@
 | **Status** | Done. Final results on the post-G1 full graph (D-039, D-040), re-run 2026-10-19/20 with unchanged code |
 | **Planned dates** | 2026-10-19 – 2026-10-30 |
 | **Actual dates** | 2026-10-11 – 2026-10-13 (provisional graph); final re-run 2026-10-19 – 2026-10-20 |
-| **Owners** | B; built by Claude Code with member A at the team's request |
+| **Built with** | Claude Code, on request |
 | **Data snapshot** | MusicBrainz full export `20261007-002147` (schema sequence 31); main graph `full`, edges fingerprint `-2227712706449027820962` (1,135,461 artists, 3,078,519 edges); variants `full-characters` (`-1131787253908781684974`) and `full-classical` (`-3716276720548320596788`, identical to the provisional graph) |
 
 ## 1. Goal
@@ -105,14 +105,14 @@ The provisional numbers survive as the `classical` sensitivity run, because that
 - [D-034](../decisions.md): Louvain run of record single-threaded plus stability runs; AMI next to NMI; genre agreement also inside the largest connected component; community ids as size ranks.
 - [D-035](../decisions.md): variant graphs built side by side with `--variant` (the `variants:` section in PRD §8.4); new feature F4.7.
 - [D-036](../decisions.md): degrees of separation over the four collaboration types only (never through `:Genre`), a canonical path among ties, artists by MBID or unique name.
-- [D-037](../decisions.md): validation list chosen by Claude Code at member B's request, committed before any RQ1 result.
+- [D-037](../decisions.md): validation list chosen by Claude Code on request, committed before any RQ1 result.
 - [D-038](../decisions.md): mid-rank betweenness percentile, write-back only where diversity is defined, ego-figure settings, CJK fonts.
 - [D-039](../decisions.md), [D-040](../decisions.md) (G1, recorded 2026-10-19): classical out of the main graph and analysed as the `classical` variant; the other provisional values confirmed. Spoken word, log weights and the D-027/D-028 sign-off remain open.
 
 ## 6. Deviations from the plan
 
 - **Schedule and graph.** Planned Oct 19–30; first done Oct 11–13 on the **provisional** graph, before gate G1. After G1 was recorded (2026-10-19), P3 was rebuilt and every stage re-ran unchanged in the order of §8, plus the new `classical` variant (2026-10-19/20, about 13.5 h of wall time including about 4 h of machine sleep).
-- **Validation list** chosen by Claude Code, not by both members independently (D-037). It was still committed before any bridge result existed.
+- **Validation list** chosen by Claude Code rather than through the independent selection PRD §5.6 describes (D-037). It was still committed before any bridge result existed.
 - **New feature F4.7** (sensitivity variants), added to PRD §11 with D-035, because the PRD's `Character` sensitivity runs could not be produced with one `graph/` folder.
 - **Metric additions,** reported next to the PRD metrics, which stay unchanged:
   - AMI and largest-component views for RQ2 (D-034);
@@ -135,7 +135,7 @@ The provisional numbers survive as the `classical` sensitivity run, because that
 - **Weight-based diversity under-rates artists with a big home genre:** Quincy Jones and Herbie Hancock have top-50 betweenness but bridge ranks around 60,000 of 126,293 (F4.6).
 - **The bridge score ≈ the diversity score** for every artist that has one, because those artists all have betweenness percentiles near 1 (D-038).
 - **Genres cover a minority:** 22.0 % of artists have a primary genre, and labelled coverage falls from 61 % (1960s) to 29 % (2020s) of decade weight. This is the main caveat for RQ1–RQ3.
-- **Spot-check verdicts:** one entry is still unverified (Luke Pickman), and 16 new top-10 entries are not yet reviewed (F4.6). All verdicts are Claude Code's judgement and need both members' review.
+- **Spot-check verdicts:** one entry is still unverified (Luke Pickman), and 16 new top-10 entries are not yet reviewed (F4.6). All verdicts are Claude Code's judgement and need review.
 - **Yo‐Yo Ma**, on the pre-registered list, is not in the main graph (classical); the list stays unchanged (D-037).
 - **Betweenness is slow** (about 2.7 h of compute per full F4.1 run, single-threaded), and a sleeping machine pauses the run. Keep the machine awake for full runs.
 
@@ -166,13 +166,13 @@ docker compose exec spark pytest
 
 ## 9. Handoff to the next phase
 
-P5 (benchmarks, member A) and P6 (report) can rely on:
+P5 (benchmarks) and P6 (report) can rely on:
 
-- **Neo4j holds the full graph** (`loaded_graph.json`: `full`) with every P4 property written back: `degreeWeighted`, `pagerank`, `betweenness`, `louvain`, `genreDiversity`, `bridgeScore`. These serve the F6.2 demo. Member B's sample graph needs `bash neo4j/import_graph.sh sample-f0.05 --overwrite`.
+- **Neo4j holds the full graph** (`loaded_graph.json`: `full`) with every P4 property written back: `degreeWeighted`, `pagerank`, `betweenness`, `louvain`, `genreDiversity`, `bridgeScore`. These serve the F6.2 demo. The dev sample graph needs `bash neo4j/import_graph.sh sample-f0.05 --overwrite`.
 - **Report tables and figures** are in `reports/tables/` and `reports/figures/` (final full graph), with the sensitivity versions under `variants/characters/` and `variants/classical/`. Every row names its graph and edges fingerprint.
 - **For F5.2 (GDS vs GraphFrames PageRank):** F4.1's PageRank runs to convergence (122 iterations on COLLAB of the final graph), not 20 (D-033). Compare on the same settings or state the difference.
 - **Watch out for:**
-  - **Spoken word.** If the team adopts the spoken-word filter (F3.6), P3 and §8 must run again (about 10 h of compute with both variants).
+  - **Spoken word.** If the spoken-word filter is adopted (F3.6), P3 and §8 must run again (about 10 h of compute with both variants).
   - **Betweenness variance across imports** (§7): don't compare raw betweenness scores between graphs or imports.
   - **Write-backs don't survive a re-import.** Importing another graph wipes the Neo4j properties.
   - **Review the F4.6 spot-check verdicts**, the unverified entry and the 16 not-yet-reviewed entries before quoting top lists.

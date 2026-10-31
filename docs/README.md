@@ -23,39 +23,39 @@ This folder records what was built, in which phase, and why. The rules for writi
 | P3 Graph build & Neo4j load | Oct 18–24 | Done | [P3-graph-build-neo4j.md](phases/P3-graph-build-neo4j.md) |
 | P4 Graph analytics | Oct 19–30 | Done (final post-G1 graph, re-run 2026-10-20) | [P4-graph-analytics.md](phases/P4-graph-analytics.md) |
 | P5 Benchmarks | Oct 22–30 | Done (Oct 19–20) | [P5-benchmarks.md](phases/P5-benchmarks.md) |
-| P6 Presentation & report | Oct 28–Nov 9 | Built 2026-10-20; team review, demo video and rehearsal pending | [P6-presentation-report.md](phases/P6-presentation-report.md) |
+| P6 Presentation & report | Oct 28–Nov 9 | Built 2026-10-20; review, demo video and rehearsal pending | [P6-presentation-report.md](phases/P6-presentation-report.md) |
 
 ## Features
 
-| ID | Feature | Phase | Owner | Priority | Status | Doc |
-|---|---|---|---|---|---|---|
-| F1.1 | Dev environment | P1 | A | Must | Done | [F1.1-dev-environment.md](features/F1.1-dev-environment.md) |
-| F1.2 | Dump download and snapshot pinning | P1 | A | Must | Done | [F1.2-dump-download.md](features/F1.2-dump-download.md) |
-| F1.3 | Table schemas and raw ingest | P1 | A | Must | Done | [F1.3-raw-ingest.md](features/F1.3-raw-ingest.md) |
-| F1.4 | Data profiling report | P1 | A + B | Must | Done | [F1.4-profiling.md](features/F1.4-profiling.md) |
-| F1.5 | Neo4j + GDS smoke test | P1 | B | Must | Done | [F1.5-neo4j-smoke-test.md](features/F1.5-neo4j-smoke-test.md) |
-| F2.1 | Artist cleaning and special-purpose filter | P2 | A | Must | Done | [F2.1-artist-cleaning.md](features/F2.1-artist-cleaning.md) |
-| F2.2 | Credit parsing (main / featured) | P2 | A | Must | Done | [F2.2-credit-parsing.md](features/F2.2-credit-parsing.md) |
-| F2.3 | Contribution relationship extraction | P2 | A | Must | Done | [F2.3-contributions.md](features/F2.3-contributions.md) |
-| F2.4 | Recording first release year | P2 | A | Must | Done | [F2.4-first-release-year.md](features/F2.4-first-release-year.md) |
-| F2.5 | Genre normalization | P2 | A + B | Must | Done | [F2.5-genre-normalization.md](features/F2.5-genre-normalization.md) |
-| F3.1 | Edge building and filters | P3 | A | Must | Done | [F3.1-edge-building.md](features/F3.1-edge-building.md) |
-| F3.2 | Sample mode and dev sample graph | P3 | A | Must | Done | [F3.2-dev-sample-graph.md](features/F3.2-dev-sample-graph.md) |
-| F3.3 | Graph-layer quality checks | P3 | A | Must | Done | [F3.3-graph-quality-checks.md](features/F3.3-graph-quality-checks.md) |
-| F3.4 | Neo4j CSV export and bulk import | P3 | A | Must | Done | [F3.4-neo4j-export-import.md](features/F3.4-neo4j-export-import.md) |
-| F3.5 | Constraints, indexes, GDS projections | P3 | B (built by A) | Must | Done | [F3.5-constraints-indexes-projections.md](features/F3.5-constraints-indexes-projections.md) |
-| F4.1 | Centrality and agreement (RQ4) | P4 | B | Must | Done | [F4.1-centrality.md](features/F4.1-centrality.md) |
-| F4.2 | Communities vs genres (RQ2) | P4 | B | Must | Done | [F4.2-communities.md](features/F4.2-communities.md) |
-| F4.3 | Genre bridges (RQ1) | P4 | B | Must | Done | [F4.3-genre-bridges.md](features/F4.3-genre-bridges.md) |
-| F4.4 | Cross-genre trends by decade (RQ3) | P4 | B | Must | Done | [F4.4-cross-genre-trends.md](features/F4.4-cross-genre-trends.md) |
-| F4.5 | Degrees of separation | P4 | B | Should | Done | [F4.5-degrees-of-separation.md](features/F4.5-degrees-of-separation.md) |
-| F4.6 | Validation | P4 | B | Must | Done | [F4.6-validation.md](features/F4.6-validation.md) |
-| F4.7 | Sensitivity graph variants (D-021) | P4 | B | Must | Done (`characters`, `classical`) | [F4.7-sensitivity-variants.md](features/F4.7-sensitivity-variants.md) |
-| F5.1 | Spark scaling benchmark | P5 | A | Must | Done | [F5.1-spark-scaling.md](features/F5.1-spark-scaling.md) |
-| F5.2 | PageRank: GDS vs GraphFrames | P5 | A | Should | Done | [F5.2-pagerank-gds-vs-graphframes.md](features/F5.2-pagerank-gds-vs-graphframes.md) |
-| F5.3 | PageRank on GPU (cuGraph) | P5 | A | Could | Done | [F5.3-pagerank-cugraph.md](features/F5.3-pagerank-cugraph.md) |
-| F6.1 | Report figures and tables | P6 | Both | Must | Done | [F6.1-report-figures-tables.md](features/F6.1-report-figures-tables.md) |
-| F6.2 | Demo | P6 | B | Must | Done (video to record; Streamlit not built) | [F6.2-demo.md](features/F6.2-demo.md) |
-| F6.3 | Final report | P6 | Both | Must | Draft complete, team review pending ([report/report.md](../report/report.md)) | [F6.3-final-report.md](features/F6.3-final-report.md) |
-| F6.4 | Slides and rehearsal | P6 | Both | Must | Deck done; video and rehearsal pending | [F6.4-slides.md](features/F6.4-slides.md) |
-| F6.5 | README and reproducibility check | P6 | A | Must | Done (sample mode from a clean clone, 2026-10-20; full mode not re-run) | [F6.5-readme-reproducibility.md](features/F6.5-readme-reproducibility.md) |
+| ID | Feature | Phase | Priority | Status | Doc |
+|---|---|---|---|---|---|
+| F1.1 | Dev environment | P1 | Must | Done | [F1.1-dev-environment.md](features/F1.1-dev-environment.md) |
+| F1.2 | Dump download and snapshot pinning | P1 | Must | Done | [F1.2-dump-download.md](features/F1.2-dump-download.md) |
+| F1.3 | Table schemas and raw ingest | P1 | Must | Done | [F1.3-raw-ingest.md](features/F1.3-raw-ingest.md) |
+| F1.4 | Data profiling report | P1 | Must | Done | [F1.4-profiling.md](features/F1.4-profiling.md) |
+| F1.5 | Neo4j + GDS smoke test | P1 | Must | Done | [F1.5-neo4j-smoke-test.md](features/F1.5-neo4j-smoke-test.md) |
+| F2.1 | Artist cleaning and special-purpose filter | P2 | Must | Done | [F2.1-artist-cleaning.md](features/F2.1-artist-cleaning.md) |
+| F2.2 | Credit parsing (main / featured) | P2 | Must | Done | [F2.2-credit-parsing.md](features/F2.2-credit-parsing.md) |
+| F2.3 | Contribution relationship extraction | P2 | Must | Done | [F2.3-contributions.md](features/F2.3-contributions.md) |
+| F2.4 | Recording first release year | P2 | Must | Done | [F2.4-first-release-year.md](features/F2.4-first-release-year.md) |
+| F2.5 | Genre normalization | P2 | Must | Done | [F2.5-genre-normalization.md](features/F2.5-genre-normalization.md) |
+| F3.1 | Edge building and filters | P3 | Must | Done | [F3.1-edge-building.md](features/F3.1-edge-building.md) |
+| F3.2 | Sample mode and dev sample graph | P3 | Must | Done | [F3.2-dev-sample-graph.md](features/F3.2-dev-sample-graph.md) |
+| F3.3 | Graph-layer quality checks | P3 | Must | Done | [F3.3-graph-quality-checks.md](features/F3.3-graph-quality-checks.md) |
+| F3.4 | Neo4j CSV export and bulk import | P3 | Must | Done | [F3.4-neo4j-export-import.md](features/F3.4-neo4j-export-import.md) |
+| F3.5 | Constraints, indexes, GDS projections | P3 | Must | Done | [F3.5-constraints-indexes-projections.md](features/F3.5-constraints-indexes-projections.md) |
+| F4.1 | Centrality and agreement (RQ4) | P4 | Must | Done | [F4.1-centrality.md](features/F4.1-centrality.md) |
+| F4.2 | Communities vs genres (RQ2) | P4 | Must | Done | [F4.2-communities.md](features/F4.2-communities.md) |
+| F4.3 | Genre bridges (RQ1) | P4 | Must | Done | [F4.3-genre-bridges.md](features/F4.3-genre-bridges.md) |
+| F4.4 | Cross-genre trends by decade (RQ3) | P4 | Must | Done | [F4.4-cross-genre-trends.md](features/F4.4-cross-genre-trends.md) |
+| F4.5 | Degrees of separation | P4 | Should | Done | [F4.5-degrees-of-separation.md](features/F4.5-degrees-of-separation.md) |
+| F4.6 | Validation | P4 | Must | Done | [F4.6-validation.md](features/F4.6-validation.md) |
+| F4.7 | Sensitivity graph variants (D-021) | P4 | Must | Done (`characters`, `classical`) | [F4.7-sensitivity-variants.md](features/F4.7-sensitivity-variants.md) |
+| F5.1 | Spark scaling benchmark | P5 | Must | Done | [F5.1-spark-scaling.md](features/F5.1-spark-scaling.md) |
+| F5.2 | PageRank: GDS vs GraphFrames | P5 | Should | Done | [F5.2-pagerank-gds-vs-graphframes.md](features/F5.2-pagerank-gds-vs-graphframes.md) |
+| F5.3 | PageRank on GPU (cuGraph) | P5 | Could | Done | [F5.3-pagerank-cugraph.md](features/F5.3-pagerank-cugraph.md) |
+| F6.1 | Report figures and tables | P6 | Must | Done | [F6.1-report-figures-tables.md](features/F6.1-report-figures-tables.md) |
+| F6.2 | Demo | P6 | Must | Done (video to record; Streamlit not built) | [F6.2-demo.md](features/F6.2-demo.md) |
+| F6.3 | Final report | P6 | Must | Draft complete, review pending ([report/report.md](../report/report.md)) | [F6.3-final-report.md](features/F6.3-final-report.md) |
+| F6.4 | Slides and rehearsal | P6 | Must | Deck done; video and rehearsal pending | [F6.4-slides.md](features/F6.4-slides.md) |
+| F6.5 | README and reproducibility check | P6 | Must | Done (sample mode from a clean clone, 2026-10-20; full mode not re-run) | [F6.5-readme-reproducibility.md](features/F6.5-readme-reproducibility.md) |

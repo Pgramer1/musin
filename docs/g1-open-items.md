@@ -1,6 +1,6 @@
 # Open G1 items — decision brief (2026-10-20)
 
-**Status:** for members A and B to decide. Nothing in this note is decided. It was prepared by Claude Code on 2026-10-20 at member A's request, after P4 was re-run on the final graph and P5 was closed. Each decision taken gets its own `D-NNN` entry.
+**Status:** open for decision. Nothing in this note is decided. It was prepared by Claude Code on 2026-10-20, after P4 was re-run on the final graph and P5 was closed. Each decision taken gets its own `D-NNN` entry.
 
 **Why now:** the feature freeze is Oct 30 (M4) and P6 starts Oct 28. Options that rebuild the graph need about 11 h of machine time, so they must be decided this week. If both items lead to a rebuild, doing them **together** saves one full P4 re-run.
 
@@ -26,7 +26,7 @@ The size of the problem was only estimated before G1, on the provisional graph w
 
 The G1 proposal (g1-scope-gate.md §4) drops **recordings** whose release groups are **all** of an excluded secondary type (Audiobook, Audio drama, Spoken word). A music recording that also appears on a spoken-word compilation keeps its edges. Springsteen's music stays; his audiobook goes.
 
-It needs two dump tables we don't ingest yet, `release_group_secondary_type` and `release_group_secondary_type_join`. They would come from `mbdump.tar.bz2`, which is already on disk; F1.3 extracted 22 tables in 136 s. It is new scope: F3.6 / FR-28 and a new `filters.exclude_secondary_types` key need a PRD change approved by both members (RULES §3, §11).
+It needs two dump tables we don't ingest yet, `release_group_secondary_type` and `release_group_secondary_type_join`. They would come from `mbdump.tar.bz2`, which is already on disk; F1.3 extracted 22 tables in 136 s. It is new scope: F3.6 / FR-28 and a new `filters.exclude_secondary_types` key need an approved PRD change (RULES §3, §11).
 
 ### 1.3 Options
 
@@ -98,11 +98,11 @@ Exact betweenness (all 1.1 M sources) is out of reach: about 113 × the sampled 
 | **Clean rebuild** | S0 → S1 + B1 together (+ B2 overnight on the new main graph) | about 11 h (+ 6.4 h) | audiobooks gone, rebuilds reproducible, betweenness stability reported; one P4 re-run covers everything |
 | **Sensitivity only** | S0 → S2 + B1 + B2 | about 3.2 h + 6.4 h | headline numbers unchanged; the report shows both effects as sensitivity results |
 
-**Claude Code's suggestion** (the members decide): start with **Evidence first**. It costs about 10 min of compute and an afternoon of work. Then choose between **Clean rebuild** and **Sensitivity only** based on how much weight spoken word really carries. If there is a rebuild, B1 should ride along, because it makes that rebuild the last non-reproducible one.
+**Claude Code's suggestion** (not a decision): start with **Evidence first**. It costs about 10 min of compute and an afternoon of work. Then choose between **Clean rebuild** and **Sensitivity only** based on how much weight spoken word really carries. If there is a rebuild, B1 should ride along, because it makes that rebuild the last non-reproducible one.
 
 ---
 
 ## 4. Also still open from G1 (not covered here)
 
-- **`log(1 + weight)` for the weighted P4 measures** (g1-scope-gate.md §2.3), member B's decision. Without classical, Springsteen's live archive (#1–#4 by weighted degree) is the remaining weight outlier. A log transform would also shrink the audiobook pairs' dominance, so it partly overlaps with §1.
-- **M1 sign-off of D-027/D-028** (g1-scope-gate.md §2.2): already implemented, it only needs both members' agreement.
+- **`log(1 + weight)` for the weighted P4 measures** (g1-scope-gate.md §2.3). Without classical, Springsteen's live archive (#1–#4 by weighted degree) is the remaining weight outlier. A log transform would also shrink the audiobook pairs' dominance, so it partly overlaps with §1.
+- **M1 sign-off of D-027/D-028** (g1-scope-gate.md §2.2): already implemented, it only needs sign-off.

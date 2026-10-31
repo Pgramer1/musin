@@ -4,7 +4,6 @@
 |---|---|
 | **Phase** | P<n> — <phase name> |
 | **PRD requirements** | FR-xx, … (and RQx for analysis features) |
-| **Owner** | A / B |
 | **Status** | Done |
 | **Completed** | YYYY-MM-DD |
 | **PR** | <link> |

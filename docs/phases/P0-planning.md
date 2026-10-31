@@ -5,12 +5,11 @@
 | **Status** | Done |
 | **Planned dates** | 2026-10-10 |
 | **Actual dates** | 2026-10-10 |
-| **Owners** | Both |
 | **Data snapshot** | Not chosen yet (OD6, decided in F1.2) |
 
 ## 1. Goal
 
-Turn the initial idea into a scoped, buildable plan for a one-month, two-person Big Data Analytics project, and set up how we work and how we document.
+Turn the initial idea into a scoped, buildable plan for a one-month Big Data Analytics project, and set up how the project is run and documented.
 
 ## 2. What was built
 
@@ -20,7 +19,7 @@ No code was written in this phase. It produced the project's planning documents:
 |---|---|
 | [README.md](../../README.md) | Project overview and live status, updated as the project progresses |
 | [PRD.md](../../PRD.md) | Scope, research questions, metric definitions, schema contract, features, schedule, risks |
-| [RULES.md](../../RULES.md) | Team conventions, including these documentation rules |
+| [RULES.md](../../RULES.md) | Working conventions, including these documentation rules |
 | [CLAUDE.md](../../CLAUDE.md) | Guidance for Claude Code working in the repo |
 | [docs/README.md](../README.md) | Build-log index of every phase and feature |
 | [docs/decisions.md](../decisions.md) | Decision log, D-001 to D-010 |
@@ -51,7 +50,7 @@ A written review of that pitch came with it; its findings are summarised below. 
 - *Spark vs pandas benchmark* → replaced by Spark scaling plus a graph-engine comparison (D-009).
 - *Streamlit dashboard* → made optional (D-010).
 
-**Constraints recorded:** team of two; about one month (2026-10-10 to ~2026-11-09); no data-size requirement; Spark/Hadoop/Hive optional but valued; reference machine with 24 GB RAM and an RTX 4060 (8 GB).
+**Constraints recorded:** about one month (2026-10-10 to ~2026-11-09); no data-size requirement; Spark/Hadoop/Hive optional but valued; reference machine with 24 GB RAM and an RTX 4060 (8 GB).
 
 **How the build log works from here.** Each feature gets a doc in `docs/features/` when it's done, each phase gets a doc in `docs/phases/` when it closes, and `docs/README.md` tracks the status of all of them (RULES.md §1).
 
@@ -81,7 +80,6 @@ n/a: this is the first phase.
 
 - Open decisions OD1–OD7 (PRD §14) are unresolved until gate G1 on Oct 16.
 - The exact submission deadline still needs confirming.
-- Team member names still need filling in (PRD header and §12).
 
 ## 8. How to reproduce this phase
 
@@ -91,7 +89,7 @@ n/a.
 
 Before P1 work starts:
 
-- [ ] Fill in member names (PRD header and §12) and confirm the deadline
+- [ ] Confirm the deadline
 - [x] Create the Git repo (remote: `github.com/Pgramer1/musin`) and add `.gitignore` + `.gitattributes`
 - [ ] Install WSL2 (Ubuntu) and Docker on both machines
 - [ ] Check that the reference machine has ≥ 100 GB of free disk

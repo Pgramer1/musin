@@ -2,10 +2,10 @@
 
 | | |
 |---|---|
-| **Status** | Built 2026-10-20; closes when the team has reviewed the report, recorded the demo video and rehearsed (§7) |
+| **Status** | Built 2026-10-20; closes when the report has been reviewed, the demo video recorded and the talk rehearsed (§7) |
 | **Planned dates** | 2026-10-28 – 2026-11-09 |
 | **Actual dates** | 2026-10-20 (build) |
-| **Owners** | Both (F6.2 B, F6.5 A); built by Claude Code with member A |
+| **Built with** | Claude Code |
 | **Data snapshot** | MusicBrainz full export `20261007-002147`; final graph `full`, edges fingerprint `-2227712706449027820962` (1,135,461 artists, 3,078,519 edges) |
 
 ## 1. Goal
@@ -15,7 +15,7 @@ From PRD §11 and FR-24–FR-27:
 - a live demo through saved Neo4j Browser queries (F6.2);
 - the final report (F6.3);
 - slides and a rehearsal (F6.4);
-- a README that a new team member can follow from a clean clone (F6.5).
+- a README that a newcomer can follow from a clean clone (F6.5).
 
 Success criteria 1–5 (PRD §16) are checked here.
 
@@ -25,7 +25,7 @@ Success criteria 1–5 (PRD §16) are checked here.
 |---|---|---|
 | F6.1 — Report figures and tables | Done | [F6.1-report-figures-tables.md](../features/F6.1-report-figures-tables.md) |
 | F6.2 — Demo: saved Browser queries | Done (video to record); FR-26 Streamlit (Could) not built | [F6.2-demo.md](../features/F6.2-demo.md) |
-| F6.3 — Final report | Draft complete; team review pending | [F6.3-final-report.md](../features/F6.3-final-report.md) |
+| F6.3 — Final report | Draft complete; review pending | [F6.3-final-report.md](../features/F6.3-final-report.md) |
 | F6.4 — Slides and rehearsal | Deck done; video, names and rehearsal pending | [F6.4-slides.md](../features/F6.4-slides.md) |
 | F6.5 — README and clean-clone reproducibility check | Done (sample mode) | [F6.5-readme-reproducibility.md](../features/F6.5-readme-reproducibility.md) |
 
@@ -62,34 +62,34 @@ README + fresh clone ──F6.5──▶ corrected Getting started / Verify the 
 2. **RQ1–RQ4:** each has metrics, figures, a written answer and a validation note (report §5–§6).
 3. **Benchmarks:** FR-21–FR-23 are reported with environment details (report §7, `bench_environment`).
 4. **Build log:** every Must feature and every phase has a doc.
-5. **Report, slides, demo:** built; the team still reviews the report, records the video and rehearses before M6.
+5. **Report, slides, demo:** built; the report review, the video and the rehearsal remain before M6.
 
 ## 5. Decisions made
 
 - [D-044](../decisions.md): report figures and tables generated from `reports/tables` with a one-build guard; Markdown and LaTeX tables; the manifest.
 - Presentation choices, recorded in the feature docs (not decisions under RULES §1.3):
-  - ego figures and separation pairs kept as generated (member A, F6.1 §8);
+  - ego figures and separation pairs kept as generated (F6.1 §8);
   - Ry Cooder as the demo artist (F6.2 §5);
-  - a 5-slide, 5-minute talk (member A, F6.4).
+  - a 5-slide, 5-minute talk (F6.4).
 
 ## 6. Deviations from the plan
 
 - **Dates:** built on 2026-10-20, ahead of the planned Oct 28 – Nov 9, right after P5.
-- **Slides:** the team asked for a 5-minute talk with five slides, including a video of the working model. The demo is therefore shown as a recorded video rather than live.
+- **Slides:** a 5-minute talk with five slides was requested, including a video of the working model. The demo is therefore shown as a recorded video rather than live.
 - **FR-26 (Streamlit, Could):** not built.
-- **Report:** drafted by Claude Code from the generated files and the build log, to be reviewed and edited by both members. The plan was for both members to write it.
+- **Report:** drafted by Claude Code from the generated files and the build log, to be reviewed and edited. The plan was to write it by hand.
 - **New module and file:** `musin.demo_check` (a dry run of the demo) and `neo4j/10_demo.cypher`.
 - **No PRs:** merged directly into `main`, as in P1–P5.
 
 ## 7. Known issues and limitations
 
-To close the phase, the team still has to:
+To close the phase, it still remains to:
 - **Review and edit the report**, fill in the names and confirm the deadline (F6.3 §8).
 - **Review the F4.6 spot-check verdicts** before the top lists are quoted (P4 §7).
 - **Record the demo video** (F6.2 §6) and insert it on slide 4.
 - **Rehearse** the 5-minute talk.
 - **Check the course policy on AI assistance** and adjust the draft statement in report §10.
-- **Share the deck** from its Share menu if the other member or the examiner needs the link.
+- **Share the deck** from its Share menu if anyone else, such as the examiner, needs the link.
 
 Inherited and stated in the report's limitations:
 - the parked G1 items: spoken word, betweenness reproducibility across imports, log weights, the D-027/D-028 sign-off;
@@ -114,7 +114,7 @@ Then:
 
 ## 9. Handoff
 
-This is the last phase. What the team can rely on for submission:
+This is the last phase. What can be relied on for submission:
 - **Generated outputs:** every report figure and table is generated by code and listed in `reports/README.md`.
 - **Report and slides:** the report quotes them only; the slides quote the report tables.
 - **Demo:** the queries are checked against the loaded graph.

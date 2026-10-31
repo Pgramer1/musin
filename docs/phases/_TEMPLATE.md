@@ -5,7 +5,6 @@
 | **Status** | Done / Closed with cuts |
 | **Planned dates** | |
 | **Actual dates** | |
-| **Owners** | |
 | **Data snapshot** | MusicBrainz export `<date>` |
 
 ## 1. Goal

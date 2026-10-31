@@ -1,6 +1,6 @@
 <!--
-F6.3 final report (FR-27). Draft written 2026-10-20 by Claude Code at member A's request, from the generated
-files only. Both members must review and edit it before submission.
+F6.3 final report (FR-27). Draft written 2026-10-20 by Claude Code from the generated
+files only. Review and edit it before submission.
 
 Rules for editing:
 - Numbers are copied from generated files only (RULES §9): reports/tables/report/*.md (rounded report tables,
@@ -10,17 +10,16 @@ Rules for editing:
 - Format: Markdown (pandoc can turn it into PDF or DOCX). For LaTeX, \input the .tex tables
   (booktabs; XeLaTeX or LuaLaTeX for CJK names, ρ and ×).
 
-Before submission (team):
-- [ ] Fill in the names and confirm the deadline (M6, Nov 9).
-- [ ] Both members review the F4.6 spot-check verdicts before the top lists in §6 are quoted as they stand.
+Before submission:
+- [ ] Confirm the deadline (M6, Nov 9).
+- [ ] Review the F4.6 spot-check verdicts before the top lists in §6 are quoted as they stand.
 - [ ] Check the course's policy on declaring AI assistance. Claude Code built most stages and chose the
-      validation list at member B's request (D-037); the build log says so. §10 has a draft statement.
+      validation list (D-037); the build log says so. §10 has a draft statement.
 - [ ] Optional: draw the architecture diagram as a figure (§3 has it as text).
 -->
 
 # Bridging Genres: A Big-Data Analysis of the MusicBrainz Collaboration Network
 
-**Team:** Member A — `<name>` (data engineering) · Member B — `<name>` (graph analytics)
 **Course:** Big Data Analytics, semester project, 2026
 **Data:** MusicBrainz full export `20261007-002147` · final graph `full`, edges fingerprint `-2227712706449027820962`
 
@@ -142,7 +141,7 @@ The pipeline has layers (`raw/` → `clean/` → `graph/` → `import/` → `rep
 - **Memory budget:** WSL 18 GB; Spark driver 12 GB; Neo4j heap 8 GB plus 5 GB page cache.
 - **One heavy engine at a time:** Spark and Neo4j heavy jobs never run together.
 - **Configuration split:** settings that change results live in `config/pipeline.yaml`; per-machine settings and secrets live in `.env`. A missing key fails loudly; there are no hidden defaults in code.
-- **Sample mode** (`--sample 0.05`) keeps recordings by a hash of their id. That makes samples deterministic, and both members could develop on small machines (FR-12).
+- **Sample mode** (`--sample 0.05`) keeps recordings by a hash of their id. That makes samples deterministic and lets development run on small machines (FR-12).
 
 ## 4. Data processing and graph construction
 
@@ -403,16 +402,16 @@ We would also try per-period genre attribution and release-level credits (OD7).
 - **One genre per artist, for all time.** Attribution uses the primary genre only, not the genre profile, and does not change over an artist's career.
 - **Classical music is excluded** from the main graph (D-039) and analysed only as a variant. One pre-registered artist, Yo‐Yo Ma, is therefore missing from the validation.
 
-**Open scope items** (parked by the team; `docs/g1-open-items.md`)
+**Open scope items** (parked; `docs/g1-open-items.md`)
 - **Spoken word is still in the graph** (D-040). Audiobook authors and narrators rank high on weighted degree in both projections. A recording-level filter was proposed but not built.
 - **Sampled betweenness is not reproducible across re-imports** of the same graph. On an identical rebuild, the betweenness top 20 shared only 16 of 20 artists with the earlier run (P4 §7). The likely cause, unsorted export rows changing internal node ids and with them the sampled sources, is not verified. Within one import the results are reproducible (D-033), and we quote betweenness by rank and percentile only.
 - **Weights are not log-transformed** for the weighted measures, so weight outliers such as a live archive stay at the top of weighted degree.
-- **Two graph-build rules await formal sign-off by both members** (D-027 `recording_count`; D-028 one count per recording and pair). They are implemented as described.
+- **Two graph-build rules await formal sign-off** (D-027 `recording_count`; D-028 one count per recording and pair). They are implemented as described.
 
 **Method**
 - **Record labels credited as artists** (Putumayo, Vineyard Music) are not filtered and appear in the top lists.
 - **Weight-based diversity under-rates bridges with a large home genre** (Quincy Jones, Herbie Hancock; §6.1). For every artist with a defined score, the bridge score is close to the diversity score, because all of them have high betweenness percentiles (D-038).
-- **The pre-registered list was chosen by Claude Code at member B's request** (D-037), not independently by both members as planned. It was still committed before any RQ1 result. The spot-check verdicts need both members' review.
+- **The pre-registered list was chosen by Claude Code** (D-037), not compiled independently as planned. It was still committed before any RQ1 result. The spot-check verdicts still need a human review.
 
 **Benchmarks**
 - **One machine.** The numbers describe one laptop: GDS Community limited to 4 cores, Spark in local mode, a laptop GPU. They justify this project's architecture, not general claims about the engines. Run-to-run spread is reported as min–max.
@@ -427,7 +426,7 @@ We would also try per-period genre attribution and release-level credits (OD7).
 
 **Build log.** The build log in `docs/` records every feature, every phase and every decision (D-001 to D-044).
 
-**AI assistance** (draft statement; the team to confirm against the course policy). Most of the pipeline code, the build-log documents and this draft were written with Claude Code (Anthropic) under the team's direction and review. Every number comes from the generated files.
+**AI assistance** (draft statement; to confirm against the course policy). Most of the pipeline code, the build-log documents and this draft were written with Claude Code (Anthropic) under human direction and review. Every number comes from the generated files.
 
 ## 11. Conclusion
 

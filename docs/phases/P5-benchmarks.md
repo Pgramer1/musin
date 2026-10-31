@@ -5,7 +5,7 @@
 | **Status** | Done (all three features, including the Could F5.3) |
 | **Planned dates** | 2026-10-22 – 2026-10-30 |
 | **Actual dates** | 2026-10-19 – 2026-10-20 |
-| **Owners** | A; built by Claude Code with member A |
+| **Built with** | Claude Code |
 | **Data snapshot** | MusicBrainz full export `20261007-002147`; final post-G1 graph `full`, edges fingerprint `-2227712706449027820962` (1,135,461 artists, 3,078,519 edges) |
 
 ## 1. Goal
@@ -86,7 +86,7 @@ F5.3  musin.benchmark.pagerank_gpu  (rapids container, GPU)          ─┘
 
 - [D-041](../decisions.md): F5.1 design: the recording chain as workload, a symlinked scratch root, a fresh process per cell, median of 3, repetition-major order, resume.
 - [D-042](../decisions.md): F5.2 design: unweighted PageRank on identical pairs, the same damping, tolerance (new key `benchmark.pagerank.tolerance` 1e-7) and 4 cores, three timed phases, GraphFrames 0.12.3 pinned by SHA-1.
-- [D-043](../decisions.md): F5.3: cuGraph in its own `rapids` container (profile `gpu`, host UID + `conda` group), double precision via unit float64 weights, scores rescaled ×N, output via PyArrow (cuDF's writer fails under WSL). The 5.83 GiB download and the NVIDIA Deep Learning Container License were approved by the team.
+- [D-043](../decisions.md): F5.3: cuGraph in its own `rapids` container (profile `gpu`, host UID + `conda` group), double precision via unit float64 weights, scores rescaled ×N, output via PyArrow (cuDF's writer fails under WSL). The 5.83 GiB download and the NVIDIA Deep Learning Container License were explicitly approved.
 - [D-039](../decisions.md), [D-040](../decisions.md) (G1) were recorded at the start of this phase, so that P5 runs on the final graph.
 
 ## 6. Deviations from the plan
@@ -130,7 +130,7 @@ docker compose exec spark pytest
 
 ## 9. Handoff to the next phase
 
-P6 (report, slides, demo; both members) can rely on:
+P6 (report, slides, demo) can rely on:
 
 - **Report tables** in `reports/tables/`:
   - `benchmark_scaling_{runs,summary}.csv`;

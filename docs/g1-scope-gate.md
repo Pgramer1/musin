@@ -1,6 +1,6 @@
 # Gate G1 — evidence and proposals (Oct 16)
 
-**Status:** prepared 2026-10-11 by member A for the G1 meeting. **Outcome, recorded 2026-10-19:** the §1 recommendations were accepted ([D-039](decisions.md) OD1, [D-040](decisions.md) OD2–OD5, OD7). §2.1/§4 (spoken word), §2.2 (D-027/D-028 sign-off) and §2.3 (log weights) are still open. The rest of this note is the original draft, unchanged. Each decision taken at G1 gets its own `D-NNN` entry, and provisional values in `config/pipeline.yaml` change only after that.
+**Status:** prepared 2026-10-11 for the G1 meeting. **Outcome, recorded 2026-10-19:** the §1 recommendations were accepted ([D-039](decisions.md) OD1, [D-040](decisions.md) OD2–OD5, OD7). §2.1/§4 (spoken word), §2.2 (D-027/D-028 sign-off) and §2.3 (log weights) are still open. The rest of this note is the original draft, unchanged. Each decision taken at G1 gets its own `D-NNN` entry, and provisional values in `config/pipeline.yaml` change only after that.
 
 **Graph used:** full build of snapshot `20261007-002147` at commit `2ac5547` (F3.1 with D-028): 1,180,939 artists, 3,541,659 edges.
 
@@ -12,12 +12,12 @@
 
 ## 1. Open decisions OD1–OD5, OD7
 
-| ID | Provisional | Evidence | Recommendation (member A) |
+| ID | Provisional | Evidence | Recommendation |
 |---|---|---|---|
 | **OD1** classical | `include_classical: true` | See §1.1 | **Analyse separately:** main graph with `include_classical: false`, plus a classical-included sensitivity run, as for D-021 |
 | **OD2** `min_recordings` | `1` | See §1.2 | **Keep 1** |
 | **OD3** `max_credit_size` | `10` | ≤ 10 keeps 99.97 % of recordings and 88.5 % of pair-instances (F1.4). In F3.1, 12,769 recordings over 10 skip 1,464,888 pair-instances and 37,940 contribution rows. | **Keep 10** |
-| **OD4** parent genres | 15-parent draft (D-024) | 97.5 % of genre votes map to a parent. 23.4 % of graph artists have a primary genre, and 35.2 % of edges are labelled at both ends (F3.1). Of labelled artists, 29.8 % rest on one vote and 11.4 % are tied (F2.5). | **Accept the draft**; review single rows only if a member objects |
+| **OD4** parent genres | 15-parent draft (D-024) | 97.5 % of genre votes map to a parent. 23.4 % of graph artists have a primary genre, and 35.2 % of edges are labelled at both ends (F3.1). Of labelled artists, 29.8 % rest on one vote and 11.4 % are tied (F2.5). | **Accept the draft**; review single rows only on objection |
 | **OD5** `PRODUCED_FOR` | own edge type | Producer credits on 4.4 % of recordings, peaking in the 1960s–80s (F1.4). In the graph: 291,319 edges carrying 13.8 % of COLLAB weight (F3.1/F3.2). | **Keep it as its own type**, and keep RQ4's credit-only sensitivity (PRD §5) |
 | **OD7** release-level credits | `false` | +52.7 % contribution rows, but recording coverage only 9.91 % → 11.63 %. Album credits repeat on every track and inflate producer weights (F2.3). | **Keep `false`** |
 
@@ -70,7 +70,7 @@ Raising the threshold to 2 removes 28 % of nodes but only 13 % of edges; the rem
 
 ### 2.2 Contract changes made in P3, for the M1 sign-off (Oct 13)
 
-Both are already implemented and documented. They need member B's agreement because they interpret or change PRD §8.
+Both are already implemented and documented. They need sign-off because they interpret or change PRD §8.
 
 - **[D-027](decisions.md#d-027--recording_count-counts-billed-and-contribution-credits)**
   - *What changed:* `recording_count` counts billed **and** contribution credits.
@@ -80,7 +80,7 @@ Both are already implemented and documented. They need member B's agreement beca
   - *Why:* without it, COLLAB double counts, for example a billed artist's own vocal credit. The rule removed 15.8 % of edges.
   - *Side effect:* PRD §8.2 now says this, and `PERFORMED_FOR` no longer shows billed artists' own instrument credits.
 
-### 2.3 Weight concentration (Springsteen live archive), a P4 question for member B
+### 2.3 Weight concentration (Springsteen live archive), a P4 question
 
 **Evidence:**
 - Bruce Springsteen is #1 by weighted degree (145,087), from about 75 k recordings, mostly live releases. His three pairs with the E Street Band and its members are the heaviest in the graph (31–58 k shared recordings) *(q)*.
@@ -97,12 +97,12 @@ Changing the weight is a metric change (PRD §5) and needs a decision entry. Rec
 1. M1 items: sign off D-027 and D-028 (§2.2) together with contract v1.
 2. OD1 (§1.1), then the spoken-word proposal (§2.1 and §4), because each makes the other's effect visible.
 3. OD2, OD3, OD4, OD5, OD7 (§1): confirm or change the provisional values.
-4. Weight transform for P4 (§2.3), member B's decision.
-5. After G1, member A sets the agreed config, rebuilds F3.1 → F3.2, and re-runs F3.3. Each changed value gets a `D-NNN` entry.
+4. Weight transform for P4 (§2.3).
+5. After G1, the agreed config is set, F3.1 → F3.2 is rebuilt, and F3.3 is re-run. Each changed value gets a `D-NNN` entry.
 
 ## 4. Draft PRD entry: spoken-word recording filter
 
-*Proposed text for PRD.md, to be added through the normal both-members review only if G1 accepts it. Not yet in the PRD.*
+*Proposed text for PRD.md, to be added through the normal review only if G1 accepts it. Not yet in the PRD.*
 
 **§6.2 Tables used — add a row:**
 
@@ -130,9 +130,9 @@ Changing the weight is a metric change (PRD §5) and needs a decision entry. Rec
 
 **§11 Features — add:**
 
-| ID | Feature | Covers | Owner | Priority |
-|---|---|---|---|---|
-| F3.6 | Spoken-word recording filter: ingest the two secondary-type tables (F1.3 path), flag recordings, apply in F3.1 | FR-28 | A | Should |
+| ID | Feature | Covers | Priority |
+|---|---|---|---|
+| F3.6 | Spoken-word recording filter: ingest the two secondary-type tables (F1.3 path), flag recordings, apply in F3.1 | FR-28 | Should |
 
 **Design notes for F3.6** (to be confirmed when it is built):
 

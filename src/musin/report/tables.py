@@ -20,7 +20,7 @@ BETWEENNESS_NOTE = (
 )
 SPOKEN_WORD_NOTE = (
     "Spoken-word recordings (audiobooks) are still in the graph (D-040, open G1 item), and "
-    "the F4.6 spot-check verdicts on these lists still need the team's review."
+    "the F4.6 spot-check verdicts on these lists still need review."
 )
 
 

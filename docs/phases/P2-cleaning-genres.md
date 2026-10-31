@@ -5,7 +5,6 @@
 | **Status** | Done |
 | **Planned dates** | 2026-10-15 – 2026-10-21 |
 | **Actual dates** | 2026-10-11 (all five features) |
-| **Owners** | A (F2.1–F2.4), A + B (F2.5) |
 | **Data snapshot** | MusicBrainz full export `20261007-002147` (schema sequence 31) |
 
 ## 1. Goal

@@ -4,18 +4,18 @@ Guidance for Claude Code in this repository.
 
 ## Project
 
-**Musin** is a two-person Big Data Analytics semester project (deadline ~2026-11-09). We turn the full MusicBrainz database export into an artist collaboration graph with PySpark, load it into Neo4j + GDS, and answer four research questions about genre bridges, communities, cross-genre trends, and centrality.
+**Musin** is a Big Data Analytics semester project (deadline ~2026-11-09). We turn the full MusicBrainz database export into an artist collaboration graph with PySpark, load it into Neo4j + GDS, and answer four research questions about genre bridges, communities, cross-genre trends, and centrality.
 
 - **[PRD.md](PRD.md):** scope, research questions, metric definitions, schema contract (§8), feature list with IDs (§11). Read the relevant section before starting any feature.
-- **[RULES.md](RULES.md):** binding team conventions (imported at the bottom of this file).
+- **[RULES.md](RULES.md):** binding project conventions (imported at the bottom of this file).
 - **[README.md](README.md):** project overview with current status. Kept up to date as the project progresses.
 - **[docs/README.md](docs/README.md):** build-log index, showing what is done, in progress, and planned.
 
-**Current phase:** **P6 Presentation & report** built 2026-10-20 ([P6 doc](docs/phases/P6-presentation-report.md)): F6.1 figures/tables ([D-044](docs/decisions.md)), F6.2 demo queries (`neo4j/10_demo.cypher`), F6.3 report draft (`report/report.md`), F6.4 6-slide deck (`report/musin-slides.pptx`), F6.5 clean-clone check. **Left for the team:** review and edit the report, review the F4.6 spot-check verdicts, rehearse the live demo (slide 4), check the AI-assistance policy. Parked G1 items (spoken word, betweenness across imports, log weights, D-027/D-028 sign-off) are stated as limitations. Neo4j holds `full` (post-G1) with all P4 properties written back; report numbers come from `reports/tables/` only. *(Update this line whenever a phase closes.)*
+**Current phase:** **P6 Presentation & report** built 2026-10-20 ([P6 doc](docs/phases/P6-presentation-report.md)): F6.1 figures/tables ([D-044](docs/decisions.md)), F6.2 demo queries (`neo4j/10_demo.cypher`), F6.3 report draft (`report/report.md`), F6.4 6-slide deck (`report/musin-slides.pptx`), F6.5 clean-clone check. **Still to do:** review and edit the report, review the F4.6 spot-check verdicts, rehearse the live demo (slide 4), check the AI-assistance policy. Parked G1 items (spoken word, betweenness across imports, log weights, D-027/D-028 sign-off) are stated as limitations. Neo4j holds `full` (post-G1) with all P4 properties written back; report numbers come from `reports/tables/` only. *(Update this line whenever a phase closes.)*
 
 ## Mandatory: document every feature and phase
 
-The team requires a written record of everything built. This is part of the work, not optional.
+The project requires a written record of everything built. This is part of the work, not optional.
 
 1. **Before starting**, find the feature's ID in PRD §11. If the work has no ID, ask the user whether to add it to the PRD. Don't invent scope.
 2. **After implementing a feature**, before calling it done:

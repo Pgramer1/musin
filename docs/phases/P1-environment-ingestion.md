@@ -5,12 +5,11 @@
 | **Status** | Done |
 | **Planned dates** | 2026-10-10 – 2026-10-16 |
 | **Actual dates** | 2026-10-10 (all five features in one day) |
-| **Owners** | A (F1.1–F1.3), A + B (F1.4), B (F1.5) |
 | **Data snapshot** | MusicBrainz full export `20261007-002147` (schema sequence 31, replication sequence 189552) |
 
 ## 1. Goal
 
-From PRD §11: a pinned, reproducible environment on the reference machine; the MusicBrainz full export downloaded and verified; every table the project needs parsed with an explicit schema into typed Parquet; a profiling report that gives gate G1 the evidence for the open decisions; and a working Neo4j + GDS path, proven on a toy graph, so member B can build analysis code before the real graph exists.
+From PRD §11: a pinned, reproducible environment on the reference machine; the MusicBrainz full export downloaded and verified; every table the project needs parsed with an explicit schema into typed Parquet; a profiling report that gives gate G1 the evidence for the open decisions; and a working Neo4j + GDS path, proven on a toy graph, so analysis code can be built before the real graph exists.
 
 ## 2. What was built
 
@@ -69,17 +68,17 @@ tests/fixtures/neo4j_toy ─F1.5 neo4j-admin import─────────�
 
 ## 6. Deviations from the plan
 
-- **Schedule:** planned Oct 10–16, finished Oct 10. Gate G1 stays on Oct 16; the open decisions OD1–OD5 and OD7 are *not* resolved by this phase. F1.4 supplies the evidence and the team decides at G1.
+- **Schedule:** planned Oct 10–16, finished Oct 10. Gate G1 stays on Oct 16; the open decisions OD1–OD5 and OD7 are *not* resolved by this phase. F1.4 supplies the evidence and the decisions are made at G1.
 - **Scope added within existing features:** `l_artist_release` joined the raw layer (D-014) so OD7 could be measured. F1.5 changed the schema contract text (D-016, still draft v1, so no version bump) and fixed the COLLAB merge rule (D-017).
-- **Owner split:** F1.5 (owner B) was implemented in the same session as F1.1–F1.4.
-- **No PRs:** features were merged directly to `main` at the team's request, instead of through the reviewed PRs in RULES §2.
+- **Same session:** F1.5 was implemented in the same session as F1.1–F1.4.
+- **No PRs:** features were merged directly to `main` on request, instead of through the reviewed PRs in RULES §2.
 
 ## 7. Known issues and limitations
 
-- **The snapshot expires from the server around 2026-10-21.** Keep `$MUSIN_DATA/dumps/20261007-002147/`; a teammate copies it and runs `--verify-only`.
+- **The snapshot expires from the server around 2026-10-21.** Keep `$MUSIN_DATA/dumps/20261007-002147/`; another machine copies it and runs `--verify-only`.
 - **`raw/` keeps Postgres types** (32-bit IDs, short years). `clean/` must widen them to the §8.1 types.
 - **Data-quality issues seen in profiling,** to be handled in P2: special artists (`[unknown]` is the largest hub), 30,801 downvoted artist tags, implausible years (206 … 3030), voice-actor `(CV:` credits, and genre tags matched by exact name only.
-- **D-016 awaits the second member's sign-off** at M1 (Oct 13), together with the rest of contract v1.
+- **D-016 awaits sign-off** at M1 (Oct 13), together with the rest of contract v1.
 - **PageRank at `max_iterations` 20 did not converge on the toy graph,** and Louvain concurrency has no config key. F4.1/F4.2 must address both.
 - **The concurrency rule is a working rule,** not enforced: nothing stops a heavy Spark job and Neo4j work from running together. Profiling peaked at a 13.1 GiB JVM.
 

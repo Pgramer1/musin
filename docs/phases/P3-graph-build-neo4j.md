@@ -5,12 +5,11 @@
 | **Status** | Done |
 | **Planned dates** | 2026-10-18 – 2026-10-24 |
 | **Actual dates** | 2026-10-11 (all five features) |
-| **Owners** | A (F3.1–F3.4); F3.5 assigned to B, built by A at the team's request |
 | **Data snapshot** | MusicBrainz full export `20261007-002147` (schema sequence 31) |
 
 ## 1. Goal
 
-From PRD §11: turn the P2 `clean/` layer into the artist collaboration graph of PRD §8 (typed, aggregated edges, edges per decade, nodes with genres), apply every graph-level filter (FR-09–FR-11, D-021, OD1/OD2), guarantee its quality (FR-13), make a deterministic dev sample (FR-12), and load both into Neo4j with constraints and the GDS projections P4 needs (FR-14). Milestones served: **M2** (sample graph in Neo4j for member B) and the groundwork for **M3** (full graph in Neo4j).
+From PRD §11: turn the P2 `clean/` layer into the artist collaboration graph of PRD §8 (typed, aggregated edges, edges per decade, nodes with genres), apply every graph-level filter (FR-09–FR-11, D-021, OD1/OD2), guarantee its quality (FR-13), make a deterministic dev sample (FR-12), and load both into Neo4j with constraints and the GDS projections P4 needs (FR-14). Milestones served: **M2** (sample graph in Neo4j for P4 development) and the groundwork for **M3** (full graph in Neo4j).
 
 ## 2. What was built
 
@@ -93,7 +92,7 @@ F3.2 graph.sample --sample 0.05: credits → contributions → years → graph.b
 
 - **Schedule.** Planned Oct 18–24, done Oct 11, before gate G1 (Oct 16). The whole graph uses the **provisional** G1 values (`min_recordings` 1, `max_credit_size` 10, classical included, release-level credits off). G1 will change some of them; re-running F3.1 → F3.5 for both graphs takes about 9 minutes (build 168 s, checks 27 s, sample chain 95 s, exports 47 s, imports with setup 211 s).
 - **Contract changes inside the draft:** D-027 and D-028 interpret or change PRD §8.1/§8.2 before the M1 freeze (Oct 13). Both are listed in the G1 note for sign-off.
-- **F3.5 ownership.** Built by A, not B, at the team's request. Member B should review the F3.5 doc and the `project()`/`drop()` API before P4.
+- **F3.5 review.** The F3.5 doc and the `project()`/`drop()` API should be reviewed before P4.
 - **Rework.** F3.1 was reworked once in this phase (D-028, double counting in COLLAB), and its doc has a revision line.
 - **New config key** `checks.max_row_change` (F3.3; PRD §8.4 updated).
 - **Sample exports live under `import/`**, not in the D-019 sample tree, because Neo4j can only see `import/` (D-031).
@@ -120,13 +119,13 @@ docker compose exec spark python -m musin.graph.sample --config config/pipeline.
 docker compose exec spark python -m musin.export.neo4j_csv --config config/pipeline.yaml            # F3.4, full
 docker compose exec spark python -m musin.export.neo4j_csv --config config/pipeline.yaml --sample 0.05
 bash neo4j/import_graph.sh full --overwrite           # F3.4 import + verify, F3.5 schema + projections
-bash neo4j/import_graph.sh sample-f0.05 --overwrite   # leave member B's dev graph loaded
+bash neo4j/import_graph.sh sample-f0.05 --overwrite   # leave the dev sample graph loaded
 docker compose exec spark pytest
 ```
 
 ## 9. Handoff to the next phase
 
-P4 (member B) can rely on:
+P4 can rely on:
 
 - **Neo4j holds `sample-f0.05`** with constraints on `artistId` / `mbid` / `Genre.name` and an index on `Artist.name`. `$MUSIN_DATA/neo4j/loaded_graph.json` names the loaded graph and its fingerprints; quote the `edges` fingerprint with results. Switching to the full graph takes one command (≈ 2 min) and replaces the sample.
 - **Projections:** `musin.gds.setup.project(driver, "collab_undirected" | "credit_only")` builds them exactly as D-017 defines, already checked against Parquet; `drop()` removes them. The weight is the number of shared recordings (D-028).

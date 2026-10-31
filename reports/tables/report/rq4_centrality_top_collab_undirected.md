@@ -27,5 +27,5 @@
 
 Primary genre in brackets.
 Sampled betweenness is reproducible within one import but not across re-imports of the same graph (P4 §7): quote ranks and percentiles, not the exact top-20 order.
-Spoken-word recordings (audiobooks) are still in the graph (D-040, open G1 item), and the F4.6 spot-check verdicts on these lists still need the team's review.
+Spoken-word recordings (audiobooks) are still in the graph (D-040, open G1 item), and the F4.6 spot-check verdicts on these lists still need review.
 Graph full, edges fingerprint -2227712706449027820962.
